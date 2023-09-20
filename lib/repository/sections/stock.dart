@@ -1,5 +1,5 @@
 import 'package:rich_co_inventory/models/stock.dart';
-import 'package:rich_co_inventory/repository/firebase_apis.dart';
+import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 class ProductApis extends FireStoreAPIs<Stock> {
   @override

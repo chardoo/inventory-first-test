@@ -1,4 +1,4 @@
-import 'package:rich_co_inventory/repository/firebase_apis.dart';
+import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 import '../../models/brand.dart';
 
@@ -12,15 +12,13 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
   @override
   add(Brand brand) async {
     try {
-      final isBrandExist =
-          await checkPath(collection: mainCollection, id: brand.brandName);
+      final isBrandExist = await check(
+          collection: mainCollection, field: "brandName", arg: brand.brandName);
       if (isBrandExist) {
         //TODO: prevent user from adding
+        print("already exist");
       } else {
-        instance
-            .collection(mainCollection)
-            .doc(brand.brandName)
-            .set(brand.toJson());
+        instance.collection(mainCollection).add(brand.toJson());
       }
     } catch (e) {}
   }
@@ -30,7 +28,7 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
     try {
       final isConnectedToProduct = await check(
           collection: dependantCollection,
-          column: "brandId",
+          field: "brandId",
           arg: brand.brandName);
       if (isConnectedToProduct) {
         //TODO: cant delete product

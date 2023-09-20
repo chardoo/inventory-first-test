@@ -7,7 +7,7 @@ abstract class FireStoreAPIs<T> {
   String get mainCollection;
 
   String get dependantCollection;
-  add(T item);
+  Future add(T item);
   Future<bool> checkPath(
       {required String collection, required String id}) async {
     try {
@@ -21,11 +21,11 @@ abstract class FireStoreAPIs<T> {
 
   Future<bool> check(
       {required String collection,
-      required String column,
+      required String field,
       required String arg}) async {
     final res = await instance
         .collection(collection)
-        .where(column, isEqualTo: arg)
+        .where(field, isEqualTo: arg.toLowerCase())
         .limit(1)
         .get();
     return res.docs.isNotEmpty;
@@ -37,4 +37,4 @@ abstract class FireStoreAPIs<T> {
   Future<List<T>> getAll();
 }
 
-enum Collections { brands, suppliers, products ,sales, purchase, stock}
+enum Collections { brands, suppliers, products, sales, purchase, stock }

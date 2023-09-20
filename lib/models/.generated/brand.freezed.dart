@@ -20,9 +20,9 @@ Brand _$BrandFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Brand {
-  String? get brandId => throw _privateConstructorUsedError;
+  @JsonKey(toJson: Converter.toLowerCase)
   String get brandName => throw _privateConstructorUsedError;
-  String? get brandDescription => throw _privateConstructorUsedError;
+  String get brandDescription => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,9 @@ abstract class $BrandCopyWith<$Res> {
   factory $BrandCopyWith(Brand value, $Res Function(Brand) then) =
       _$BrandCopyWithImpl<$Res, Brand>;
   @useResult
-  $Res call({String? brandId, String brandName, String? brandDescription});
+  $Res call(
+      {@JsonKey(toJson: Converter.toLowerCase) String brandName,
+      String brandDescription});
 }
 
 /// @nodoc
@@ -50,23 +52,18 @@ class _$BrandCopyWithImpl<$Res, $Val extends Brand>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? brandId = freezed,
     Object? brandName = null,
-    Object? brandDescription = freezed,
+    Object? brandDescription = null,
   }) {
     return _then(_value.copyWith(
-      brandId: freezed == brandId
-          ? _value.brandId
-          : brandId // ignore: cast_nullable_to_non_nullable
-              as String?,
       brandName: null == brandName
           ? _value.brandName
           : brandName // ignore: cast_nullable_to_non_nullable
               as String,
-      brandDescription: freezed == brandDescription
+      brandDescription: null == brandDescription
           ? _value.brandDescription
           : brandDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ) as $Val);
   }
 }
@@ -77,7 +74,9 @@ abstract class _$$_BrandCopyWith<$Res> implements $BrandCopyWith<$Res> {
       __$$_BrandCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? brandId, String brandName, String? brandDescription});
+  $Res call(
+      {@JsonKey(toJson: Converter.toLowerCase) String brandName,
+      String brandDescription});
 }
 
 /// @nodoc
@@ -89,23 +88,18 @@ class __$$_BrandCopyWithImpl<$Res> extends _$BrandCopyWithImpl<$Res, _$_Brand>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? brandId = freezed,
     Object? brandName = null,
-    Object? brandDescription = freezed,
+    Object? brandDescription = null,
   }) {
     return _then(_$_Brand(
-      brandId: freezed == brandId
-          ? _value.brandId
-          : brandId // ignore: cast_nullable_to_non_nullable
-              as String?,
       brandName: null == brandName
           ? _value.brandName
           : brandName // ignore: cast_nullable_to_non_nullable
               as String,
-      brandDescription: freezed == brandDescription
+      brandDescription: null == brandDescription
           ? _value.brandDescription
           : brandDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -114,21 +108,21 @@ class __$$_BrandCopyWithImpl<$Res> extends _$BrandCopyWithImpl<$Res, _$_Brand>
 @JsonSerializable()
 class _$_Brand implements _Brand {
   const _$_Brand(
-      {this.brandId, required this.brandName, this.brandDescription});
+      {@JsonKey(toJson: Converter.toLowerCase) required this.brandName,
+      required this.brandDescription});
 
   factory _$_Brand.fromJson(Map<String, dynamic> json) =>
       _$$_BrandFromJson(json);
 
   @override
-  final String? brandId;
-  @override
+  @JsonKey(toJson: Converter.toLowerCase)
   final String brandName;
   @override
-  final String? brandDescription;
+  final String brandDescription;
 
   @override
   String toString() {
-    return 'Brand(brandId: $brandId, brandName: $brandName, brandDescription: $brandDescription)';
+    return 'Brand(brandName: $brandName, brandDescription: $brandDescription)';
   }
 
   @override
@@ -136,7 +130,6 @@ class _$_Brand implements _Brand {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Brand &&
-            (identical(other.brandId, brandId) || other.brandId == brandId) &&
             (identical(other.brandName, brandName) ||
                 other.brandName == brandName) &&
             (identical(other.brandDescription, brandDescription) ||
@@ -145,8 +138,7 @@ class _$_Brand implements _Brand {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, brandId, brandName, brandDescription);
+  int get hashCode => Object.hash(runtimeType, brandName, brandDescription);
 
   @JsonKey(ignore: true)
   @override
@@ -164,18 +156,16 @@ class _$_Brand implements _Brand {
 
 abstract class _Brand implements Brand {
   const factory _Brand(
-      {final String? brandId,
-      required final String brandName,
-      final String? brandDescription}) = _$_Brand;
+      {@JsonKey(toJson: Converter.toLowerCase) required final String brandName,
+      required final String brandDescription}) = _$_Brand;
 
   factory _Brand.fromJson(Map<String, dynamic> json) = _$_Brand.fromJson;
 
   @override
-  String? get brandId;
-  @override
+  @JsonKey(toJson: Converter.toLowerCase)
   String get brandName;
   @override
-  String? get brandDescription;
+  String get brandDescription;
   @override
   @JsonKey(ignore: true)
   _$$_BrandCopyWith<_$_Brand> get copyWith =>

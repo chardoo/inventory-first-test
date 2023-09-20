@@ -1,5 +1,5 @@
 import 'package:rich_co_inventory/models/supplier.dart';
-import 'package:rich_co_inventory/repository/firebase_apis.dart';
+import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 class SuppliersApis extends FireStoreAPIs<Supplier> {
   @override
@@ -25,7 +25,7 @@ class SuppliersApis extends FireStoreAPIs<Supplier> {
     try {
       final hasDependant = await check(
           collection: dependantCollection,
-          column: "supplierName",
+          field: "supplierName",
           arg: item.supplierName);
       if (hasDependant) {
         //TODO:

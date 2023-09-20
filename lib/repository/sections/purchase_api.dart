@@ -1,5 +1,5 @@
 import 'package:rich_co_inventory/models/purchase.dart';
-import 'package:rich_co_inventory/repository/firebase_apis.dart';
+import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 class ProductApis extends FireStoreAPIs<Purchase> {
   @override
@@ -29,7 +29,7 @@ class ProductApis extends FireStoreAPIs<Purchase> {
     try {
       final hasConnectionToSales = await check(
           collection: dependantCollection,
-          column: "purchaseId",
+          field: "purchaseId",
           arg: item.productId);
 
       if (hasConnectionToSales) {
