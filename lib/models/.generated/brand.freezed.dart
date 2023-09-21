@@ -23,6 +23,7 @@ mixin _$Brand {
   @JsonKey(toJson: Converter.toLowerCase)
   String get brandName => throw _privateConstructorUsedError;
   String get brandDescription => throw _privateConstructorUsedError;
+  List<Product>? get product => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,8 @@ abstract class $BrandCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(toJson: Converter.toLowerCase) String brandName,
-      String brandDescription});
+      String brandDescription,
+      List<Product>? product});
 }
 
 /// @nodoc
@@ -54,6 +56,7 @@ class _$BrandCopyWithImpl<$Res, $Val extends Brand>
   $Res call({
     Object? brandName = null,
     Object? brandDescription = null,
+    Object? product = freezed,
   }) {
     return _then(_value.copyWith(
       brandName: null == brandName
@@ -64,6 +67,10 @@ class _$BrandCopyWithImpl<$Res, $Val extends Brand>
           ? _value.brandDescription
           : brandDescription // ignore: cast_nullable_to_non_nullable
               as String,
+      product: freezed == product
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as List<Product>?,
     ) as $Val);
   }
 }
@@ -76,7 +83,8 @@ abstract class _$$_BrandCopyWith<$Res> implements $BrandCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(toJson: Converter.toLowerCase) String brandName,
-      String brandDescription});
+      String brandDescription,
+      List<Product>? product});
 }
 
 /// @nodoc
@@ -90,6 +98,7 @@ class __$$_BrandCopyWithImpl<$Res> extends _$BrandCopyWithImpl<$Res, _$_Brand>
   $Res call({
     Object? brandName = null,
     Object? brandDescription = null,
+    Object? product = freezed,
   }) {
     return _then(_$_Brand(
       brandName: null == brandName
@@ -100,6 +109,10 @@ class __$$_BrandCopyWithImpl<$Res> extends _$BrandCopyWithImpl<$Res, _$_Brand>
           ? _value.brandDescription
           : brandDescription // ignore: cast_nullable_to_non_nullable
               as String,
+      product: freezed == product
+          ? _value._product
+          : product // ignore: cast_nullable_to_non_nullable
+              as List<Product>?,
     ));
   }
 }
@@ -109,7 +122,9 @@ class __$$_BrandCopyWithImpl<$Res> extends _$BrandCopyWithImpl<$Res, _$_Brand>
 class _$_Brand implements _Brand {
   const _$_Brand(
       {@JsonKey(toJson: Converter.toLowerCase) required this.brandName,
-      required this.brandDescription});
+      required this.brandDescription,
+      final List<Product>? product})
+      : _product = product;
 
   factory _$_Brand.fromJson(Map<String, dynamic> json) =>
       _$$_BrandFromJson(json);
@@ -119,10 +134,19 @@ class _$_Brand implements _Brand {
   final String brandName;
   @override
   final String brandDescription;
+  final List<Product>? _product;
+  @override
+  List<Product>? get product {
+    final value = _product;
+    if (value == null) return null;
+    if (_product is EqualUnmodifiableListView) return _product;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Brand(brandName: $brandName, brandDescription: $brandDescription)';
+    return 'Brand(brandName: $brandName, brandDescription: $brandDescription, product: $product)';
   }
 
   @override
@@ -133,12 +157,14 @@ class _$_Brand implements _Brand {
             (identical(other.brandName, brandName) ||
                 other.brandName == brandName) &&
             (identical(other.brandDescription, brandDescription) ||
-                other.brandDescription == brandDescription));
+                other.brandDescription == brandDescription) &&
+            const DeepCollectionEquality().equals(other._product, _product));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, brandName, brandDescription);
+  int get hashCode => Object.hash(runtimeType, brandName, brandDescription,
+      const DeepCollectionEquality().hash(_product));
 
   @JsonKey(ignore: true)
   @override
@@ -157,7 +183,8 @@ class _$_Brand implements _Brand {
 abstract class _Brand implements Brand {
   const factory _Brand(
       {@JsonKey(toJson: Converter.toLowerCase) required final String brandName,
-      required final String brandDescription}) = _$_Brand;
+      required final String brandDescription,
+      final List<Product>? product}) = _$_Brand;
 
   factory _Brand.fromJson(Map<String, dynamic> json) = _$_Brand.fromJson;
 
@@ -166,6 +193,8 @@ abstract class _Brand implements Brand {
   String get brandName;
   @override
   String get brandDescription;
+  @override
+  List<Product>? get product;
   @override
   @JsonKey(ignore: true)
   _$$_BrandCopyWith<_$_Brand> get copyWith =>

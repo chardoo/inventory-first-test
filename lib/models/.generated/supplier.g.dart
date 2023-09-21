@@ -12,6 +12,12 @@ _$_Supplier _$$_SupplierFromJson(Map<String, dynamic> json) => _$_Supplier(
       supplierContact: json['supplierContact'] as String?,
       supplierEmail: json['supplierEmail'] as String?,
       supplierAddress: json['supplierAddress'] as String?,
+      purchases: (json['purchases'] as List<dynamic>?)
+          ?.map((e) => Purchase.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      products: (json['products'] as List<dynamic>?)
+          ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_SupplierToJson(_$_Supplier instance) =>
@@ -21,4 +27,6 @@ Map<String, dynamic> _$$_SupplierToJson(_$_Supplier instance) =>
       'supplierContact': instance.supplierContact,
       'supplierEmail': instance.supplierEmail,
       'supplierAddress': instance.supplierAddress,
+      'purchases': instance.purchases?.map((e) => e.toJson()).toList(),
+      'products': instance.products?.map((e) => e.toJson()).toList(),
     };

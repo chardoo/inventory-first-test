@@ -13,6 +13,9 @@ _$_Sale _$$_SaleFromJson(Map<String, dynamic> json) => _$_Sale(
       quantitySold: json['quantitySold'] as int,
       totalRevenue: (json['totalRevenue'] as num).toDouble(),
       salesmanId: json['salesmanId'] as int?,
+      sales: (json['sales'] as List<dynamic>?)
+          ?.map((e) => Sale.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_SaleToJson(_$_Sale instance) => <String, dynamic>{
@@ -22,4 +25,5 @@ Map<String, dynamic> _$$_SaleToJson(_$_Sale instance) => <String, dynamic>{
       'quantitySold': instance.quantitySold,
       'totalRevenue': instance.totalRevenue,
       'salesmanId': instance.salesmanId,
+      'sales': instance.sales?.map((e) => e.toJson()).toList(),
     };

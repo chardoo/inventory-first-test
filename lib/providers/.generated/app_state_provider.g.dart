@@ -7,7 +7,7 @@ part of '../app_state_provider.dart';
 // **************************************************************************
 
 String _$loadingStateProviderHash() =>
-    r'e905844b4110ecc8abac52b9310a5a54392d6c5c';
+    r'55d2f8507089db4d15316429b135f94875000e98';
 
 /// See also [LoadingStateProvider].
 @ProviderFor(LoadingStateProvider)
