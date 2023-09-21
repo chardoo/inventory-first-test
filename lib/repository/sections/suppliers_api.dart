@@ -15,6 +15,7 @@ class SuppliersApis extends FireStoreAPIs<Supplier> {
           .collection(mainCollection)
           .doc(item.supplierName)
           .set(item.toJson());
+      print("done");
     } catch (e) {
       //TODO
     }
