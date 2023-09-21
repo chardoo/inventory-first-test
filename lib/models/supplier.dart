@@ -15,3 +15,5 @@ abstract class Supplier with _$Supplier {
 
   factory Supplier.fromJson(Map<String, dynamic> json) => _$SupplierFromJson(json);
 }
+
+

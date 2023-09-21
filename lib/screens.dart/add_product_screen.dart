@@ -4,6 +4,7 @@ import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/supplier.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
+import 'package:rich_co_inventory/providers/brand_api_helper.dart';
 import 'package:rich_co_inventory/providers/supplier_api_helper.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
@@ -170,8 +171,8 @@ class _ProductDetailsState extends State<ProductDetails> {
             Expanded(
               child: DropdownField<Product>(
                   items: products,
-                  labelText: "product ",
-                  hintText: "add a product"),
+                  labelText: "brand ",
+                  hintText: "add a brand"),
             ),
             SizedBox(
               width: 12,
@@ -183,7 +184,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                     shape: RoundedRectangleBorder(
                         side: BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.circular(8))),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return _AddBrandDialog();
+                      });
+                },
                 icon: Icon(Icons.add),
                 label: Text("New"))
           ],
@@ -245,13 +252,65 @@ class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
                     controller: emailCont),
                 CustomButton(
                   label: "Add",
-                  ontap: () async{
+                  ontap: () async {
                     Supplier supplier = Supplier(
                         supplierName: nameCont.text,
                         supplierEmail: emailCont.text,
                         supplierContact: contactCont.text,
                         supplierAddress: addressCont.text);
                     SupplierApisHelper().addBrand(supplier, ref);
+                  },
+                )
+              ]),
+            ),
+          ),
+        ),
+        ref.watch(loadingStateProvider).show(context)
+      ],
+    );
+  }
+}
+
+class _AddBrandDialog extends ConsumerStatefulWidget {
+  const _AddBrandDialog({
+    super.key,
+  });
+
+  @override
+  ConsumerState<_AddBrandDialog> createState() => _AddBrandDialogState();
+}
+
+class _AddBrandDialogState extends ConsumerState<_AddBrandDialog> {
+  final nameCont = TextEditingController();
+
+  final descriptionController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SingleChildScrollView(
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                const MyText(text: "Create Brand"),
+                MyTextFieldWithTitle(
+                    name: "name",
+                    label: "enter supplier name",
+                    controller: nameCont),
+                MyTextFieldWithTitle(
+                    name: "contact",
+                    label: "enter contact",
+                    controller: descriptionController),
+                CustomButton(
+                  label: "Add",
+                  ontap: () async {
+                    Brand brand = Brand(
+                      brandName: nameCont.text,
+                      brandDescription: descriptionController.text,
+                    );
+                    BrandAPIsHelper().add(brand, ref);
                   },
                 )
               ]),

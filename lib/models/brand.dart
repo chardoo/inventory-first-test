@@ -17,4 +17,15 @@ class Converter {
   static String toLowerCase(String i) {
     return i.toLowerCase();
   }
+
+  static produceSearchList(String name) {
+    String val = "";
+    List<String> result = [];
+    for (var s in name.split("")) {
+      val = val + s;
+      result.add(s);
+    }
+
+    return result;
+  }
 }
