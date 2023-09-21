@@ -1,4 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rich_co_inventory/models/purchase.dart';
+import 'package:rich_co_inventory/models/sales.dart';
+import 'package:rich_co_inventory/models/stock.dart';
 
 part '.generated/product.freezed.dart';
 part '.generated/product.g.dart';
@@ -12,6 +15,9 @@ abstract class Product with _$Product {
     required double price,
     int? supplierId,
     int? brandId,
+    List<Sale> ? sales,
+    List<Purchase> ? purchases, 
+     List<Stock> ? stocks, 
   }) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);

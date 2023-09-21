@@ -26,6 +26,9 @@ mixin _$Product {
   double get price => throw _privateConstructorUsedError;
   int? get supplierId => throw _privateConstructorUsedError;
   int? get brandId => throw _privateConstructorUsedError;
+  List<Sale>? get sales => throw _privateConstructorUsedError;
+  List<Purchase>? get purchases => throw _privateConstructorUsedError;
+  List<Stock>? get stocks => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +46,10 @@ abstract class $ProductCopyWith<$Res> {
       String? productDescription,
       double price,
       int? supplierId,
-      int? brandId});
+      int? brandId,
+      List<Sale>? sales,
+      List<Purchase>? purchases,
+      List<Stock>? stocks});
 }
 
 /// @nodoc
@@ -65,6 +71,9 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? price = null,
     Object? supplierId = freezed,
     Object? brandId = freezed,
+    Object? sales = freezed,
+    Object? purchases = freezed,
+    Object? stocks = freezed,
   }) {
     return _then(_value.copyWith(
       productId: freezed == productId
@@ -91,6 +100,18 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.brandId
           : brandId // ignore: cast_nullable_to_non_nullable
               as int?,
+      sales: freezed == sales
+          ? _value.sales
+          : sales // ignore: cast_nullable_to_non_nullable
+              as List<Sale>?,
+      purchases: freezed == purchases
+          ? _value.purchases
+          : purchases // ignore: cast_nullable_to_non_nullable
+              as List<Purchase>?,
+      stocks: freezed == stocks
+          ? _value.stocks
+          : stocks // ignore: cast_nullable_to_non_nullable
+              as List<Stock>?,
     ) as $Val);
   }
 }
@@ -108,7 +129,10 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String? productDescription,
       double price,
       int? supplierId,
-      int? brandId});
+      int? brandId,
+      List<Sale>? sales,
+      List<Purchase>? purchases,
+      List<Stock>? stocks});
 }
 
 /// @nodoc
@@ -127,6 +151,9 @@ class __$$_ProductCopyWithImpl<$Res>
     Object? price = null,
     Object? supplierId = freezed,
     Object? brandId = freezed,
+    Object? sales = freezed,
+    Object? purchases = freezed,
+    Object? stocks = freezed,
   }) {
     return _then(_$_Product(
       productId: freezed == productId
@@ -153,6 +180,18 @@ class __$$_ProductCopyWithImpl<$Res>
           ? _value.brandId
           : brandId // ignore: cast_nullable_to_non_nullable
               as int?,
+      sales: freezed == sales
+          ? _value._sales
+          : sales // ignore: cast_nullable_to_non_nullable
+              as List<Sale>?,
+      purchases: freezed == purchases
+          ? _value._purchases
+          : purchases // ignore: cast_nullable_to_non_nullable
+              as List<Purchase>?,
+      stocks: freezed == stocks
+          ? _value._stocks
+          : stocks // ignore: cast_nullable_to_non_nullable
+              as List<Stock>?,
     ));
   }
 }
@@ -166,7 +205,13 @@ class _$_Product implements _Product {
       this.productDescription,
       required this.price,
       this.supplierId,
-      this.brandId});
+      this.brandId,
+      final List<Sale>? sales,
+      final List<Purchase>? purchases,
+      final List<Stock>? stocks})
+      : _sales = sales,
+        _purchases = purchases,
+        _stocks = stocks;
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
       _$$_ProductFromJson(json);
@@ -183,10 +228,39 @@ class _$_Product implements _Product {
   final int? supplierId;
   @override
   final int? brandId;
+  final List<Sale>? _sales;
+  @override
+  List<Sale>? get sales {
+    final value = _sales;
+    if (value == null) return null;
+    if (_sales is EqualUnmodifiableListView) return _sales;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Purchase>? _purchases;
+  @override
+  List<Purchase>? get purchases {
+    final value = _purchases;
+    if (value == null) return null;
+    if (_purchases is EqualUnmodifiableListView) return _purchases;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Stock>? _stocks;
+  @override
+  List<Stock>? get stocks {
+    final value = _stocks;
+    if (value == null) return null;
+    if (_stocks is EqualUnmodifiableListView) return _stocks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Product(productId: $productId, productName: $productName, productDescription: $productDescription, price: $price, supplierId: $supplierId, brandId: $brandId)';
+    return 'Product(productId: $productId, productName: $productName, productDescription: $productDescription, price: $price, supplierId: $supplierId, brandId: $brandId, sales: $sales, purchases: $purchases, stocks: $stocks)';
   }
 
   @override
@@ -203,13 +277,26 @@ class _$_Product implements _Product {
             (identical(other.price, price) || other.price == price) &&
             (identical(other.supplierId, supplierId) ||
                 other.supplierId == supplierId) &&
-            (identical(other.brandId, brandId) || other.brandId == brandId));
+            (identical(other.brandId, brandId) || other.brandId == brandId) &&
+            const DeepCollectionEquality().equals(other._sales, _sales) &&
+            const DeepCollectionEquality()
+                .equals(other._purchases, _purchases) &&
+            const DeepCollectionEquality().equals(other._stocks, _stocks));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, productId, productName,
-      productDescription, price, supplierId, brandId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      productId,
+      productName,
+      productDescription,
+      price,
+      supplierId,
+      brandId,
+      const DeepCollectionEquality().hash(_sales),
+      const DeepCollectionEquality().hash(_purchases),
+      const DeepCollectionEquality().hash(_stocks));
 
   @JsonKey(ignore: true)
   @override
@@ -232,7 +319,10 @@ abstract class _Product implements Product {
       final String? productDescription,
       required final double price,
       final int? supplierId,
-      final int? brandId}) = _$_Product;
+      final int? brandId,
+      final List<Sale>? sales,
+      final List<Purchase>? purchases,
+      final List<Stock>? stocks}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
@@ -248,6 +338,12 @@ abstract class _Product implements Product {
   int? get supplierId;
   @override
   int? get brandId;
+  @override
+  List<Sale>? get sales;
+  @override
+  List<Purchase>? get purchases;
+  @override
+  List<Stock>? get stocks;
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

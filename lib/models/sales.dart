@@ -11,7 +11,9 @@ abstract class Sale with _$Sale {
     required DateTime saleDate,
     required int quantitySold,
     required double totalRevenue,
+    
     int? salesmanId,
+     List<Sale> ? sales,
   }) = _Sale;
 
   factory Sale.fromJson(Map<String, dynamic> json) => _$SaleFromJson(json);

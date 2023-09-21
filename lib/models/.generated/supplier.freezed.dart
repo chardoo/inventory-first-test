@@ -25,6 +25,8 @@ mixin _$Supplier {
   String? get supplierContact => throw _privateConstructorUsedError;
   String? get supplierEmail => throw _privateConstructorUsedError;
   String? get supplierAddress => throw _privateConstructorUsedError;
+  List<Purchase>? get purchases => throw _privateConstructorUsedError;
+  List<Product>? get products => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +44,9 @@ abstract class $SupplierCopyWith<$Res> {
       String supplierName,
       String? supplierContact,
       String? supplierEmail,
-      String? supplierAddress});
+      String? supplierAddress,
+      List<Purchase>? purchases,
+      List<Product>? products});
 }
 
 /// @nodoc
@@ -63,6 +67,8 @@ class _$SupplierCopyWithImpl<$Res, $Val extends Supplier>
     Object? supplierContact = freezed,
     Object? supplierEmail = freezed,
     Object? supplierAddress = freezed,
+    Object? purchases = freezed,
+    Object? products = freezed,
   }) {
     return _then(_value.copyWith(
       supplierId: freezed == supplierId
@@ -85,6 +91,14 @@ class _$SupplierCopyWithImpl<$Res, $Val extends Supplier>
           ? _value.supplierAddress
           : supplierAddress // ignore: cast_nullable_to_non_nullable
               as String?,
+      purchases: freezed == purchases
+          ? _value.purchases
+          : purchases // ignore: cast_nullable_to_non_nullable
+              as List<Purchase>?,
+      products: freezed == products
+          ? _value.products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<Product>?,
     ) as $Val);
   }
 }
@@ -101,7 +115,9 @@ abstract class _$$_SupplierCopyWith<$Res> implements $SupplierCopyWith<$Res> {
       String supplierName,
       String? supplierContact,
       String? supplierEmail,
-      String? supplierAddress});
+      String? supplierAddress,
+      List<Purchase>? purchases,
+      List<Product>? products});
 }
 
 /// @nodoc
@@ -120,6 +136,8 @@ class __$$_SupplierCopyWithImpl<$Res>
     Object? supplierContact = freezed,
     Object? supplierEmail = freezed,
     Object? supplierAddress = freezed,
+    Object? purchases = freezed,
+    Object? products = freezed,
   }) {
     return _then(_$_Supplier(
       supplierId: freezed == supplierId
@@ -142,6 +160,14 @@ class __$$_SupplierCopyWithImpl<$Res>
           ? _value.supplierAddress
           : supplierAddress // ignore: cast_nullable_to_non_nullable
               as String?,
+      purchases: freezed == purchases
+          ? _value._purchases
+          : purchases // ignore: cast_nullable_to_non_nullable
+              as List<Purchase>?,
+      products: freezed == products
+          ? _value._products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<Product>?,
     ));
   }
 }
@@ -154,7 +180,11 @@ class _$_Supplier implements _Supplier {
       required this.supplierName,
       this.supplierContact,
       this.supplierEmail,
-      this.supplierAddress});
+      this.supplierAddress,
+      final List<Purchase>? purchases,
+      final List<Product>? products})
+      : _purchases = purchases,
+        _products = products;
 
   factory _$_Supplier.fromJson(Map<String, dynamic> json) =>
       _$$_SupplierFromJson(json);
@@ -169,10 +199,29 @@ class _$_Supplier implements _Supplier {
   final String? supplierEmail;
   @override
   final String? supplierAddress;
+  final List<Purchase>? _purchases;
+  @override
+  List<Purchase>? get purchases {
+    final value = _purchases;
+    if (value == null) return null;
+    if (_purchases is EqualUnmodifiableListView) return _purchases;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Product>? _products;
+  @override
+  List<Product>? get products {
+    final value = _products;
+    if (value == null) return null;
+    if (_products is EqualUnmodifiableListView) return _products;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Supplier(supplierId: $supplierId, supplierName: $supplierName, supplierContact: $supplierContact, supplierEmail: $supplierEmail, supplierAddress: $supplierAddress)';
+    return 'Supplier(supplierId: $supplierId, supplierName: $supplierName, supplierContact: $supplierContact, supplierEmail: $supplierEmail, supplierAddress: $supplierAddress, purchases: $purchases, products: $products)';
   }
 
   @override
@@ -189,13 +238,23 @@ class _$_Supplier implements _Supplier {
             (identical(other.supplierEmail, supplierEmail) ||
                 other.supplierEmail == supplierEmail) &&
             (identical(other.supplierAddress, supplierAddress) ||
-                other.supplierAddress == supplierAddress));
+                other.supplierAddress == supplierAddress) &&
+            const DeepCollectionEquality()
+                .equals(other._purchases, _purchases) &&
+            const DeepCollectionEquality().equals(other._products, _products));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, supplierId, supplierName,
-      supplierContact, supplierEmail, supplierAddress);
+  int get hashCode => Object.hash(
+      runtimeType,
+      supplierId,
+      supplierName,
+      supplierContact,
+      supplierEmail,
+      supplierAddress,
+      const DeepCollectionEquality().hash(_purchases),
+      const DeepCollectionEquality().hash(_products));
 
   @JsonKey(ignore: true)
   @override
@@ -217,7 +276,9 @@ abstract class _Supplier implements Supplier {
       required final String supplierName,
       final String? supplierContact,
       final String? supplierEmail,
-      final String? supplierAddress}) = _$_Supplier;
+      final String? supplierAddress,
+      final List<Purchase>? purchases,
+      final List<Product>? products}) = _$_Supplier;
 
   factory _Supplier.fromJson(Map<String, dynamic> json) = _$_Supplier.fromJson;
 
@@ -231,6 +292,10 @@ abstract class _Supplier implements Supplier {
   String? get supplierEmail;
   @override
   String? get supplierAddress;
+  @override
+  List<Purchase>? get purchases;
+  @override
+  List<Product>? get products;
   @override
   @JsonKey(ignore: true)
   _$$_SupplierCopyWith<_$_Supplier> get copyWith =>

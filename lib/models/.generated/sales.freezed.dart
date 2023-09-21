@@ -26,6 +26,7 @@ mixin _$Sale {
   int get quantitySold => throw _privateConstructorUsedError;
   double get totalRevenue => throw _privateConstructorUsedError;
   int? get salesmanId => throw _privateConstructorUsedError;
+  List<Sale>? get sales => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +44,8 @@ abstract class $SaleCopyWith<$Res> {
       DateTime saleDate,
       int quantitySold,
       double totalRevenue,
-      int? salesmanId});
+      int? salesmanId,
+      List<Sale>? sales});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
     Object? quantitySold = null,
     Object? totalRevenue = null,
     Object? salesmanId = freezed,
+    Object? sales = freezed,
   }) {
     return _then(_value.copyWith(
       saleId: null == saleId
@@ -91,6 +94,10 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
           ? _value.salesmanId
           : salesmanId // ignore: cast_nullable_to_non_nullable
               as int?,
+      sales: freezed == sales
+          ? _value.sales
+          : sales // ignore: cast_nullable_to_non_nullable
+              as List<Sale>?,
     ) as $Val);
   }
 }
@@ -107,7 +114,8 @@ abstract class _$$_SaleCopyWith<$Res> implements $SaleCopyWith<$Res> {
       DateTime saleDate,
       int quantitySold,
       double totalRevenue,
-      int? salesmanId});
+      int? salesmanId,
+      List<Sale>? sales});
 }
 
 /// @nodoc
@@ -125,6 +133,7 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
     Object? quantitySold = null,
     Object? totalRevenue = null,
     Object? salesmanId = freezed,
+    Object? sales = freezed,
   }) {
     return _then(_$_Sale(
       saleId: null == saleId
@@ -151,6 +160,10 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
           ? _value.salesmanId
           : salesmanId // ignore: cast_nullable_to_non_nullable
               as int?,
+      sales: freezed == sales
+          ? _value._sales
+          : sales // ignore: cast_nullable_to_non_nullable
+              as List<Sale>?,
     ));
   }
 }
@@ -164,7 +177,9 @@ class _$_Sale implements _Sale {
       required this.saleDate,
       required this.quantitySold,
       required this.totalRevenue,
-      this.salesmanId});
+      this.salesmanId,
+      final List<Sale>? sales})
+      : _sales = sales;
 
   factory _$_Sale.fromJson(Map<String, dynamic> json) => _$$_SaleFromJson(json);
 
@@ -180,10 +195,19 @@ class _$_Sale implements _Sale {
   final double totalRevenue;
   @override
   final int? salesmanId;
+  final List<Sale>? _sales;
+  @override
+  List<Sale>? get sales {
+    final value = _sales;
+    if (value == null) return null;
+    if (_sales is EqualUnmodifiableListView) return _sales;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Sale(saleId: $saleId, productId: $productId, saleDate: $saleDate, quantitySold: $quantitySold, totalRevenue: $totalRevenue, salesmanId: $salesmanId)';
+    return 'Sale(saleId: $saleId, productId: $productId, saleDate: $saleDate, quantitySold: $quantitySold, totalRevenue: $totalRevenue, salesmanId: $salesmanId, sales: $sales)';
   }
 
   @override
@@ -201,13 +225,21 @@ class _$_Sale implements _Sale {
             (identical(other.totalRevenue, totalRevenue) ||
                 other.totalRevenue == totalRevenue) &&
             (identical(other.salesmanId, salesmanId) ||
-                other.salesmanId == salesmanId));
+                other.salesmanId == salesmanId) &&
+            const DeepCollectionEquality().equals(other._sales, _sales));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, saleId, productId, saleDate,
-      quantitySold, totalRevenue, salesmanId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      saleId,
+      productId,
+      saleDate,
+      quantitySold,
+      totalRevenue,
+      salesmanId,
+      const DeepCollectionEquality().hash(_sales));
 
   @JsonKey(ignore: true)
   @override
@@ -230,7 +262,8 @@ abstract class _Sale implements Sale {
       required final DateTime saleDate,
       required final int quantitySold,
       required final double totalRevenue,
-      final int? salesmanId}) = _$_Sale;
+      final int? salesmanId,
+      final List<Sale>? sales}) = _$_Sale;
 
   factory _Sale.fromJson(Map<String, dynamic> json) = _$_Sale.fromJson;
 
@@ -246,6 +279,8 @@ abstract class _Sale implements Sale {
   double get totalRevenue;
   @override
   int? get salesmanId;
+  @override
+  List<Sale>? get sales;
   @override
   @JsonKey(ignore: true)
   _$$_SaleCopyWith<_$_Sale> get copyWith => throw _privateConstructorUsedError;

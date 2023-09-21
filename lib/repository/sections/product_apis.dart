@@ -4,6 +4,7 @@ import 'package:rich_co_inventory/repository/firestore_apis.dart';
 class ProductApis extends FireStoreAPIs<Product> {
   @override
   String get mainCollection => Collections.products.name;
+  String get salesCollection => Collections.sales.name;
 
   @override
   String get dependantCollection => "";
@@ -69,8 +70,37 @@ class ProductApis extends FireStoreAPIs<Product> {
   Future<Product?> getOne(String name) async {
     try {
       final res = await instance.collection(mainCollection).doc(name).get();
+
+      Map<String, dynamic> productData = res.data()!;
+
+      await instance.collection(salesCollection).get();
       if (res.exists) {
         return Product.fromJson(res.data()!);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+ 
+  Future<Product?> getproductwithSale(String name) async {
+    try {
+      final res = await instance.collection(mainCollection).doc(name).get();
+
+      Map<String, dynamic> productData = res.data()!;
+     
+      var salesResults = await instance.collection(salesCollection).where("field", isEqualTo: productData["productId"]).get();
+
+      
+  
+         
+
+      if (res.exists) {
+         Product.fromJson(res.data()!);
+     
+     
       } else {
         return null;
       }
