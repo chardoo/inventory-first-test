@@ -6,7 +6,7 @@ class MyTextFieldWithTitle extends StatelessWidget {
       required this.name,
       required this.label,
       this.trailing,
-      this.obsureText = false,
+      // this.obsureText = false,
       this.readOnly,
       required this.controller,
       this.lines,
@@ -15,7 +15,7 @@ class MyTextFieldWithTitle extends StatelessWidget {
   final String label;
   final Widget? trailing;
   final TextEditingController controller;
-  final bool obsureText;
+  // final bool obsureText;
   final int? lines;
   final bool? readOnly;
   final Function()? ontap;
@@ -40,7 +40,7 @@ class MyTextFieldWithTitle extends StatelessWidget {
           ontap: ontap,
           trailing: trailing,
           line: lines,
-          obsureText: obsureText,
+          // obsureText: obsureText,
         )
       ],
     );
@@ -51,7 +51,7 @@ class MyTextField extends StatelessWidget {
   MyTextField(
       {super.key,
       required this.controller,
-      this.obsureText = false,
+      // this.obsureText = false,
       this.trailing,
       this.label,
       this.line,
@@ -59,7 +59,7 @@ class MyTextField extends StatelessWidget {
       this.ontap,
       this.bgColor});
   final TextEditingController controller;
-  final bool obsureText;
+  // final bool obsureText;
   final bool? readOnly;
   final Widget? trailing;
   final String? label;
@@ -70,7 +70,7 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      obscureText: obsureText,
+      // obscureText: obsureText,
       maxLines: line,
       onTap: ontap,
       readOnly: readOnly ?? false,

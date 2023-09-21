@@ -29,7 +29,7 @@ class AuthProvider extends _$AuthProvider {
       required Function(String err) onError}) async {
     initLoader();
     loadingStateNotifier?.activate();
-    User? user = await repo.logIn(email, pwd, onError);
+   var user = await repo.logIn(email, pwd, onError);
     if (user != null) {
       print("name is ${user.email}");
       state = user;

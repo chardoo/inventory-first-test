@@ -38,4 +38,4 @@ abstract class FireStoreAPIs<T> {
  
 }
 
-enum Collections { brands, suppliers, products, sales, purchase, stock }
+enum Collections { brands, user, suppliers, products, sales, purchase, stock }
