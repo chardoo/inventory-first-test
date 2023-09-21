@@ -163,7 +163,7 @@ class _PasswordFieldState extends State<PasswordField> {
       controller: widget._pwdController,
       name: "password",
       label: "Type your password",
-      obsureText: isObscure,
+      // obsureText: isObscure,
       trailing: GestureDetector(
         onTap: () {
           setState(() {

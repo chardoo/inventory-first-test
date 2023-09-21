@@ -1,4 +1,5 @@
 import 'package:rich_co_inventory/models/product.dart';
+import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 class ProductApis extends FireStoreAPIs<Product> {
@@ -87,18 +88,23 @@ class ProductApis extends FireStoreAPIs<Product> {
  
   Future<Product?> getproductwithSale(String name) async {
     try {
+      var salesResults ;
       final res = await instance.collection(mainCollection).doc(name).get();
 
       Map<String, dynamic> productData = res.data()!;
      
-      var salesResults = await instance.collection(salesCollection).where("field", isEqualTo: productData["productId"]).get();
+       salesResults = await instance.collection(salesCollection).where("field", isEqualTo: productData["productId"]).get().then((value){
+
+      });
 
       
   
          
 
       if (res.exists) {
-         Product.fromJson(res.data()!);
+       Product product =   Product.fromJson(res.data()!);
+    
+      
      
      
       } else {

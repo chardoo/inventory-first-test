@@ -1,18 +1,60 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
-class AuthRepo {
-  final FirebaseAuth instance;
-  AuthRepo() : instance = FirebaseAuth.instance;
-
-  Future<User?> logIn(
-      String email, String pwd, Function(String err) onError) async {
+class AuthRepo extends FireStoreAPIs<User> {
+  String get userCollection => Collections.user.name;
+  Future<dynamic> logIn(
+      String email, String password, dynamic Function(String) onError) async {
     try {
-      final userCredentials = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: pwd);
-      return userCredentials.user!;
-    } on FirebaseAuthException catch (e) {
-      onError("${e.message}");
+      final res = await instance.collection(userCollection).doc(email).get();
+      print(res.data());
+      if (res.data()!.isNotEmpty) {
+        if (res.data()!['password'] == password) {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
       return null;
     }
+  }
+
+  @override
+  Future add(User item) {
+    // TODO: implement add
+    throw UnimplementedError();
+  }
+
+  @override
+  delete(User item) {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement dependantCollection
+  String get dependantCollection => throw UnimplementedError();
+
+  @override
+  Future<List<User>> getAll() {
+    // TODO: implement getAll
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User?> getOne(String name) {
+    // TODO: implement getOne
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement mainCollection
+  String get mainCollection => throw UnimplementedError();
+
+  @override
+  update(User item) {
+    // TODO: implement update
+    throw UnimplementedError();
   }
 }
