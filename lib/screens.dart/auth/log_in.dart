@@ -66,7 +66,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                       ],
                     ),
                     const Spacer(flex: 3),
-                    MyTextField(
+                    MyTextFieldWithTitle(
                         controller: _emailController,
                         name: "Email",
                         label: "Type your email"),
@@ -159,7 +159,7 @@ class _PasswordFieldState extends State<PasswordField> {
   bool isObscure = true;
   @override
   Widget build(BuildContext context) {
-    return MyTextField(
+    return MyTextFieldWithTitle(
       controller: widget._pwdController,
       name: "password",
       label: "Type your password",

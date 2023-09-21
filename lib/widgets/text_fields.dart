@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MyTextField extends StatelessWidget {
-  MyTextField({
+class MyTextFieldWithTitle extends StatelessWidget {
+  MyTextFieldWithTitle({
     super.key,
     required this.name,
     required this.label,
@@ -28,23 +28,49 @@ class MyTextField extends StatelessWidget {
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 7),
-        TextField(
+        MyTextField(
           controller: controller,
-          obscureText: obsureText,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 18),
-            suffixIcon: trailing,
-            focusedBorder: border,
-            labelText: label,
-            border: border,
-          ),
-        ),
+          label: label,
+          trailing: trailing,
+          obsureText: obsureText,
+        )
       ],
     );
   }
+}
 
-  final OutlineInputBorder border = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey),
+class MyTextField extends StatelessWidget {
+  MyTextField(
+      {super.key,
+      required this.controller,
+      this.obsureText = false,
+      this.trailing,
+      this.label,
+      this.bgColor});
+  final TextEditingController controller;
+  final bool obsureText;
+  final Widget? trailing;
+  final String? label;
+  final Color? bgColor;
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      obscureText: obsureText,
+      decoration: InputDecoration(
+        fillColor: bgColor,
+        filled: bgColor != null,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 18),
+        suffixIcon: trailing,
+        focusedBorder: border,
+        labelText: label,
+        border: border,
+      ),
+    );
+  }
+
+  OutlineInputBorder border = OutlineInputBorder(
+    borderSide: const BorderSide(color: Colors.grey),
     borderRadius: BorderRadius.circular(8),
   );
 }
