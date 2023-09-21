@@ -48,6 +48,7 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
         ),
         itemAsString: widget.itemAsString,
         items: widget.items,
+       
         dropdownDecoratorProps: DropDownDecoratorProps(
           baseStyle: Theme.of(context).textTheme.bodyMedium,
           dropdownSearchDecoration: InputDecoration(
