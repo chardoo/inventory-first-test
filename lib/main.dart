@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/repository/sections/brand_apis.dart';
 import 'package:rich_co_inventory/screens.dart/add_product_screen.dart';
+import 'package:rich_co_inventory/screens.dart/add_sales.dart';
 import 'package:rich_co_inventory/screens.dart/auth/log_in.dart';
 import 'package:rich_co_inventory/screens.dart/dashboard.dart';
 
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: AddProductScreen()),
+          home: AddSalesScreen()),
     );
   }
 }
