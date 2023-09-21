@@ -25,7 +25,7 @@ mixin _$Purchase {
   DateTime get purchaseDate => throw _privateConstructorUsedError;
   int get quantityPurchased => throw _privateConstructorUsedError;
   int? get supplierId => throw _privateConstructorUsedError;
-  double get totalCost => throw _privateConstructorUsedError;
+  double get cost => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +44,7 @@ abstract class $PurchaseCopyWith<$Res> {
       DateTime purchaseDate,
       int quantityPurchased,
       int? supplierId,
-      double totalCost});
+      double cost});
 }
 
 /// @nodoc
@@ -65,7 +65,7 @@ class _$PurchaseCopyWithImpl<$Res, $Val extends Purchase>
     Object? purchaseDate = null,
     Object? quantityPurchased = null,
     Object? supplierId = freezed,
-    Object? totalCost = null,
+    Object? cost = null,
   }) {
     return _then(_value.copyWith(
       purchaseId: null == purchaseId
@@ -88,9 +88,9 @@ class _$PurchaseCopyWithImpl<$Res, $Val extends Purchase>
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
               as int?,
-      totalCost: null == totalCost
-          ? _value.totalCost
-          : totalCost // ignore: cast_nullable_to_non_nullable
+      cost: null == cost
+          ? _value.cost
+          : cost // ignore: cast_nullable_to_non_nullable
               as double,
     ) as $Val);
   }
@@ -109,7 +109,7 @@ abstract class _$$_PurchaseCopyWith<$Res> implements $PurchaseCopyWith<$Res> {
       DateTime purchaseDate,
       int quantityPurchased,
       int? supplierId,
-      double totalCost});
+      double cost});
 }
 
 /// @nodoc
@@ -128,7 +128,7 @@ class __$$_PurchaseCopyWithImpl<$Res>
     Object? purchaseDate = null,
     Object? quantityPurchased = null,
     Object? supplierId = freezed,
-    Object? totalCost = null,
+    Object? cost = null,
   }) {
     return _then(_$_Purchase(
       purchaseId: null == purchaseId
@@ -151,9 +151,9 @@ class __$$_PurchaseCopyWithImpl<$Res>
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
               as int?,
-      totalCost: null == totalCost
-          ? _value.totalCost
-          : totalCost // ignore: cast_nullable_to_non_nullable
+      cost: null == cost
+          ? _value.cost
+          : cost // ignore: cast_nullable_to_non_nullable
               as double,
     ));
   }
@@ -168,7 +168,7 @@ class _$_Purchase implements _Purchase {
       required this.purchaseDate,
       required this.quantityPurchased,
       this.supplierId,
-      required this.totalCost});
+      required this.cost});
 
   factory _$_Purchase.fromJson(Map<String, dynamic> json) =>
       _$$_PurchaseFromJson(json);
@@ -184,11 +184,11 @@ class _$_Purchase implements _Purchase {
   @override
   final int? supplierId;
   @override
-  final double totalCost;
+  final double cost;
 
   @override
   String toString() {
-    return 'Purchase(purchaseId: $purchaseId, productId: $productId, purchaseDate: $purchaseDate, quantityPurchased: $quantityPurchased, supplierId: $supplierId, totalCost: $totalCost)';
+    return 'Purchase(purchaseId: $purchaseId, productId: $productId, purchaseDate: $purchaseDate, quantityPurchased: $quantityPurchased, supplierId: $supplierId, cost: $cost)';
   }
 
   @override
@@ -206,14 +206,13 @@ class _$_Purchase implements _Purchase {
                 other.quantityPurchased == quantityPurchased) &&
             (identical(other.supplierId, supplierId) ||
                 other.supplierId == supplierId) &&
-            (identical(other.totalCost, totalCost) ||
-                other.totalCost == totalCost));
+            (identical(other.cost, cost) || other.cost == cost));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, purchaseId, productId,
-      purchaseDate, quantityPurchased, supplierId, totalCost);
+      purchaseDate, quantityPurchased, supplierId, cost);
 
   @JsonKey(ignore: true)
   @override
@@ -236,7 +235,7 @@ abstract class _Purchase implements Purchase {
       required final DateTime purchaseDate,
       required final int quantityPurchased,
       final int? supplierId,
-      required final double totalCost}) = _$_Purchase;
+      required final double cost}) = _$_Purchase;
 
   factory _Purchase.fromJson(Map<String, dynamic> json) = _$_Purchase.fromJson;
 
@@ -251,7 +250,7 @@ abstract class _Purchase implements Purchase {
   @override
   int? get supplierId;
   @override
-  double get totalCost;
+  double get cost;
   @override
   @JsonKey(ignore: true)
   _$$_PurchaseCopyWith<_$_Purchase> get copyWith =>
