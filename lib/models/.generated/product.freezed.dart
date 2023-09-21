@@ -20,12 +20,12 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Product {
-  int? get productId => throw _privateConstructorUsedError;
+  String? get productId => throw _privateConstructorUsedError;
   String get productName => throw _privateConstructorUsedError;
   String? get productDescription => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
-  int? get supplierId => throw _privateConstructorUsedError;
-  int? get brandId => throw _privateConstructorUsedError;
+  String? get supplierId => throw _privateConstructorUsedError;
+  String? get brandId => throw _privateConstructorUsedError;
   List<Sale>? get sales => throw _privateConstructorUsedError;
   List<Purchase>? get purchases => throw _privateConstructorUsedError;
   List<Stock>? get stocks => throw _privateConstructorUsedError;
@@ -41,12 +41,12 @@ abstract class $ProductCopyWith<$Res> {
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
   $Res call(
-      {int? productId,
+      {String? productId,
       String productName,
       String? productDescription,
       double price,
-      int? supplierId,
-      int? brandId,
+      String? supplierId,
+      String? brandId,
       List<Sale>? sales,
       List<Purchase>? purchases,
       List<Stock>? stocks});
@@ -79,7 +79,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       productId: freezed == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       productName: null == productName
           ? _value.productName
           : productName // ignore: cast_nullable_to_non_nullable
@@ -95,11 +95,11 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       supplierId: freezed == supplierId
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       brandId: freezed == brandId
           ? _value.brandId
           : brandId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       sales: freezed == sales
           ? _value.sales
           : sales // ignore: cast_nullable_to_non_nullable
@@ -124,12 +124,12 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? productId,
+      {String? productId,
       String productName,
       String? productDescription,
       double price,
-      int? supplierId,
-      int? brandId,
+      String? supplierId,
+      String? brandId,
       List<Sale>? sales,
       List<Purchase>? purchases,
       List<Stock>? stocks});
@@ -159,7 +159,7 @@ class __$$_ProductCopyWithImpl<$Res>
       productId: freezed == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       productName: null == productName
           ? _value.productName
           : productName // ignore: cast_nullable_to_non_nullable
@@ -175,11 +175,11 @@ class __$$_ProductCopyWithImpl<$Res>
       supplierId: freezed == supplierId
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       brandId: freezed == brandId
           ? _value.brandId
           : brandId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       sales: freezed == sales
           ? _value._sales
           : sales // ignore: cast_nullable_to_non_nullable
@@ -217,7 +217,7 @@ class _$_Product implements _Product {
       _$$_ProductFromJson(json);
 
   @override
-  final int? productId;
+  final String? productId;
   @override
   final String productName;
   @override
@@ -225,9 +225,9 @@ class _$_Product implements _Product {
   @override
   final double price;
   @override
-  final int? supplierId;
+  final String? supplierId;
   @override
-  final int? brandId;
+  final String? brandId;
   final List<Sale>? _sales;
   @override
   List<Sale>? get sales {
@@ -314,12 +314,12 @@ class _$_Product implements _Product {
 
 abstract class _Product implements Product {
   const factory _Product(
-      {final int? productId,
+      {final String? productId,
       required final String productName,
       final String? productDescription,
       required final double price,
-      final int? supplierId,
-      final int? brandId,
+      final String? supplierId,
+      final String? brandId,
       final List<Sale>? sales,
       final List<Purchase>? purchases,
       final List<Stock>? stocks}) = _$_Product;
@@ -327,7 +327,7 @@ abstract class _Product implements Product {
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
   @override
-  int? get productId;
+  String? get productId;
   @override
   String get productName;
   @override
@@ -335,9 +335,9 @@ abstract class _Product implements Product {
   @override
   double get price;
   @override
-  int? get supplierId;
+  String? get supplierId;
   @override
-  int? get brandId;
+  String? get brandId;
   @override
   List<Sale>? get sales;
   @override

@@ -9,12 +9,12 @@ part '.generated/product.g.dart';
 @freezed
 abstract class Product with _$Product {
   const factory Product({
-    int? productId,
+    String? productId,
     required String productName,
     String? productDescription,
     required double price,
-    int? supplierId,
-    int? brandId,
+    String? supplierId,
+    String? brandId,
     List<Sale> ? sales,
     List<Purchase> ? purchases, 
      List<Stock> ? stocks, 

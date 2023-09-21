@@ -8,7 +8,7 @@ part '.generated/supplier.g.dart';
 @freezed
 abstract class Supplier with _$Supplier {
   const factory Supplier({
-    int? supplierId,
+    String? supplierId,
     required String supplierName,
     String? supplierContact,
     String? supplierEmail,

@@ -126,13 +126,27 @@ class _ProductDetailsState extends State<_ProductDetails> {
       ),
       padding: const EdgeInsets.all(24),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        DropdownField<Product>(
-            items: products,
-            labelText: "Gabriel shamsudeen ",
-            hintText: "add a product"),
+        SearchDropDownMenu<Product>(
+            context: context,
+            itemBuilder: (context, value) {
+              return Text(value.productName);
+            },
+            controller: productCont,
+            onSelected: (val) {
+              productCont.text = val.productName;
+            },
+            suggestionsCallback: (val) {}),
         const SizedBox(height: 50),
-        DropdownField<Product>(
-            items: products, labelText: "product ", hintText: "add a product"),
+        SearchDropDownMenu<Product>(
+            context: context,
+            itemBuilder: (context, value) {
+              return Text(value.productName);
+            },
+            controller: productCont,
+            onSelected: (val) {
+              productCont.text = val.productName;
+            },
+            suggestionsCallback: (val) {})
       ]),
     );
   }

@@ -7,7 +7,7 @@ part of '../supplier.dart';
 // **************************************************************************
 
 _$_Supplier _$$_SupplierFromJson(Map<String, dynamic> json) => _$_Supplier(
-      supplierId: json['supplierId'] as int?,
+      supplierId: json['supplierId'] as String?,
       supplierName: json['supplierName'] as String,
       supplierContact: json['supplierContact'] as String?,
       supplierEmail: json['supplierEmail'] as String?,

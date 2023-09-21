@@ -69,6 +69,20 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
     }
   }
 
+  Future<List<Brand>> searchByName(String name) async {
+    try {
+      final res = await instance
+          .collection(mainCollection)
+          .where('brandName', isGreaterThanOrEqualTo: name.toLowerCase())
+          .where('brandName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .get();
+      if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Brand.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
   @override
   Future<List<Brand>> getAll() async {
     try {

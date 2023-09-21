@@ -82,17 +82,20 @@ class SuppliersApis extends FireStoreAPIs<Supplier> {
     }
   }
 
-  Future<Supplier?> searchByName(String modelName) async {
+  Future<List<Supplier>> searchByName(String name) async {
     try {
-      final res =
-          await instance.collection(mainCollection).doc(modelName).get();
-      if (res.exists) {
-        return Supplier.fromJson(res.data()!);
-      } else {
-        return null;
-      }
+      final res = await instance
+          .collection(mainCollection)
+          .where('supplierName', isGreaterThanOrEqualTo: name.toLowerCase())
+          .where('supplierName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .get();
+      if (res.docs.isEmpty) return [];
+
+      final a = res.docs.map((e) => Supplier.fromJson(e.data())).toList();
+      print("data is $a");
+      return a;
     } catch (e) {
-      return null;
+      return [];
     }
   }
 }

@@ -7,12 +7,12 @@ part of '../product.dart';
 // **************************************************************************
 
 _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
-      productId: json['productId'] as int?,
+      productId: json['productId'] as String?,
       productName: json['productName'] as String,
       productDescription: json['productDescription'] as String?,
       price: (json['price'] as num).toDouble(),
-      supplierId: json['supplierId'] as int?,
-      brandId: json['brandId'] as int?,
+      supplierId: json['supplierId'] as String?,
+      brandId: json['brandId'] as String?,
       sales: (json['sales'] as List<dynamic>?)
           ?.map((e) => Sale.fromJson(e as Map<String, dynamic>))
           .toList(),

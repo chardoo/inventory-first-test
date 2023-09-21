@@ -1,75 +1,86 @@
-import 'package:dropdown_search/dropdown_search.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:rich_co_inventory/widgets/shimmer.dart';
 
-class DropdownField<T> extends StatefulWidget {
-  final List<T> items;
-  final String labelText;
-  final String hintText;
-  final bool showSearch;
-  final String Function(T item)? itemAsString;
-  final void Function(T? item)? onChanged;
+class SearchDropDownMenu<T> extends StatelessWidget {
+  SearchDropDownMenu(
+      {super.key,
+      required BuildContext context,
+      required this.itemBuilder,
+      required this.controller,
+      required this.onSelected,
+      required this.suggestionsCallback,
+      this.onFetchData,
+      this.trailing,
+      this.label});
 
-  const DropdownField({
-    super.key,
-    required this.items,
-    this.itemAsString,
-    required this.labelText,
-    required this.hintText,
-    this.showSearch = true,
-    this.onChanged,
-  });
-
-  @override
-  State<DropdownField<T>> createState() => _DropdownFieldState<T>();
-}
-
-class _DropdownFieldState<T> extends State<DropdownField<T>> {
+  final Widget Function(BuildContext context, T data) itemBuilder;
+  final TextEditingController controller;
+  final Function(T val) onSelected;
+  final Function(String val)? onFetchData;
+  final Function(String val) suggestionsCallback;
+  final Widget? trailing;
+  final String? label;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          8,
-        ),
-        border: Border.all(color: Colors.grey, width: 1),
-      ),
-      padding: const EdgeInsets.all(4).copyWith(
-        top: 4 * 1.5,
-      ),
-      child: DropdownSearch<T>(
-        popupProps: PopupProps.menu(
-          showSearchBox: widget.showSearch,
-          fit: FlexFit.loose,
-          searchFieldProps: TextFieldProps(
-            cursorColor: Colors.grey.shade300,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: InputDecoration(hintText: widget.hintText),
+    return Consumer(builder: (context, ref, _) {
+      return TypeAheadField<T>(
+        textFieldConfiguration: TextFieldConfiguration(
+          controller: controller,
+          style: const TextStyle(fontSize: 14),
+          decoration: InputDecoration(
+            fillColor: Colors.grey.shade100,
+            filled: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 18),
+            suffixIcon: trailing,
+            focusedBorder: border,
+            labelText: label,
+            border: border,
           ),
         ),
-        itemAsString: widget.itemAsString,
-        items: widget.items,
-       
-        dropdownDecoratorProps: DropDownDecoratorProps(
-          baseStyle: Theme.of(context).textTheme.bodyMedium,
-          dropdownSearchDecoration: InputDecoration(
-            contentPadding: EdgeInsets.zero,
-            suffixIconColor: Colors.grey.shade300,
-            labelText: widget.labelText,
-            border: InputBorder.none,
-            focusColor: Colors.grey.shade300,
-            isCollapsed: true,
-            suffix: const Icon(Icons.arrow_drop_down),
-            suffixIcon: const SizedBox(),
-            suffixIconConstraints: BoxConstraints.loose(Size.zero),
-            labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  height: 0.35,
-                ),
-          ),
-        ),
-        onChanged: widget.onChanged,
-        selectedItem: null,
-        autoValidateMode: AutovalidateMode.onUserInteraction,
-      ),
+        itemBuilder: itemBuilder,
+        loadingBuilder: (_) {
+          return shimer(context);
+        },
+        errorBuilder: (_, err) {
+          return errorBuilder();
+        },
+        noItemsFoundBuilder: (_) => shimer(context),
+        onSuggestionSelected: (T city) {
+          onSelected(city);
+        },
+        debounceDuration: const Duration(seconds: 1),
+        suggestionsCallback: (val) => suggestionsCallback(val),
+      );
+    });
+  }
+
+  OutlineInputBorder border = OutlineInputBorder(
+    borderSide: const BorderSide(color: Colors.grey),
+    borderRadius: BorderRadius.circular(8),
+  );
+  Widget errorBuilder() {
+    return const Center(child: Text("Try again please"));
+  }
+
+  Widget shimer(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    return ListView.separated(
+      itemCount: 3,
+      itemBuilder: (_, i) {
+        return ListTile(
+            leading: ShimmerLayout(
+              width: width * 0.15,
+              height: 40,
+              shape: BoxShape.circle,
+              radius: null,
+            ),
+            title: ShimmerLayout(height: 15, width: width * 0.6),
+            subtitle: ShimmerLayout(height: 15, width: width * 0.3));
+      },
+      separatorBuilder: (_, i) => const SizedBox(height: 5),
     );
   }
 }

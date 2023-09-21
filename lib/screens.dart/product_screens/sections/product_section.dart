@@ -34,11 +34,16 @@ class ProductDetails extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: DropdownField<Product>(
-                  items: products,
-                  labelText: "product ",
-                  hintText: "add a product"),
-            ),
+                child: SearchDropDownMenu<Product>(
+                    context: context,
+                    itemBuilder: (context, value) {
+                      return Text(value.productName);
+                    },
+                    controller: controller,
+                    onSelected: (val) {
+                      controller.text = val.productName;
+                    },
+                    suggestionsCallback: (val) {})),
             SizedBox(
               width: 12,
             ),
@@ -58,12 +63,16 @@ class ProductDetails extends StatelessWidget {
         MyText(text: "brand"),
         Row(
           children: [
-            Expanded(
-              child: DropdownField<Product>(
-                  items: products,
-                  labelText: "product ",
-                  hintText: "add a product"),
-            ),
+            SearchDropDownMenu<Product>(
+                context: context,
+                itemBuilder: (context, value) {
+                  return Text(value.productName);
+                },
+                controller: controller,
+                onSelected: (val) {
+                  controller.text = val.productName;
+                },
+                suggestionsCallback: (val) {}),
             SizedBox(
               width: 12,
             ),

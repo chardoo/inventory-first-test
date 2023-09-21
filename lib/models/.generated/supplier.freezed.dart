@@ -20,7 +20,7 @@ Supplier _$SupplierFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Supplier {
-  int? get supplierId => throw _privateConstructorUsedError;
+  String? get supplierId => throw _privateConstructorUsedError;
   String get supplierName => throw _privateConstructorUsedError;
   String? get supplierContact => throw _privateConstructorUsedError;
   String? get supplierEmail => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $SupplierCopyWith<$Res> {
       _$SupplierCopyWithImpl<$Res, Supplier>;
   @useResult
   $Res call(
-      {int? supplierId,
+      {String? supplierId,
       String supplierName,
       String? supplierContact,
       String? supplierEmail,
@@ -74,7 +74,7 @@ class _$SupplierCopyWithImpl<$Res, $Val extends Supplier>
       supplierId: freezed == supplierId
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       supplierName: null == supplierName
           ? _value.supplierName
           : supplierName // ignore: cast_nullable_to_non_nullable
@@ -111,7 +111,7 @@ abstract class _$$_SupplierCopyWith<$Res> implements $SupplierCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? supplierId,
+      {String? supplierId,
       String supplierName,
       String? supplierContact,
       String? supplierEmail,
@@ -143,7 +143,7 @@ class __$$_SupplierCopyWithImpl<$Res>
       supplierId: freezed == supplierId
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       supplierName: null == supplierName
           ? _value.supplierName
           : supplierName // ignore: cast_nullable_to_non_nullable
@@ -190,7 +190,7 @@ class _$_Supplier implements _Supplier {
       _$$_SupplierFromJson(json);
 
   @override
-  final int? supplierId;
+  final String? supplierId;
   @override
   final String supplierName;
   @override
@@ -272,7 +272,7 @@ class _$_Supplier implements _Supplier {
 
 abstract class _Supplier implements Supplier {
   const factory _Supplier(
-      {final int? supplierId,
+      {final String? supplierId,
       required final String supplierName,
       final String? supplierContact,
       final String? supplierEmail,
@@ -283,7 +283,7 @@ abstract class _Supplier implements Supplier {
   factory _Supplier.fromJson(Map<String, dynamic> json) = _$_Supplier.fromJson;
 
   @override
-  int? get supplierId;
+  String? get supplierId;
   @override
   String get supplierName;
   @override

@@ -1,21 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/supplier.dart';
+import 'package:rich_co_inventory/providers/add_product_controller.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
-import 'package:rich_co_inventory/providers/brand_api_helper.dart';
-import 'package:rich_co_inventory/providers/supplier_api_helper.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 
 import '../widgets/texts.dart';
 
-class AddProductScreen extends StatelessWidget {
+class AddProductScreen extends ConsumerStatefulWidget {
   AddProductScreen({super.key});
-  final List<Product> products = List.generate(
-      5, (index) => Product(productName: "productName", price: 2342));
+
+  @override
+  ConsumerState<AddProductScreen> createState() => _AddProductScreenState();
+}
+
+class _AddProductScreenState extends ConsumerState<AddProductScreen> {
+  final TextEditingController productController = TextEditingController();
+
+  final TextEditingController brandController = TextEditingController();
+
+  final TextEditingController supplierController = TextEditingController();
+
+  final TextEditingController productDescriptionCont = TextEditingController();
+  final TextEditingController priceCont = TextEditingController();
+
+  final TextEditingController initialStockCont = TextEditingController();
+
+  final TextEditingController dateController = TextEditingController();
+  @override
+  void dispose() {
+    productController.dispose();
+    brandController.dispose();
+    supplierController.dispose();
+    productController.dispose();
+    priceCont.dispose();
+    initialStockCont.dispose();
+    dateController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,74 +55,129 @@ class AddProductScreen extends StatelessWidget {
             size: 24,
           ),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              ProductDetails(),
-              SizedBox(height: 50),
-              StockDetails(controller: TextEditingController())
-            ]),
-          ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ProductDetails(
+                          productController: productController,
+                          brandController: brandController,
+                          supplierController: supplierController,
+                          productDescriptionCont: productDescriptionCont),
+                      const SizedBox(height: 50),
+                      Consumer(builder: (context, ref, child) {
+                        return StockDetails(
+                          priceCont: priceCont,
+                          initialStockCont: initialStockCont,
+                          dateController: dateController,
+                          addProduct: () {
+                            final state = ref.read(addProductProvider);
+                            if (state.brand != null && state.supplier != null) {
+                              Product product = Product(
+                                  productName: productController.text,
+                                  price: double.tryParse(priceCont.text) ?? 0,
+                                  supplierId: state.supplier!.supplierId,
+                                  brandId: state.brand?.brandName);
+                              ref
+                                  .read(addProductProvider.notifier)
+                                  .addProduct(product);
+                            } else {
+                              print(
+                                  "state is ${state.brand} supplier ${state.supplier}");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "please fill in all the fields")));
+                            }
+                          },
+                        );
+                      })
+                    ]),
+              ),
+            ),
+            ref.watch(loadingStateProvider).show(context)
+          ],
         ));
   }
 }
 
-class StockDetails extends StatelessWidget {
+class StockDetails extends StatefulWidget {
   const StockDetails({
     super.key,
-    required this.controller,
+    required this.priceCont,
+    required this.initialStockCont,
+    required this.dateController,
+    this.addProduct,
   });
+  final TextEditingController priceCont;
+  final Function()? addProduct;
+  final TextEditingController initialStockCont;
 
-  final TextEditingController controller;
+  final TextEditingController dateController;
+  @override
+  State<StockDetails> createState() => _StockDetailsState();
+}
 
+class _StockDetailsState extends State<StockDetails> {
+  final format = DateFormat(DateFormat.YEAR_MONTH_DAY);
+  DateTime currentDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
+    widget.dateController.text = format.format(currentDate);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Colors.white,
       ),
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const MyText(
           text: "Configure stock for this product",
           size: 24,
           weight: FontWeight.bold,
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         const MyText(
           text: "product cost",
           weight: FontWeight.bold,
           size: 16,
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         TextFieldWithDivider(
-          controller: controller,
+          controller: widget.priceCont,
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         MyTextFieldWithTitle(
-            name: "initial Stock", label: "", controller: controller),
-        SizedBox(height: 24),
+            name: "initial Stock",
+            label: "",
+            controller: widget.initialStockCont),
+        const SizedBox(height: 24),
         MyTextFieldWithTitle(
           name: "input date",
           label: "",
-          controller: controller,
+          controller: widget.dateController,
           readOnly: true,
-          ontap: () {
-            showDatePicker(
+          ontap: () async {
+            final selectedDate = await showDatePicker(
+                currentDate: currentDate,
                 context: context,
                 initialDate: DateTime.now(),
-                firstDate: DateTime.now().subtract(Duration(days: 1000)),
-                lastDate: DateTime.now().add(Duration(days: 1000)));
+                firstDate: DateTime.now().subtract(const Duration(days: 1000)),
+                lastDate: DateTime.now().add(const Duration(days: 1000)));
+            setState(() {
+              currentDate = selectedDate ?? currentDate;
+            });
           },
-          trailing: Icon(Icons.calendar_month),
+          trailing: const Icon(Icons.calendar_month),
         ),
-        SizedBox(height: 50),
+        const SizedBox(height: 50),
         CustomButton(
           label: "Add product",
-          ontap: () {},
+          ontap: widget.addProduct,
           width: double.infinity,
         )
       ]),
@@ -102,24 +185,25 @@ class StockDetails extends StatelessWidget {
   }
 }
 
-class ProductDetails extends StatefulWidget {
+class ProductDetails extends ConsumerStatefulWidget {
   ProductDetails({
     super.key,
+    required this.productController,
+    required this.brandController,
+    required this.supplierController,
+    required this.productDescriptionCont,
   });
+  final TextEditingController productController;
 
+  final TextEditingController brandController;
+
+  final TextEditingController supplierController;
+  final TextEditingController productDescriptionCont;
   @override
-  State<ProductDetails> createState() => _ProductDetailsState();
+  ConsumerState<ProductDetails> createState() => _ProductDetailsState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
-  final productController = TextEditingController();
-
-  final brandController = TextEditingController();
-
-  final supplierController = TextEditingController();
-
-  final products = List.generate(
-      5, (index) => const Product(productName: 'productName', price: 3232));
+class _ProductDetailsState extends ConsumerState<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -127,23 +211,35 @@ class _ProductDetailsState extends State<ProductDetails> {
         borderRadius: BorderRadius.circular(8),
         color: Colors.white,
       ),
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         MyTextFieldWithTitle(
             name: "Product name",
             label: "eg. coca cola",
-            controller: productController),
+            controller: widget.productController),
         const SizedBox(height: 12),
-        MyText(text: "Supplier"),
+        const MyText(text: "Supplier"),
         Row(
           children: [
             Expanded(
-              child: DropdownField<Product>(
-                  items: products,
-                  labelText: "product ",
-                  hintText: "add a product"),
-            ),
-            SizedBox(
+                child: SearchDropDownMenu<Supplier>(
+                    context: context,
+                    itemBuilder: (context, value) {
+                      return ListTile(title: Text(value.supplierName));
+                    },
+                    controller: widget.supplierController,
+                    onSelected: (val) {
+                      ref
+                          .read(addProductProvider.notifier)
+                          .addSupplierToState(val);
+                      widget.supplierController.text = val.supplierName;
+                    },
+                    suggestionsCallback: (val) async {
+                      return ref
+                          .read(addProductProvider.notifier)
+                          .searchSuppliers(val);
+                    })),
+            const SizedBox(
               width: 12,
             ),
             FilledButton.icon(
@@ -151,7 +247,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     foregroundColor: Colors.blue,
                     backgroundColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.blue),
+                        side: const BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.circular(8))),
                 onPressed: () {
                   showDialog(
@@ -160,21 +256,34 @@ class _ProductDetailsState extends State<ProductDetails> {
                         return const _AddSupplierDialog();
                       });
                 },
-                icon: Icon(Icons.add),
-                label: Text("New"))
+                icon: const Icon(Icons.add),
+                label: const Text("New"))
           ],
         ),
-        SizedBox(height: 12),
-        MyText(text: "brand"),
+        const SizedBox(height: 12),
+        const MyText(text: "brand"),
         Row(
           children: [
             Expanded(
-              child: DropdownField<Product>(
-                  items: products,
-                  labelText: "brand ",
-                  hintText: "add a brand"),
-            ),
-            SizedBox(
+                child: SearchDropDownMenu<Brand>(
+                    context: context,
+                    itemBuilder: (context, value) {
+                      return ListTile(title: Text(value.brandName));
+                    },
+                    controller: widget.brandController,
+                    onSelected: (val) {
+                      ref
+                          .read(addProductProvider.notifier)
+                          .addBrandToState(val);
+
+                      widget.brandController.text = val.brandName;
+                    },
+                    suggestionsCallback: (val) async {
+                      return ref
+                          .read(addProductProvider.notifier)
+                          .searchByName(val);
+                    })),
+            const SizedBox(
               width: 12,
             ),
             FilledButton.icon(
@@ -182,24 +291,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                     foregroundColor: Colors.blue,
                     backgroundColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.blue),
+                        side: const BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.circular(8))),
                 onPressed: () {
                   showDialog(
                       context: context,
                       builder: (_) {
-                        return _AddBrandDialog();
+                        return const _AddBrandDialog();
                       });
                 },
-                icon: Icon(Icons.add),
-                label: Text("New"))
+                icon: const Icon(Icons.add),
+                label: const Text("New"))
           ],
         ),
         const SizedBox(height: 12),
         MyTextFieldWithTitle(
-            name: "name",
+            name: "product description",
             label: "Type something",
-            lines: 3,
+            lines: 5,
             controller: TextEditingController())
       ]),
     );
@@ -233,7 +342,7 @@ class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
             padding: const EdgeInsets.all(12.0),
             child: SingleChildScrollView(
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                MyText(text: "Create Supplier"),
+                const MyText(text: "Create Supplier"),
                 MyTextFieldWithTitle(
                     name: "name",
                     label: "enter supplier name",
@@ -258,7 +367,7 @@ class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
                         supplierEmail: emailCont.text,
                         supplierContact: contactCont.text,
                         supplierAddress: addressCont.text);
-                    SupplierApisHelper().addBrand(supplier, ref);
+                    ref.read(addProductProvider.notifier).addSupplier(supplier);
                   },
                 )
               ]),
@@ -310,7 +419,7 @@ class _AddBrandDialogState extends ConsumerState<_AddBrandDialog> {
                       brandName: nameCont.text,
                       brandDescription: descriptionController.text,
                     );
-                    BrandAPIsHelper().add(brand, ref);
+                    ref.read(addProductProvider.notifier).addBrand(brand);
                   },
                 )
               ]),
