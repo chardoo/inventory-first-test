@@ -26,13 +26,15 @@ class AuthProvider extends _$AuthProvider {
   Future logIn(
       {required String email,
       required String pwd,
-      required Function(String err) onError}) async {
+      required Function(String err) onError,
+     required Function() onSuccess}) async {
     initLoader();
     loadingStateNotifier?.activate();
-   var user = await repo.logIn(email, pwd, onError);
-    if (user != null) {
-      print("name is ${user.email}");
-      state = user;
+    var logInState = await repo.logIn(email, pwd, onError);
+    if (!logInState.isSuccess) {
+      onError(logInState.message!);
+    } else {
+      onSuccess();
     }
     loadingStateNotifier?.finish();
     loadingStateNotifier?.diactivate();

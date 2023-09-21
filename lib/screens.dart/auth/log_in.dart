@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/providers/add_product_controller.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
 import 'package:rich_co_inventory/providers/auth_provider.dart';
+import 'package:rich_co_inventory/screens.dart/add_product_screen.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 
@@ -93,6 +96,9 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                             ref.read(authProvider.notifier).logIn(
                                 email: _emailController.text,
                                 pwd: _pwdController.text,
+                                onSuccess: () {
+                                  MyNavigator.goto(context, AddProductScreen());
+                                },
                                 onError: (err) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(err)));
