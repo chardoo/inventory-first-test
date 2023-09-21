@@ -1,14 +1,18 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
-import 'package:rich_co_inventory/screens.dart/dashboard.dart';
+import 'package:rich_co_inventory/models/supplier.dart';
+import 'package:rich_co_inventory/providers/app_state_provider.dart';
+import 'package:rich_co_inventory/providers/supplier_api_helper.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 
+import '../widgets/texts.dart';
+
 class AddProductScreen extends StatelessWidget {
   AddProductScreen({super.key});
-  final TextEditingController controller = TextEditingController();
   final List<Product> products = List.generate(
       5, (index) => Product(productName: "productName", price: 2342));
   @override
@@ -16,7 +20,7 @@ class AddProductScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
-          title: MyText(
+          title: const MyText(
             text: "Add product",
             weight: FontWeight.bold,
             size: 24,
@@ -27,9 +31,9 @@ class AddProductScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 30),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              ProductDetails(controller: controller, products: products),
+              ProductDetails(),
               SizedBox(height: 50),
-              StockDetails(controller: controller)
+              StockDetails(controller: TextEditingController())
             ]),
           ),
         ));
@@ -97,16 +101,24 @@ class StockDetails extends StatelessWidget {
   }
 }
 
-class ProductDetails extends StatelessWidget {
-  const ProductDetails({
+class ProductDetails extends StatefulWidget {
+  ProductDetails({
     super.key,
-    required this.controller,
-    required this.products,
   });
 
-  final TextEditingController controller;
-  final List<Product> products;
+  @override
+  State<ProductDetails> createState() => _ProductDetailsState();
+}
 
+class _ProductDetailsState extends State<ProductDetails> {
+  final productController = TextEditingController();
+
+  final brandController = TextEditingController();
+
+  final supplierController = TextEditingController();
+
+  final products = List.generate(
+      5, (index) => const Product(productName: 'productName', price: 3232));
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -119,7 +131,7 @@ class ProductDetails extends StatelessWidget {
         MyTextFieldWithTitle(
             name: "Product name",
             label: "eg. coca cola",
-            controller: controller),
+            controller: productController),
         const SizedBox(height: 12),
         MyText(text: "Supplier"),
         Row(
@@ -140,7 +152,13 @@ class ProductDetails extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         side: BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.circular(8))),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return const _AddSupplierDialog();
+                      });
+                },
                 icon: Icon(Icons.add),
                 label: Text("New"))
           ],
@@ -175,43 +193,73 @@ class ProductDetails extends StatelessWidget {
             name: "name",
             label: "Type something",
             lines: 3,
-            controller: controller)
+            controller: TextEditingController())
       ]),
     );
   }
 }
 
-class TextFieldWithDivider extends StatelessWidget {
-  const TextFieldWithDivider({
+class _AddSupplierDialog extends ConsumerStatefulWidget {
+  const _AddSupplierDialog({
     super.key,
-    required this.controller,
   });
 
-  final TextEditingController controller;
+  @override
+  ConsumerState<_AddSupplierDialog> createState() => _AddSupplierDialogState();
+}
+
+class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
+  final nameCont = TextEditingController();
+
+  final emailCont = TextEditingController();
+
+  final addressCont = TextEditingController();
+
+  final contactCont = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("GHC"),
-          VerticalDivider(),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              decoration: InputDecoration(border: InputBorder.none),
+    return Stack(
+      children: [
+        Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SingleChildScrollView(
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                MyText(text: "Create Supplier"),
+                MyTextFieldWithTitle(
+                    name: "name",
+                    label: "enter supplier name",
+                    controller: nameCont),
+                MyTextFieldWithTitle(
+                    name: "contact",
+                    label: "enter contact",
+                    controller: contactCont),
+                MyTextFieldWithTitle(
+                    name: "address",
+                    label: "enter supplier contact",
+                    controller: addressCont),
+                MyTextFieldWithTitle(
+                    name: "email",
+                    label: "enter supplier email",
+                    controller: emailCont),
+                CustomButton(
+                  label: "Add",
+                  ontap: () async{
+                    Supplier supplier = Supplier(
+                        supplierName: nameCont.text,
+                        supplierEmail: emailCont.text,
+                        supplierContact: contactCont.text,
+                        supplierAddress: addressCont.text);
+                    SupplierApisHelper().addBrand(supplier, ref);
+                  },
+                )
+              ]),
             ),
           ),
-        ],
-      ),
+        ),
+        ref.watch(loadingStateProvider).show(context)
+      ],
     );
   }
 }

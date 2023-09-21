@@ -91,3 +91,38 @@ class MyTextField extends StatelessWidget {
     borderRadius: BorderRadius.circular(8),
   );
 }
+
+class TextFieldWithDivider extends StatelessWidget {
+  const TextFieldWithDivider({
+    super.key,
+    required this.controller,
+  });
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("GHC"),
+          VerticalDivider(),
+          Expanded(
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(border: InputBorder.none),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
