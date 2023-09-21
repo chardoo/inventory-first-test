@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:rich_co_inventory/widgets/bottom_navigation.dart';
 import 'package:rich_co_inventory/widgets/graph.dart';
 
 import '../widgets/texts.dart';
@@ -76,6 +77,8 @@ class DashBoard extends StatelessWidget {
           ]),
         ),
       ),
+
+      bottomNavigationBar: BottomNavigation(),
     );
   }
 }

@@ -97,7 +97,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                                 email: _emailController.text,
                                 pwd: _pwdController.text,
                                 onSuccess: () {
-                                  MyNavigator.goto(context, AddProductScreen());
+                                  MyNavigator.goto(context, DashBoard());
                                 },
                                 onError: (err) {
                                   ScaffoldMessenger.of(context).showSnackBar(
