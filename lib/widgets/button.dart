@@ -20,3 +20,31 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+
+class MyFilledIconButton extends StatelessWidget {
+  const MyFilledIconButton({
+    super.key,
+    required this.icon,
+    required this.label,
+    this.ontap,
+  });
+
+  final Widget icon;
+  final Widget label;
+  final Function()? ontap;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton.icon(
+        style: FilledButton.styleFrom(
+            foregroundColor: Colors.blue,
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Colors.blue),
+                borderRadius: BorderRadius.circular(8))),
+        onPressed: ontap,
+        icon: icon,
+        label: label);
+  }
+}

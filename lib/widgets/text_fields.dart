@@ -51,6 +51,7 @@ class MyTextField extends StatelessWidget {
   MyTextField(
       {super.key,
       required this.controller,
+      this.onChanged,
       // this.obsureText = false,
       this.trailing,
       this.label,
@@ -66,6 +67,7 @@ class MyTextField extends StatelessWidget {
   final Color? bgColor;
   final int? line;
   final Function()? ontap;
+  final Function(String val)? onChanged;
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -74,6 +76,7 @@ class MyTextField extends StatelessWidget {
       maxLines: line,
       onTap: ontap,
       readOnly: readOnly ?? false,
+      onChanged: onChanged,
       decoration: InputDecoration(
         fillColor: bgColor,
         filled: bgColor != null,

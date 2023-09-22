@@ -57,22 +57,16 @@ class _ProductDetailsState extends ConsumerState<_UpperSection> {
             const SizedBox(
               width: 12,
             ),
-            FilledButton.icon(
-                style: FilledButton.styleFrom(
-                    foregroundColor: Colors.blue,
-                    backgroundColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(8))),
-                onPressed: () {
+            MyFilledIconButton(
+                icon: Icon(Icons.add),
+                label: Text("New"),
+                ontap: () {
                   showDialog(
                       context: context,
                       builder: (_) {
                         return const _AddSupplierDialog();
                       });
-                },
-                icon: const Icon(Icons.add),
-                label: const Text("New"))
+                })
           ],
         ),
         const SizedBox(height: 12),
@@ -101,22 +95,17 @@ class _ProductDetailsState extends ConsumerState<_UpperSection> {
             const SizedBox(
               width: 12,
             ),
-            FilledButton.icon(
-                style: FilledButton.styleFrom(
-                    foregroundColor: Colors.blue,
-                    backgroundColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(8))),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (_) {
-                        return const _AddBrandDialog();
-                      });
-                },
-                icon: const Icon(Icons.add),
-                label: const Text("New"))
+            MyFilledIconButton(
+              ontap: () {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return const _AddBrandDialog();
+                    });
+              },
+              label: Text("New"),
+              icon: Icon(Icons.add),
+            )
           ],
         ),
         const SizedBox(height: 12),

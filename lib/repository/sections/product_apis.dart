@@ -123,4 +123,18 @@ class ProductApis extends FireStoreAPIs<Product> {
       return [];
     }
   }
+
+  Future<List<Product>> searchByName(String name) async {
+    try {
+      final res = await instance
+          .collection(mainCollection)
+          .where('productName', isGreaterThanOrEqualTo: name.toLowerCase())
+          .where('productName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .get();
+      if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Product.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
+    }
+  }
 }

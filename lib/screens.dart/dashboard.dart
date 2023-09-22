@@ -17,6 +17,7 @@ class DashBoard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: CircleAvatar(
             radius: 5,
+            backgroundColor: Colors.black,
             child: Text(
               "N",
               style: Theme.of(context)
@@ -24,18 +25,17 @@ class DashBoard extends StatelessWidget {
                   .bodySmall
                   ?.copyWith(color: Colors.white),
             ),
-            backgroundColor: Colors.black,
           ),
         ),
-        actions: [
+        actions: const [
           Icon(Icons.calendar_month_outlined),
           SizedBox(width: 5),
           Icon(Icons.menu),
           SizedBox(width: 10)
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: const Padding(
+        padding: EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(children: [
             OverviewCard(),
@@ -77,8 +77,6 @@ class DashBoard extends StatelessWidget {
           ]),
         ),
       ),
-
-      bottomNavigationBar: BottomNavigation(),
     );
   }
 }
@@ -107,7 +105,7 @@ class SummaryTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               icon,
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -133,17 +131,17 @@ class OverviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(8)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               child: Icon(Icons.inventory_2),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Text(
               "Overview",
               style: Theme.of(context)
@@ -153,11 +151,11 @@ class OverviewCard extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            MyIconButton(
+            const MyIconButton(
                 label: "Monthly",
                 forgroundColor: Colors.grey,
                 borderColor: Colors.grey,
@@ -168,10 +166,10 @@ class OverviewCard extends StatelessWidget {
                 label: "Download Report",
                 forgroundColor: Colors.blueAccent,
                 bgColor: Colors.lightBlue.shade100,
-                icon: Icon(Icons.download))
+                icon: const Icon(Icons.download))
           ],
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         CustomGraph(
           points: [
             Point(0, 10),
@@ -184,8 +182,8 @@ class OverviewCard extends StatelessWidget {
             Point(8, 10)
           ],
         ),
-        Divider(),
-        Row(
+        const Divider(),
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
@@ -252,12 +250,11 @@ class OverviewCard extends StatelessWidget {
             )
           ],
         ),
-        Divider()
+        const Divider()
       ]),
     );
   }
 }
-
 
 class MyIconButton extends StatelessWidget {
   const MyIconButton({
@@ -291,7 +288,7 @@ class MyIconButton extends StatelessWidget {
       child: child ??
           Row(children: [
             Text(label ?? ""),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             icon ?? const SizedBox.shrink()

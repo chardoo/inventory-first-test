@@ -3,41 +3,57 @@ import 'package:rich_co_inventory/helpers/navigator.dart';
 
 import '../screens.dart/add_to_product/add_product_screen.dart';
 
-class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({super.key});
+class BottomNavigation extends StatefulWidget {
+  const BottomNavigation({super.key, required this.ontap});
+  final Function(int val) ontap;
 
+  @override
+  State<BottomNavigation> createState() => _BottomNavigationState();
+}
+
+class _BottomNavigationState extends State<BottomNavigation> {
+  int currentIndex = 0;
+
+  Icon navIcon(IconData data) => Icon(data, color: Colors.grey);
+  Icon activeIcon(IconData data) => Icon(data, color: Colors.blue);
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        onTap: (value) {
-          if (value == 0) {
-            MyNavigator.goto(context, AddProductScreen());
-          } else if (value == 1) {
-            MyNavigator.goto(context, AddProductScreen());
-          } else {
-            MyNavigator.goto(context, AddProductScreen());
-          }
+        onTap: (val) {
+          currentIndex = val;
+          widget.ontap(val);
         },
+        currentIndex: currentIndex,
         unselectedItemColor: Color.fromARGB(255, 141, 137, 137),
         // backgroundColor: Color.fromARGB(255, 10, 13, 17),
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              label: 'Products',
-              backgroundColor: Colors.white),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add,
+            icon: navIcon(
+              Icons.home,
             ),
-            label: 'Add Sales',
+            activeIcon: activeIcon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: navIcon(
+              Icons.gif_box,
+            ),
+            activeIcon: activeIcon(Icons.gif_box),
+            label: 'Products',
+          ),
+          BottomNavigationBarItem(
+            icon: navIcon(
+              Icons.factory,
+            ),
+            activeIcon: activeIcon(Icons.factory),
+            label: 'Inventory',
+          ),
+          BottomNavigationBarItem(
+            icon: navIcon(
               Icons.person,
             ),
-            label: 'inventory',
+            activeIcon: activeIcon(Icons.person),
+            label: 'Profile',
           )
         ]);
   }
