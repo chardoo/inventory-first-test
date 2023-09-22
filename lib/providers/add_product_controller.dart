@@ -1,7 +1,9 @@
 import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
+import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/models/supplier.dart';
 import 'package:rich_co_inventory/repository/sections/product_apis.dart';
+import 'package:rich_co_inventory/repository/sections/stock.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../repository/sections/brand_apis.dart';
@@ -14,9 +16,11 @@ class AddProductProvider extends _$AddProductProvider {
   final BrandAPIs brandApis;
   final SuppliersApis supplierApis;
   final ProductApis productApis;
+  final StockApis stockApis;
   AddProductProvider()
       : brandApis = BrandAPIs(),
         productApis = ProductApis(),
+        stockApis = StockApis(),
         supplierApis = SuppliersApis();
   @override
   AddProductState build() {
@@ -28,6 +32,15 @@ class AddProductProvider extends _$AddProductProvider {
     loadingState.activate();
     await Future.delayed(Duration(seconds: 2));
     supplierApis.add(supplier);
+    loadingState.finish();
+    loadingState.diactivate();
+  }
+
+  Future<String?> addStock(Stock stock) async {
+    final loadingState = ref.read(loadingStateProvider.notifier);
+    loadingState.activate();
+    await Future.delayed(Duration(seconds: 2));
+    stockApis.add(stock);
     loadingState.finish();
     loadingState.diactivate();
   }
@@ -59,13 +72,14 @@ class AddProductProvider extends _$AddProductProvider {
     loadingState.diactivate();
   }
 
-  addProduct(Product product) async {
+  Future<String?> addProduct(Product product) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
     await Future.delayed(Duration(seconds: 2));
-    productApis.add(product);
+    final id = productApis.add(product);
     loadingState.finish();
     loadingState.diactivate();
+    return id;
   }
 
   Future<List<Brand>> searchByName(String name) async {

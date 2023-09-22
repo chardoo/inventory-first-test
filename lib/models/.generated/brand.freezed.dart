@@ -20,6 +20,7 @@ Brand _$BrandFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Brand {
+  String? get brandId => throw _privateConstructorUsedError;
   @JsonKey(toJson: Converter.toLowerCase)
   String get brandName => throw _privateConstructorUsedError;
   String get brandDescription => throw _privateConstructorUsedError;
@@ -36,7 +37,8 @@ abstract class $BrandCopyWith<$Res> {
       _$BrandCopyWithImpl<$Res, Brand>;
   @useResult
   $Res call(
-      {@JsonKey(toJson: Converter.toLowerCase) String brandName,
+      {String? brandId,
+      @JsonKey(toJson: Converter.toLowerCase) String brandName,
       String brandDescription,
       List<Product>? product});
 }
@@ -54,11 +56,16 @@ class _$BrandCopyWithImpl<$Res, $Val extends Brand>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? brandId = freezed,
     Object? brandName = null,
     Object? brandDescription = null,
     Object? product = freezed,
   }) {
     return _then(_value.copyWith(
+      brandId: freezed == brandId
+          ? _value.brandId
+          : brandId // ignore: cast_nullable_to_non_nullable
+              as String?,
       brandName: null == brandName
           ? _value.brandName
           : brandName // ignore: cast_nullable_to_non_nullable
@@ -82,7 +89,8 @@ abstract class _$$_BrandCopyWith<$Res> implements $BrandCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(toJson: Converter.toLowerCase) String brandName,
+      {String? brandId,
+      @JsonKey(toJson: Converter.toLowerCase) String brandName,
       String brandDescription,
       List<Product>? product});
 }
@@ -96,11 +104,16 @@ class __$$_BrandCopyWithImpl<$Res> extends _$BrandCopyWithImpl<$Res, _$_Brand>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? brandId = freezed,
     Object? brandName = null,
     Object? brandDescription = null,
     Object? product = freezed,
   }) {
     return _then(_$_Brand(
+      brandId: freezed == brandId
+          ? _value.brandId
+          : brandId // ignore: cast_nullable_to_non_nullable
+              as String?,
       brandName: null == brandName
           ? _value.brandName
           : brandName // ignore: cast_nullable_to_non_nullable
@@ -121,7 +134,8 @@ class __$$_BrandCopyWithImpl<$Res> extends _$BrandCopyWithImpl<$Res, _$_Brand>
 @JsonSerializable()
 class _$_Brand implements _Brand {
   const _$_Brand(
-      {@JsonKey(toJson: Converter.toLowerCase) required this.brandName,
+      {this.brandId,
+      @JsonKey(toJson: Converter.toLowerCase) required this.brandName,
       required this.brandDescription,
       final List<Product>? product})
       : _product = product;
@@ -129,6 +143,8 @@ class _$_Brand implements _Brand {
   factory _$_Brand.fromJson(Map<String, dynamic> json) =>
       _$$_BrandFromJson(json);
 
+  @override
+  final String? brandId;
   @override
   @JsonKey(toJson: Converter.toLowerCase)
   final String brandName;
@@ -146,7 +162,7 @@ class _$_Brand implements _Brand {
 
   @override
   String toString() {
-    return 'Brand(brandName: $brandName, brandDescription: $brandDescription, product: $product)';
+    return 'Brand(brandId: $brandId, brandName: $brandName, brandDescription: $brandDescription, product: $product)';
   }
 
   @override
@@ -154,6 +170,7 @@ class _$_Brand implements _Brand {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Brand &&
+            (identical(other.brandId, brandId) || other.brandId == brandId) &&
             (identical(other.brandName, brandName) ||
                 other.brandName == brandName) &&
             (identical(other.brandDescription, brandDescription) ||
@@ -163,8 +180,8 @@ class _$_Brand implements _Brand {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, brandName, brandDescription,
-      const DeepCollectionEquality().hash(_product));
+  int get hashCode => Object.hash(runtimeType, brandId, brandName,
+      brandDescription, const DeepCollectionEquality().hash(_product));
 
   @JsonKey(ignore: true)
   @override
@@ -182,12 +199,15 @@ class _$_Brand implements _Brand {
 
 abstract class _Brand implements Brand {
   const factory _Brand(
-      {@JsonKey(toJson: Converter.toLowerCase) required final String brandName,
+      {final String? brandId,
+      @JsonKey(toJson: Converter.toLowerCase) required final String brandName,
       required final String brandDescription,
       final List<Product>? product}) = _$_Brand;
 
   factory _Brand.fromJson(Map<String, dynamic> json) = _$_Brand.fromJson;
 
+  @override
+  String? get brandId;
   @override
   @JsonKey(toJson: Converter.toLowerCase)
   String get brandName;

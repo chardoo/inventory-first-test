@@ -4,17 +4,19 @@ import 'package:rich_co_inventory/repository/firestore_apis.dart';
 class SuppliersApis extends FireStoreAPIs<Supplier> {
   @override
   add(item) async {
+    final supplier = Supplier.generateId(item.toJson());
+
     try {
-      final isProductExist =
-          await checkPath(collection: mainCollection, id: item.supplierName);
+      final isProductExist = await checkPath(
+          collection: mainCollection, id: supplier.supplierName);
       if (isProductExist) {
         //TODO: do some thing
         return;
       }
       instance
           .collection(mainCollection)
-          .doc(item.supplierName)
-          .set(item.toJson());
+          .doc(supplier.supplierName)
+          .set(supplier.toJson());
       print("done");
     } catch (e) {
       //TODO

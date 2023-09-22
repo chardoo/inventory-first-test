@@ -10,7 +10,9 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
   String get dependantCollection => "products";
 
   @override
-  add(Brand brand) async {
+  add(Brand item) async {
+    final brand = Brand.generateId(item.toJson());
+
     try {
       final isBrandExist = await check(
           collection: mainCollection, field: "brandName", arg: brand.brandName);
@@ -18,7 +20,10 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
         //TODO: prevent user from adding
         print("already exist");
       } else {
-        instance.collection(mainCollection).add(brand.toJson());
+        instance
+            .collection(mainCollection)
+            .doc(brand.brandId)
+            .set(brand.toJson());
       }
     } catch (e) {}
   }

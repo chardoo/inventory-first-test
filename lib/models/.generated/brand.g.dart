@@ -7,6 +7,7 @@ part of '../brand.dart';
 // **************************************************************************
 
 _$_Brand _$$_BrandFromJson(Map<String, dynamic> json) => _$_Brand(
+      brandId: json['brandId'] as String?,
       brandName: json['brandName'] as String,
       brandDescription: json['brandDescription'] as String,
       product: (json['product'] as List<dynamic>?)
@@ -15,6 +16,7 @@ _$_Brand _$$_BrandFromJson(Map<String, dynamic> json) => _$_Brand(
     );
 
 Map<String, dynamic> _$$_BrandToJson(_$_Brand instance) => <String, dynamic>{
+      'brandId': instance.brandId,
       'brandName': Converter.toLowerCase(instance.brandName),
       'brandDescription': instance.brandDescription,
       'product': instance.product?.map((e) => e.toJson()).toList(),

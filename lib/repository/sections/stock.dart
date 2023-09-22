@@ -1,7 +1,7 @@
 import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
-class ProductApis extends FireStoreAPIs<Stock> {
+class StockApis extends FireStoreAPIs<Stock> {
   @override
   String get mainCollection => Collections.stock.name;
 
@@ -9,26 +9,31 @@ class ProductApis extends FireStoreAPIs<Stock> {
   String get dependantCollection => "";
 
   @override
-  add(Stock item) async {
+  Future<String?> add(Stock item) async {
+    final stock = Stock.generateId(item.toJson());
+
     try {
       final isProductExist =
-          await checkPath(collection: mainCollection, id: item.stockId);
+          await checkPath(collection: mainCollection, id: stock.stockId ?? "");
       if (isProductExist) {
         //TODO: prevent user from adding
       } else {
-        instance
+        await instance
             .collection(mainCollection)
-            .doc(item.stockId)
-            .set(item.toJson());
+            .doc(stock.stockId)
+            .set(stock.toJson());
+        return stock.stockId;
       }
-    } catch (e) {}
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
   delete(Stock item) async {
     try {
-      final docToDelete =
-          instance.collection(mainCollection).doc(item.stockId);
+      final docToDelete = instance.collection(mainCollection).doc(item.stockId);
       docToDelete.delete();
     } catch (e) {
       print("error is $e");

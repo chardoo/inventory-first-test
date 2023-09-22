@@ -7,7 +7,7 @@ part of '../stock.dart';
 // **************************************************************************
 
 _$_Stock _$$_StockFromJson(Map<String, dynamic> json) => _$_Stock(
-      stockId: json['stockId'] as String,
+      stockId: json['stockId'] as String?,
       productId: json['productId'] as String,
       currentQuantity: json['currentQuantity'] as int,
       minimumRequiredQuantity: json['minimumRequiredQuantity'] as int,

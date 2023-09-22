@@ -11,19 +11,24 @@ class ProductApis extends FireStoreAPIs<Product> {
   String get dependantCollection => "";
 
   @override
-  add(Product product) async {
+  Future<String?> add(Product item) async {
+    final productToAdd = Product.generateId(item.toJson());
     try {
       final isProductExist =
-          await checkPath(collection: mainCollection, id: product.productName);
+          await checkPath(collection: mainCollection, id: item.productName);
       if (isProductExist) {
         //TODO: prevent user from adding
       } else {
         instance
             .collection(mainCollection)
-            .doc(product.productName)
-            .set(product.toJson());
+            .doc(productToAdd.productId)
+            .set(productToAdd.toJson());
+        return productToAdd.productId;
       }
-    } catch (e) {}
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
@@ -85,28 +90,21 @@ class ProductApis extends FireStoreAPIs<Product> {
     }
   }
 
- 
   Future<Product?> getproductwithSale(String name) async {
     try {
-      var salesResults ;
+      var salesResults;
       final res = await instance.collection(mainCollection).doc(name).get();
 
       Map<String, dynamic> productData = res.data()!;
-     
-       salesResults = await instance.collection(salesCollection).where("field", isEqualTo: productData["productId"]).get().then((value){
 
-      });
-
-      
-  
-         
+      salesResults = await instance
+          .collection(salesCollection)
+          .where("field", isEqualTo: productData["productId"])
+          .get()
+          .then((value) {});
 
       if (res.exists) {
-       Product product =   Product.fromJson(res.data()!);
-    
-      
-     
-     
+        Product product = Product.fromJson(res.data()!);
       } else {
         return null;
       }

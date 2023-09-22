@@ -20,7 +20,7 @@ Stock _$StockFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Stock {
-  String get stockId => throw _privateConstructorUsedError;
+  String? get stockId => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
   int get currentQuantity => throw _privateConstructorUsedError;
   int get minimumRequiredQuantity => throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ abstract class $StockCopyWith<$Res> {
       _$StockCopyWithImpl<$Res, Stock>;
   @useResult
   $Res call(
-      {String stockId,
+      {String? stockId,
       String productId,
       int currentQuantity,
       int minimumRequiredQuantity});
@@ -55,16 +55,16 @@ class _$StockCopyWithImpl<$Res, $Val extends Stock>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? stockId = null,
+    Object? stockId = freezed,
     Object? productId = null,
     Object? currentQuantity = null,
     Object? minimumRequiredQuantity = null,
   }) {
     return _then(_value.copyWith(
-      stockId: null == stockId
+      stockId: freezed == stockId
           ? _value.stockId
           : stockId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       productId: null == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
@@ -88,7 +88,7 @@ abstract class _$$_StockCopyWith<$Res> implements $StockCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String stockId,
+      {String? stockId,
       String productId,
       int currentQuantity,
       int minimumRequiredQuantity});
@@ -103,16 +103,16 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res, _$_Stock>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? stockId = null,
+    Object? stockId = freezed,
     Object? productId = null,
     Object? currentQuantity = null,
     Object? minimumRequiredQuantity = null,
   }) {
     return _then(_$_Stock(
-      stockId: null == stockId
+      stockId: freezed == stockId
           ? _value.stockId
           : stockId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       productId: null == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
@@ -133,7 +133,7 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res, _$_Stock>
 @JsonSerializable()
 class _$_Stock implements _Stock {
   const _$_Stock(
-      {required this.stockId,
+      {this.stockId,
       required this.productId,
       required this.currentQuantity,
       required this.minimumRequiredQuantity});
@@ -142,7 +142,7 @@ class _$_Stock implements _Stock {
       _$$_StockFromJson(json);
 
   @override
-  final String stockId;
+  final String? stockId;
   @override
   final String productId;
   @override
@@ -191,7 +191,7 @@ class _$_Stock implements _Stock {
 
 abstract class _Stock implements Stock {
   const factory _Stock(
-      {required final String stockId,
+      {final String? stockId,
       required final String productId,
       required final int currentQuantity,
       required final int minimumRequiredQuantity}) = _$_Stock;
@@ -199,7 +199,7 @@ abstract class _Stock implements Stock {
   factory _Stock.fromJson(Map<String, dynamic> json) = _$_Stock.fromJson;
 
   @override
-  String get stockId;
+  String? get stockId;
   @override
   String get productId;
   @override
