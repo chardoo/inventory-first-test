@@ -12,7 +12,7 @@ _$_Purchase _$$_PurchaseFromJson(Map<String, dynamic> json) => _$_Purchase(
       purchaseDate: DateTime.parse(json['purchaseDate'] as String),
       quantityPurchased: json['quantityPurchased'] as int,
       supplierId: json['supplierId'] as int?,
-      totalCost: (json['totalCost'] as num).toDouble(),
+      cost: (json['cost'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$_PurchaseToJson(_$_Purchase instance) =>
@@ -22,5 +22,5 @@ Map<String, dynamic> _$$_PurchaseToJson(_$_Purchase instance) =>
       'purchaseDate': instance.purchaseDate.toIso8601String(),
       'quantityPurchased': instance.quantityPurchased,
       'supplierId': instance.supplierId,
-      'totalCost': instance.totalCost,
+      'cost': instance.cost,
     };

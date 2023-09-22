@@ -11,7 +11,7 @@ abstract class Purchase with _$Purchase {
     required DateTime purchaseDate,
     required int quantityPurchased,
     int? supplierId,
-    required double totalCost,
+    required double cost,
   }) = _Purchase;
 
   factory Purchase.fromJson(Map<String, dynamic> json) => _$PurchaseFromJson(json);
