@@ -10,7 +10,7 @@ import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 
-import '../widgets/texts.dart';
+import '../../widgets/texts.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
   AddProductScreen({super.key});
