@@ -1,27 +1,38 @@
+import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
-class ProductApis extends FireStoreAPIs<Purchase> {
+class PurchaseApis extends FireStoreAPIs<Purchase> {
   @override
-  String get mainCollection => Collections.products.name;
+  String get mainCollection => Collections.purchases.name;
 
   @override
   String get dependantCollection => "";
 
   @override
-  add(Purchase item) async {
+  Future<String?>  add(Purchase item) async {
+    final purchaseToAdd =  Purchase.generateId(item.toJson());
+    print(purchaseToAdd.product);
     try {
-      final isProductExist =
-          await checkPath(collection: mainCollection, id: item.purchaseId);
-      if (isProductExist) {
-        //TODO: prevent user from adding
-      } else {
+      // final isProductExist =
+      //     await checkPath(collection: mainCollection, id: item.purchaseId!);
+      // if (isProductExist) {
+      //   //TODO: prevent user from adding
+     
+      // } else {
+         
         instance
             .collection(mainCollection)
-            .doc(item.purchaseId)
-            .set(item.toJson());
-      }
-    } catch (e) {}
+            .doc(purchaseToAdd.purchaseId)
+            .set(purchaseToAdd.toJson());
+
+            return purchaseToAdd.purchaseId;
+     // }
+    } catch (e) {
+
+      print("error happen pleas");
+      print(e.toString());
+    }
   }
 
   @override
@@ -80,4 +91,67 @@ class ProductApis extends FireStoreAPIs<Purchase> {
       return [];
     }
   }
+
+  Future<List<Purchase>> getPurchaseByDate(String data) async {
+    try {
+      // final res = await instance.collection(mainCollection).get();
+      var result = [];
+      // final res = await instance.collection(mainCollection).get().then((value)async{
+      //     await Future.forEach(value.docs, (element) async {
+      //   var product = await instance
+      //       .collection(Collections.products.name)
+      //       .doc(element.data()['productId'])
+      //       .get();
+      //   var fulproduct = {...element.data(), 'product': product.data()!};
+      //   print("full odsodsodsods");
+      //   print(fulproduct);
+      //   result.add(fulproduct);
+      // });
+      // });
+      
+       final res = await instance.collection(mainCollection).get();
+      if (res.docs.isEmpty) return [];
+       
+        // List<String> names = res.docs.map((e) => e.data()['productId'] as String).toList();
+        
+        // print("name is here man");
+        // print(names);
+        // var product = await instance.collection(Collections.products.name).where('productId', whereIn: names).get();
+       
+        //  print("product is herer man ss");
+        //  print( product.docs);
+      // await Future.forEach(res.docs, (element) async {
+      //   var product = await instance
+      //       .collection(Collections.products.name)
+      //       .doc(element.data()['productId'])
+      //       .get();
+      //   var fulproduct = {...element.data(), 'product': product.data()!};
+      //   result.add(fulproduct);
+      // });
+      return res.docs.map((e) => Purchase.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
+    }
+
+
+    
+  }
+
+
+ Future<List<Purchase>> searchPruchaseByName(String name) async {
+    try {
+      final res = await instance
+          .collection(mainCollection)
+          .where('productName', isGreaterThanOrEqualTo: name.toLowerCase())
+          .where('productName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .get();
+
+        
+      if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Purchase.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
 }

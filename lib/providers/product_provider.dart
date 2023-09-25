@@ -9,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../repository/sections/brand_apis.dart';
 import '../repository/sections/suppliers_api.dart';
 import 'app_state_provider.dart';
-part '.generated/add_product_controller.g.dart';
+part '.generated/product_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class AddProductProvider extends _$AddProductProvider {
@@ -81,6 +81,8 @@ class AddProductProvider extends _$AddProductProvider {
     loadingState.diactivate();
     return id;
   }
+
+  
 
   Future<List<Product>> searchProductByName(String name) async {
     return productApis.searchByName(name);

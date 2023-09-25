@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/screens.dart/auth/log_in.dart';
 import 'package:rich_co_inventory/screens.dart/dashboard.dart';
+import 'package:rich_co_inventory/screens.dart/inventory/all_inventory.dart';
 import 'package:rich_co_inventory/screens.dart/product_display/products_screen.dart';
 import 'package:rich_co_inventory/screens.dart/profile_screen.dart';
+import 'package:rich_co_inventory/screens.dart/purchase/all_purchase_page.dart';
 import 'package:rich_co_inventory/screens.dart/stocks_screen.dart';
 import 'package:rich_co_inventory/widgets/bottom_navigation.dart';
 
@@ -45,8 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> screens = [
     DashBoard(),
     ProductsScreen(),
-    StocksScreen(),
-    ProfileScreen()
+    AllInventory(),
+    AllPurchaseScreen()
   ];
 
   int index = 0;

@@ -53,7 +53,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               Icons.person,
             ),
             activeIcon: activeIcon(Icons.person),
-            label: 'Profile',
+            label: 'Purchase',
           )
         ]);
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
-import 'package:rich_co_inventory/providers/add_product_controller.dart';
+import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
 import 'package:rich_co_inventory/providers/auth_provider.dart';
 import 'package:rich_co_inventory/screens.dart/add_to_product/add_product_screen.dart';

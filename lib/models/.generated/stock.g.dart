@@ -9,6 +9,7 @@ part of '../stock.dart';
 _$_Stock _$$_StockFromJson(Map<String, dynamic> json) => _$_Stock(
       stockId: json['stockId'] as String?,
       productId: json['productId'] as String,
+      productName: json['productName'] as String?,
       currentQuantity: json['currentQuantity'] as int,
       minimumRequiredQuantity: json['minimumRequiredQuantity'] as int,
     );
@@ -16,6 +17,7 @@ _$_Stock _$$_StockFromJson(Map<String, dynamic> json) => _$_Stock(
 Map<String, dynamic> _$$_StockToJson(_$_Stock instance) => <String, dynamic>{
       'stockId': instance.stockId,
       'productId': instance.productId,
+      'productName': instance.productName,
       'currentQuantity': instance.currentQuantity,
       'minimumRequiredQuantity': instance.minimumRequiredQuantity,
     };

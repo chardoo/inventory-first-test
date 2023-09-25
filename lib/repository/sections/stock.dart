@@ -42,6 +42,8 @@ class StockApis extends FireStoreAPIs<Stock> {
 
   @override
   update(Stock item) async {
+    print("upading the stock man");
+    print(item);
     try {
       await instance
           .collection(mainCollection)
@@ -49,6 +51,19 @@ class StockApis extends FireStoreAPIs<Stock> {
           .update(item.toJson());
     } catch (e) {
       //TODO: do something
+    }
+  }
+
+   
+  Future <List<Stock?>> getStockByProductId(String  productId) async {
+    try {
+     var res =  await instance
+          .collection(mainCollection).where("productId", isEqualTo: productId).get();
+ 
+        if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Stock.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
     }
   }
 
@@ -70,6 +85,22 @@ class StockApis extends FireStoreAPIs<Stock> {
   Future<List<Stock>> getAll() async {
     try {
       final res = await instance.collection(mainCollection).get();
+      if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Stock.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+   @override
+  Future<List<Stock>> getStockByProductName(String name) async {
+    try {
+      // final res = await instance.collection(mainCollection).get();
+      final res = await instance
+          .collection(mainCollection)
+          .where('productName', isGreaterThanOrEqualTo: name.toLowerCase())
+          .where('productName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .get();
       if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Stock.fromJson(e.data())).toList();
     } catch (e) {

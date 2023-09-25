@@ -1,21 +1,25 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
+import 'package:rich_co_inventory/providers/purchase_provider.dart';
 import 'package:rich_co_inventory/screens.dart/add_to_product/add_product_screen.dart';
+import 'package:rich_co_inventory/screens.dart/purchase/add_purchase_page.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/shimmer.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 import 'package:rich_co_inventory/widgets/texts.dart';
 
-class ProductsScreen extends StatefulWidget {
-  const ProductsScreen({super.key});
+class AllPurchaseScreen extends StatefulWidget {
+  const AllPurchaseScreen({super.key});
 
   @override
-  State<ProductsScreen> createState() => _ProductsScreenState();
+  State<AllPurchaseScreen> createState() => _ProductsScreenState();
 }
 
-class _ProductsScreenState extends State<ProductsScreen> {
+class _ProductsScreenState extends State<AllPurchaseScreen> {
   final TextEditingController searchCtrl = TextEditingController(text: "");
 
   
@@ -26,7 +30,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
           title:
-              MyText(text: "All Products", weight: FontWeight.bold, size: 24)),
+              MyText(text: "All Purchases", weight: FontWeight.bold, size: 24)),
       body: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(
@@ -58,7 +62,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   color: Colors.blue,
                 ),
                 ontap: () {
-                  MyNavigator.goto(context, AddProductScreen());
+                  MyNavigator.goto(context, AddPurchaseScreen());
                 },
               )
             ],
@@ -68,8 +72,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
             child: Consumer(builder: (context, ref, _) {
               return FutureBuilder(
                   future: ref
-                      .read(addProductProvider.notifier)
-                      .searchProductByName(searchCtrl.text),
+                      .read(purchaseProvider.notifier)
+                      .getPurchases(searchCtrl.text),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListView.separated(
@@ -98,7 +102,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       if (snapshot.requireData.isEmpty) {
                         return const Center(
                           child: MyText(
-                            text: "No products in store",
+                            text: "No purchase yet",
                             size: 24,
                             weight: FontWeight.bold,
                           ),
@@ -108,10 +112,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           separatorBuilder: (_, i) => SizedBox(height: 12),
                           itemCount: snapshot.requireData.length,
                           itemBuilder: (_, i) {
-                            final product = snapshot.requireData[i];
-                            return ProductCard(
-                                name: product.productName,
-                                description: product.productDescription ?? "");
+
+                            //  return Text("richOCDE");
+                            final purchase = snapshot.requireData[i];
+                            return PurchaseCard(
+                               date: purchase.purchaseDate,
+                                productName: purchase.productName,
+                                quantity: purchase.quantityPurchased ?? 0,
+                                price:  int.parse(purchase.cost.toString())
+
+                                )
+                                
+                                ;
                           });
                     }
                     return Center(
@@ -130,15 +142,19 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 }
 
-class ProductCard extends StatelessWidget {
-  const ProductCard({
+class PurchaseCard extends StatelessWidget {
+  const PurchaseCard({
     super.key,
-    required this.name,
-    required this.description,
+    required this.productName,
+     required this.quantity,
+    required this.price,
+    required this.date
   });
 
-  final String name;
-  final String description;
+  final String productName;
+  final int quantity;
+  final int price;
+  final String date;
 
   @override
   Widget build(BuildContext context) {
@@ -147,15 +163,35 @@ class ProductCard extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
           color: Colors.grey.shade100),
-      child: ListTile(
+      child:
+       
+      
+      
+       ListTile(
         title: MyText(
-          text: name,
+          text: productName,
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
         ),
+        leading: Column(children: [
+           MyText(
+          text: "cost:" + price.toString(),
+          weight: FontWeight.bold,
+          size: 16,
+          maxLines: 1,
+        ),
+           MyText(
+          text:"Qnt: " + quantity.toString(),
+          weight: FontWeight.bold,
+          size: 16,
+          maxLines: 1,
+        ),
+        ],),
+        
+        
         subtitle: MyText(
-          text: description,
+          text: date,
           size: 14,
           maxLines: 1,
           color: Colors.blueGrey,

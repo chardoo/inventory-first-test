@@ -9,6 +9,7 @@ abstract class Stock with _$Stock {
   const factory Stock({
     String? stockId,
     required String productId,
+     String? productName,
     required int currentQuantity,
     required int minimumRequiredQuantity,
   }) = _Stock;

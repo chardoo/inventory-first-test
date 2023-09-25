@@ -1,21 +1,27 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/models/purchase.dart';
+import 'package:rich_co_inventory/providers/inventory_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
+import 'package:rich_co_inventory/providers/purchase_provider.dart';
 import 'package:rich_co_inventory/screens.dart/add_to_product/add_product_screen.dart';
+import 'package:rich_co_inventory/screens.dart/inventory/add_inventory.dart';
+import 'package:rich_co_inventory/screens.dart/purchase/add_purchase_page.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/shimmer.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 import 'package:rich_co_inventory/widgets/texts.dart';
 
-class ProductsScreen extends StatefulWidget {
-  const ProductsScreen({super.key});
+class AllInventory extends StatefulWidget {
+  const AllInventory({super.key});
 
   @override
-  State<ProductsScreen> createState() => _ProductsScreenState();
+  State<AllInventory> createState() => _ProductsScreenState();
 }
 
-class _ProductsScreenState extends State<ProductsScreen> {
+class _ProductsScreenState extends State<AllInventory> {
   final TextEditingController searchCtrl = TextEditingController(text: "");
 
   
@@ -26,7 +32,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
           title:
-              MyText(text: "All Products", weight: FontWeight.bold, size: 24)),
+              MyText(text: "All Inventory", weight: FontWeight.bold, size: 24)),
       body: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(
@@ -58,7 +64,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   color: Colors.blue,
                 ),
                 ontap: () {
-                  MyNavigator.goto(context, AddProductScreen());
+                  MyNavigator.goto(context, AddInventoryScreen());
                 },
               )
             ],
@@ -68,8 +74,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
             child: Consumer(builder: (context, ref, _) {
               return FutureBuilder(
                   future: ref
-                      .read(addProductProvider.notifier)
-                      .searchProductByName(searchCtrl.text),
+                      .read(inventoryProvider.notifier)
+                      .getInventory(searchCtrl.text),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListView.separated(
@@ -98,7 +104,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       if (snapshot.requireData.isEmpty) {
                         return const Center(
                           child: MyText(
-                            text: "No products in store",
+                            text: "No Stock yet",
                             size: 24,
                             weight: FontWeight.bold,
                           ),
@@ -108,10 +114,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           separatorBuilder: (_, i) => SizedBox(height: 12),
                           itemCount: snapshot.requireData.length,
                           itemBuilder: (_, i) {
-                            final product = snapshot.requireData[i];
-                            return ProductCard(
-                                name: product.productName,
-                                description: product.productDescription ?? "");
+
+                            //  return Text("richOCDE");
+                            final inventory = snapshot.requireData[i];
+                            return PurchaseCard(
+                              //  date: inventory.purchaseDate,
+                                productName: inventory.productName!,
+                                quantity: inventory.currentQuantity ?? 0,
+                                price:  20
+
+                                )
+                                
+                                ;
                           });
                     }
                     return Center(
@@ -130,15 +144,19 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 }
 
-class ProductCard extends StatelessWidget {
-  const ProductCard({
+class PurchaseCard extends StatelessWidget {
+  const PurchaseCard({
     super.key,
-    required this.name,
-    required this.description,
+    required this.productName,
+     required this.quantity,
+    required this.price,
+    // required this.date
   });
 
-  final String name;
-  final String description;
+  final String productName;
+  final int quantity;
+  final int price;
+  // final String date;
 
   @override
   Widget build(BuildContext context) {
@@ -147,19 +165,39 @@ class ProductCard extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
           color: Colors.grey.shade100),
-      child: ListTile(
+      child:
+       
+      
+      
+       ListTile(
         title: MyText(
-          text: name,
+          text: productName,
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
         ),
-        subtitle: MyText(
-          text: description,
-          size: 14,
+        leading: Column(children: [
+           MyText(
+          text: "cost:" + price.toString(),
+          weight: FontWeight.bold,
+          size: 16,
           maxLines: 1,
-          color: Colors.blueGrey,
         ),
+           MyText(
+          text:"Qnt: " + quantity.toString(),
+          weight: FontWeight.bold,
+          size: 16,
+          maxLines: 1,
+        ),
+        ],),
+        
+        
+        // subtitle: MyText(
+        //   text: date,
+        //   size: 14,
+        //   maxLines: 1,
+        //   color: Colors.blueGrey,
+        // ),
         trailing: Icon(
           Icons.edit,
           color: Colors.blueGrey,

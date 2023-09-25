@@ -7,20 +7,26 @@ part of '../purchase.dart';
 // **************************************************************************
 
 _$_Purchase _$$_PurchaseFromJson(Map<String, dynamic> json) => _$_Purchase(
-      purchaseId: json['purchaseId'] as String,
+      purchaseId: json['purchaseId'] as String?,
       productId: json['productId'] as String,
-      purchaseDate: DateTime.parse(json['purchaseDate'] as String),
+      productName: json['productName'] as String,
+      purchaseDate: json['purchaseDate'] as String,
       quantityPurchased: json['quantityPurchased'] as int,
-      supplierId: json['supplierId'] as int?,
+      supplierId: json['supplierId'] as String?,
       cost: (json['cost'] as num).toDouble(),
+      product: json['product'] == null
+          ? null
+          : Product.fromJson(json['product'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_PurchaseToJson(_$_Purchase instance) =>
     <String, dynamic>{
       'purchaseId': instance.purchaseId,
       'productId': instance.productId,
-      'purchaseDate': instance.purchaseDate.toIso8601String(),
+      'productName': instance.productName,
+      'purchaseDate': instance.purchaseDate,
       'quantityPurchased': instance.quantityPurchased,
       'supplierId': instance.supplierId,
       'cost': instance.cost,
+      'product': instance.product?.toJson(),
     };

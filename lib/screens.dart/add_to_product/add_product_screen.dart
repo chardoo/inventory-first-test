@@ -5,7 +5,7 @@ import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/models/supplier.dart';
-import 'package:rich_co_inventory/providers/add_product_controller.dart';
+import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
@@ -106,8 +106,10 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   createAndAddStock(AddProductProvider notifier, String productId) {
     Stock stock = Stock(
+      productName: productController.text,
         productId: productId,
-        currentQuantity: int.tryParse(initialStockCont.text) ?? 0,
+        // currentQuantity: int.tryParse(initialStockCont.text) ?? 0,
+        currentQuantity: 0,
         minimumRequiredQuantity: 10);
     notifier.addStock(stock);
   }

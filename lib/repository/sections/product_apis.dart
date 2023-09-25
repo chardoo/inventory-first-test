@@ -23,6 +23,9 @@ class ProductApis extends FireStoreAPIs<Product> {
             .collection(mainCollection)
             .doc(productToAdd.productId)
             .set(productToAdd.toJson());
+
+
+            
         return productToAdd.productId;
       }
       return null;
@@ -43,7 +46,7 @@ class ProductApis extends FireStoreAPIs<Product> {
           field: "productId",
           arg: product.productName);
       final hasConnectionToPurchase = await check(
-          collection: Collections.purchase.name,
+          collection: Collections.purchases.name,
           field: "productId",
           arg: product.productName);
       if (hasConnectionToPurchase ||
@@ -131,6 +134,8 @@ class ProductApis extends FireStoreAPIs<Product> {
           .where('productName', isGreaterThanOrEqualTo: name.toLowerCase())
           .where('productName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
           .get();
+
+        
       if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Product.fromJson(e.data())).toList();
     } catch (e) {

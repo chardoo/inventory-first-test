@@ -20,12 +20,14 @@ Purchase _$PurchaseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Purchase {
-  String get purchaseId => throw _privateConstructorUsedError;
+  String? get purchaseId => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
-  DateTime get purchaseDate => throw _privateConstructorUsedError;
+  String get productName => throw _privateConstructorUsedError;
+  String get purchaseDate => throw _privateConstructorUsedError;
   int get quantityPurchased => throw _privateConstructorUsedError;
-  int? get supplierId => throw _privateConstructorUsedError;
+  String? get supplierId => throw _privateConstructorUsedError;
   double get cost => throw _privateConstructorUsedError;
+  Product? get product => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,12 +41,16 @@ abstract class $PurchaseCopyWith<$Res> {
       _$PurchaseCopyWithImpl<$Res, Purchase>;
   @useResult
   $Res call(
-      {String purchaseId,
+      {String? purchaseId,
       String productId,
-      DateTime purchaseDate,
+      String productName,
+      String purchaseDate,
       int quantityPurchased,
-      int? supplierId,
-      double cost});
+      String? supplierId,
+      double cost,
+      Product? product});
+
+  $ProductCopyWith<$Res>? get product;
 }
 
 /// @nodoc
@@ -60,26 +66,32 @@ class _$PurchaseCopyWithImpl<$Res, $Val extends Purchase>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? purchaseId = null,
+    Object? purchaseId = freezed,
     Object? productId = null,
+    Object? productName = null,
     Object? purchaseDate = null,
     Object? quantityPurchased = null,
     Object? supplierId = freezed,
     Object? cost = null,
+    Object? product = freezed,
   }) {
     return _then(_value.copyWith(
-      purchaseId: null == purchaseId
+      purchaseId: freezed == purchaseId
           ? _value.purchaseId
           : purchaseId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       productId: null == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
               as String,
+      productName: null == productName
+          ? _value.productName
+          : productName // ignore: cast_nullable_to_non_nullable
+              as String,
       purchaseDate: null == purchaseDate
           ? _value.purchaseDate
           : purchaseDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
       quantityPurchased: null == quantityPurchased
           ? _value.quantityPurchased
           : quantityPurchased // ignore: cast_nullable_to_non_nullable
@@ -87,12 +99,28 @@ class _$PurchaseCopyWithImpl<$Res, $Val extends Purchase>
       supplierId: freezed == supplierId
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       cost: null == cost
           ? _value.cost
           : cost // ignore: cast_nullable_to_non_nullable
               as double,
+      product: freezed == product
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProductCopyWith<$Res>? get product {
+    if (_value.product == null) {
+      return null;
+    }
+
+    return $ProductCopyWith<$Res>(_value.product!, (value) {
+      return _then(_value.copyWith(product: value) as $Val);
+    });
   }
 }
 
@@ -104,12 +132,17 @@ abstract class _$$_PurchaseCopyWith<$Res> implements $PurchaseCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String purchaseId,
+      {String? purchaseId,
       String productId,
-      DateTime purchaseDate,
+      String productName,
+      String purchaseDate,
       int quantityPurchased,
-      int? supplierId,
-      double cost});
+      String? supplierId,
+      double cost,
+      Product? product});
+
+  @override
+  $ProductCopyWith<$Res>? get product;
 }
 
 /// @nodoc
@@ -123,26 +156,32 @@ class __$$_PurchaseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? purchaseId = null,
+    Object? purchaseId = freezed,
     Object? productId = null,
+    Object? productName = null,
     Object? purchaseDate = null,
     Object? quantityPurchased = null,
     Object? supplierId = freezed,
     Object? cost = null,
+    Object? product = freezed,
   }) {
     return _then(_$_Purchase(
-      purchaseId: null == purchaseId
+      purchaseId: freezed == purchaseId
           ? _value.purchaseId
           : purchaseId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       productId: null == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
               as String,
+      productName: null == productName
+          ? _value.productName
+          : productName // ignore: cast_nullable_to_non_nullable
+              as String,
       purchaseDate: null == purchaseDate
           ? _value.purchaseDate
           : purchaseDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
       quantityPurchased: null == quantityPurchased
           ? _value.quantityPurchased
           : quantityPurchased // ignore: cast_nullable_to_non_nullable
@@ -150,11 +189,15 @@ class __$$_PurchaseCopyWithImpl<$Res>
       supplierId: freezed == supplierId
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       cost: null == cost
           ? _value.cost
           : cost // ignore: cast_nullable_to_non_nullable
               as double,
+      product: freezed == product
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product?,
     ));
   }
 }
@@ -163,32 +206,38 @@ class __$$_PurchaseCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Purchase implements _Purchase {
   const _$_Purchase(
-      {required this.purchaseId,
+      {this.purchaseId,
       required this.productId,
+      required this.productName,
       required this.purchaseDate,
       required this.quantityPurchased,
       this.supplierId,
-      required this.cost});
+      required this.cost,
+      this.product});
 
   factory _$_Purchase.fromJson(Map<String, dynamic> json) =>
       _$$_PurchaseFromJson(json);
 
   @override
-  final String purchaseId;
+  final String? purchaseId;
   @override
   final String productId;
   @override
-  final DateTime purchaseDate;
+  final String productName;
+  @override
+  final String purchaseDate;
   @override
   final int quantityPurchased;
   @override
-  final int? supplierId;
+  final String? supplierId;
   @override
   final double cost;
+  @override
+  final Product? product;
 
   @override
   String toString() {
-    return 'Purchase(purchaseId: $purchaseId, productId: $productId, purchaseDate: $purchaseDate, quantityPurchased: $quantityPurchased, supplierId: $supplierId, cost: $cost)';
+    return 'Purchase(purchaseId: $purchaseId, productId: $productId, productName: $productName, purchaseDate: $purchaseDate, quantityPurchased: $quantityPurchased, supplierId: $supplierId, cost: $cost, product: $product)';
   }
 
   @override
@@ -200,19 +249,22 @@ class _$_Purchase implements _Purchase {
                 other.purchaseId == purchaseId) &&
             (identical(other.productId, productId) ||
                 other.productId == productId) &&
+            (identical(other.productName, productName) ||
+                other.productName == productName) &&
             (identical(other.purchaseDate, purchaseDate) ||
                 other.purchaseDate == purchaseDate) &&
             (identical(other.quantityPurchased, quantityPurchased) ||
                 other.quantityPurchased == quantityPurchased) &&
             (identical(other.supplierId, supplierId) ||
                 other.supplierId == supplierId) &&
-            (identical(other.cost, cost) || other.cost == cost));
+            (identical(other.cost, cost) || other.cost == cost) &&
+            (identical(other.product, product) || other.product == product));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, purchaseId, productId,
-      purchaseDate, quantityPurchased, supplierId, cost);
+      productName, purchaseDate, quantityPurchased, supplierId, cost, product);
 
   @JsonKey(ignore: true)
   @override
@@ -230,27 +282,33 @@ class _$_Purchase implements _Purchase {
 
 abstract class _Purchase implements Purchase {
   const factory _Purchase(
-      {required final String purchaseId,
+      {final String? purchaseId,
       required final String productId,
-      required final DateTime purchaseDate,
+      required final String productName,
+      required final String purchaseDate,
       required final int quantityPurchased,
-      final int? supplierId,
-      required final double cost}) = _$_Purchase;
+      final String? supplierId,
+      required final double cost,
+      final Product? product}) = _$_Purchase;
 
   factory _Purchase.fromJson(Map<String, dynamic> json) = _$_Purchase.fromJson;
 
   @override
-  String get purchaseId;
+  String? get purchaseId;
   @override
   String get productId;
   @override
-  DateTime get purchaseDate;
+  String get productName;
+  @override
+  String get purchaseDate;
   @override
   int get quantityPurchased;
   @override
-  int? get supplierId;
+  String? get supplierId;
   @override
   double get cost;
+  @override
+  Product? get product;
   @override
   @JsonKey(ignore: true)
   _$$_PurchaseCopyWith<_$_Purchase> get copyWith =>
