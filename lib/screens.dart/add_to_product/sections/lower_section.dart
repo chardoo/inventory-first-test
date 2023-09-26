@@ -2,7 +2,6 @@ part of '../add_product_screen.dart';
 
 class _LowerSection extends StatefulWidget {
   const _LowerSection({
-    super.key,
     required this.priceCont,
     required this.initialStockCont,
     required this.dateController,

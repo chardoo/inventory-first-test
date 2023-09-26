@@ -1,9 +1,8 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:rich_co_inventory/widgets/bottom_navigation.dart';
 import 'package:rich_co_inventory/widgets/graph.dart';
 
 import '../widgets/texts.dart';
+import 'drawer.dart';
 
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
@@ -12,25 +11,10 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
+      drawer: const MyDrawer(),
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: CircleAvatar(
-            radius: 5,
-            backgroundColor: Colors.black,
-            child: Text(
-              "N",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Colors.white),
-            ),
-          ),
-        ),
         actions: const [
           Icon(Icons.calendar_month_outlined),
-          SizedBox(width: 5),
-          Icon(Icons.menu),
           SizedBox(width: 10)
         ],
       ),

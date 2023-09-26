@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyTextFieldWithTitle extends StatelessWidget {
-  MyTextFieldWithTitle(
+  const MyTextFieldWithTitle(
       {super.key,
       required this.name,
       required this.label,
@@ -39,7 +39,7 @@ class MyTextFieldWithTitle extends StatelessWidget {
               .bodyLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 7),
+        const SizedBox(height: 7),
         MyTextField(
           controller: controller,
           label: label, keyboadType: keyboadType,
@@ -55,6 +55,7 @@ class MyTextFieldWithTitle extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class MyTextField extends StatelessWidget {
   MyTextField(
       {super.key,
@@ -121,7 +122,7 @@ class TextFieldWithDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
         border: Border.all(color: Colors.grey.shade300),

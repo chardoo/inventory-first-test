@@ -2,7 +2,6 @@ part of '../add_product_screen.dart';
 
 class _UpperSection extends ConsumerStatefulWidget {
   const _UpperSection({
-    super.key,
     required this.productController,
     required this.brandController,
     required this.supplierController,
@@ -58,8 +57,8 @@ class _ProductDetailsState extends ConsumerState<_UpperSection> {
               width: 12,
             ),
             MyFilledIconButton(
-                icon: Icon(Icons.add),
-                label: Text("New"),
+                icon: const Icon(Icons.add),
+                label: const Text("New"),
                 ontap: () {
                   showDialog(
                       context: context,
@@ -103,8 +102,8 @@ class _ProductDetailsState extends ConsumerState<_UpperSection> {
                       return const _AddBrandDialog();
                     });
               },
-              label: Text("New"),
-              icon: Icon(Icons.add),
+              label: const Text("New"),
+              icon: const Icon(Icons.add),
             )
           ],
         ),

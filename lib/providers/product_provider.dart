@@ -34,7 +34,7 @@ class AddProductProvider extends _$AddProductProvider {
   Future addSupplier(Supplier supplier) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     supplierApis.add(supplier);
     loadingState.finish();
     loadingState.diactivate();
@@ -43,7 +43,7 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addStock(Stock stock) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    final res = await Future.delayed(Duration(seconds: 2));
+    final res = await Future.delayed(const Duration(seconds: 2));
     stockApis.add(stock);
     loadingState.finish();
     loadingState.diactivate();
@@ -53,7 +53,7 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addSales(Sale sales) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    final res = await Future.delayed(Duration(seconds: 2));
+    final res = await Future.delayed(const Duration(seconds: 2));
     salesApi.add(sales);
 
     loadingState.finish();
@@ -64,8 +64,9 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addAllSales(List<Sale> sales) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    final res = await Future.delayed(const Duration(seconds: 5));
-    salesApi.addAll(sales);
+    Future.delayed(const Duration(seconds: 5));
+    final res = await salesApi.addAll(sales);
+    print("res $res");
     loadingState.finish();
     loadingState.diactivate();
     return res;
@@ -91,7 +92,7 @@ class AddProductProvider extends _$AddProductProvider {
   addBrand(Brand brand) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     brandApis.add(brand);
     loadingState.finish();
     loadingState.diactivate();
@@ -100,7 +101,7 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addProduct(Product product) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     final id = productApis.add(product);
     loadingState.finish();
     loadingState.diactivate();

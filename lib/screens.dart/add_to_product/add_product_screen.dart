@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/models/supplier.dart';
+import 'package:rich_co_inventory/providers/display_products_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
@@ -19,7 +21,7 @@ part './sections/upper_section.dart';
 part './sections/dialogs.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
-  AddProductScreen({super.key});
+  const AddProductScreen({super.key});
 
   @override
   ConsumerState<AddProductScreen> createState() => _AddProductScreenState();
@@ -94,6 +96,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                           final id = await createAndAddProduct(notifier, state);
                           if (id == null) return;
                           createAndAddStock(notifier, id);
+                          MyNavigator.back(context);
+                          ref.read(displayProductsProvider.notifier).getData();
                         },
                       )
                     ]),
@@ -106,7 +110,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   createAndAddStock(AddProductProvider notifier, String productId) {
     Stock stock = Stock(
-      productName: productController.text,
+        productName: productController.text,
         productId: productId,
         // currentQuantity: int.tryParse(initialStockCont.text) ?? 0,
         currentQuantity: 0,

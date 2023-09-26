@@ -4,7 +4,6 @@ import '../../../models/product.dart';
 import '../../../widgets/drop_down_field.dart';
 import '../../../widgets/text_fields.dart';
 import '../../../widgets/texts.dart';
-import '../../dashboard.dart';
 
 class ProductDetails extends StatelessWidget {
   const ProductDetails({
@@ -23,14 +22,14 @@ class ProductDetails extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         color: Colors.white,
       ),
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         MyTextFieldWithTitle(
             name: "Product name",
             label: "eg. coca cola",
             controller: controller),
         const SizedBox(height: 12),
-        MyText(text: "Supplier"),
+        const MyText(text: "Supplier"),
         Row(
           children: [
             Expanded(
@@ -44,7 +43,7 @@ class ProductDetails extends StatelessWidget {
                       controller.text = val.productName;
                     },
                     suggestionsCallback: (val) {})),
-            SizedBox(
+            const SizedBox(
               width: 12,
             ),
             FilledButton.icon(
@@ -52,15 +51,15 @@ class ProductDetails extends StatelessWidget {
                     foregroundColor: Colors.blue,
                     backgroundColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.blue),
+                        side: const BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.circular(8))),
                 onPressed: () {},
-                icon: Icon(Icons.add),
-                label: Text("New"))
+                icon: const Icon(Icons.add),
+                label: const Text("New"))
           ],
         ),
-        SizedBox(height: 12),
-        MyText(text: "brand"),
+        const SizedBox(height: 12),
+        const MyText(text: "brand"),
         Row(
           children: [
             SearchDropDownMenu<Product>(
@@ -73,7 +72,7 @@ class ProductDetails extends StatelessWidget {
                   controller.text = val.productName;
                 },
                 suggestionsCallback: (val) {}),
-            SizedBox(
+            const SizedBox(
               width: 12,
             ),
             FilledButton.icon(
@@ -81,11 +80,11 @@ class ProductDetails extends StatelessWidget {
                     foregroundColor: Colors.blue,
                     backgroundColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.blue),
+                        side: const BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.circular(8))),
                 onPressed: () {},
-                icon: Icon(Icons.add),
-                label: Text("New"))
+                icon: const Icon(Icons.add),
+                label: const Text("New"))
           ],
         ),
         const SizedBox(height: 12),

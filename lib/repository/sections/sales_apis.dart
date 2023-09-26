@@ -1,27 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rich_co_inventory/models/sales.dart';
+import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
+import 'package:rich_co_inventory/repository/sections/stock.dart';
 
 class SalesApi extends FireStoreAPIs<Sale> {
+  final StockApis stockApis;
+  SalesApi() : stockApis = StockApis();
   @override
   String get mainCollection => Collections.sales.name;
 
   @override
-  String get dependantCollection => "";
+  String get dependantCollection => Collections.stock.name;
 
-  addAll(List<Sale> sales) async {
+  Future<String> addAll(List<Sale> sales) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
     try {
       for (var val in sales) {
         final sale = Sale.generateId(val.toJson());
         final docRef = instance.collection(mainCollection).doc(sale.saleId);
+        final stockRef = await instance
+            .collection(dependantCollection)
+            .where("productId", isEqualTo: sale.productId)
+            .get();
+
+        final updateStock =
+            stockRef.docs.map((e) => Stock.fromJson(e.data())).toList();
+        final data = {
+          "currentQuantity": updateStock[0].currentQuantity - sale.quantitySold
+        };
+        batch.update(stockRef.docs.first.reference, data);
         batch.set(docRef, sale.toJson());
       }
       await batch.commit();
+      return "successfull";
     } on FirebaseException catch (e) {
-      print("error firebase $e");
-    } catch (e) {}
+      return e.message ?? "an error occured";
+    }
   }
 
   @override

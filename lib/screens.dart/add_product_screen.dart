@@ -13,7 +13,7 @@ import 'package:rich_co_inventory/widgets/text_fields.dart';
 import '../widgets/texts.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
-  AddProductScreen({super.key});
+  const AddProductScreen({super.key});
 
   @override
   ConsumerState<AddProductScreen> createState() => _AddProductScreenState();
@@ -186,7 +186,7 @@ class _StockDetailsState extends State<StockDetails> {
 }
 
 class ProductDetails extends ConsumerStatefulWidget {
-  ProductDetails({
+  const ProductDetails({
     super.key,
     required this.productController,
     required this.brandController,
@@ -316,9 +316,7 @@ class _ProductDetailsState extends ConsumerState<ProductDetails> {
 }
 
 class _AddSupplierDialog extends ConsumerStatefulWidget {
-  const _AddSupplierDialog({
-    super.key,
-  });
+  const _AddSupplierDialog();
 
   @override
   ConsumerState<_AddSupplierDialog> createState() => _AddSupplierDialogState();
@@ -381,9 +379,7 @@ class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
 }
 
 class _AddBrandDialog extends ConsumerStatefulWidget {
-  const _AddBrandDialog({
-    super.key,
-  });
+  const _AddBrandDialog();
 
   @override
   ConsumerState<_AddBrandDialog> createState() => _AddBrandDialogState();

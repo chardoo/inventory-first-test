@@ -2,24 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
-import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
-import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/models/stock.dart';
-import 'package:rich_co_inventory/models/supplier.dart';
 import 'package:rich_co_inventory/providers/inventory_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
-import 'package:rich_co_inventory/providers/app_state_provider.dart';
 import 'package:rich_co_inventory/screens.dart/add_product_screen.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 
-import '../../widgets/dropdown_with_labels.dart';
 import '../../widgets/texts.dart';
 
 class AddInventoryScreen extends ConsumerStatefulWidget {
-  AddInventoryScreen({super.key});
+  const AddInventoryScreen({super.key});
 
   @override
   ConsumerState<AddInventoryScreen> createState() => _AddProductScreenState();
@@ -92,7 +87,7 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                             // print(val.productId!);
                           //  supplierId.text = val.supplierId!;
                             productid.text = val.productId!;
-                            productName.text = val.productName!;
+                            productName.text = val.productName;
                           },
                           suggestionsCallback: (val) async {
                             return ref
@@ -103,15 +98,15 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                     width: 12,
                   ),
                   MyFilledIconButton(
-                      icon: Icon(Icons.add),
-                      label: Text("New"),
+                      icon: const Icon(Icons.add),
+                      label: const Text("New"),
                       ontap: () {
                         // showDialog(
                         //     context: context,
                         //     builder: (_) {
                         //       return const _AddSupplierDialog();
                         //     });
-                        MyNavigator.goto(context, AddProductScreen());
+                        MyNavigator.goto(context, const AddProductScreen());
                       })
                 ],
               ),
@@ -139,7 +134,7 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                 },
                 trailing: const Icon(Icons.calendar_month),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               CustomButton(

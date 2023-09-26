@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rich_co_inventory/models/brand.dart';
 
 abstract class FireStoreAPIs<T> {
   FireStoreAPIs() : instance = FirebaseFirestore.instance;

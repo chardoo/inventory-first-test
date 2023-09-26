@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rich_co_inventory/helpers/navigator.dart';
 
-import '../screens.dart/add_to_product/add_product_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key, required this.ontap});
@@ -24,7 +22,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           widget.ontap(val);
         },
         currentIndex: currentIndex,
-        unselectedItemColor: Color.fromARGB(255, 141, 137, 137),
+        unselectedItemColor: const Color.fromARGB(255, 141, 137, 137),
         // backgroundColor: Color.fromARGB(255, 10, 13, 17),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

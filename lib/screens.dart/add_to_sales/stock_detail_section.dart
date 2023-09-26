@@ -29,30 +29,10 @@ class _StockDetails extends ConsumerState<StockDetails> {
     super.dispose();
   }
 
-  List<Widget> salesCart(WidgetRef ref) {
-    final selected = ref.watch(selectedSales);
-    return ref.watch(salesCartProvider).map((e) {
-      return GestureDetector(
-        onTap: () {
-          ref.read(selectedSales.notifier).set(e);
-        },
-        child: Chip(
-          backgroundColor: e.productId == selected?.productId
-              ? Colors.blue
-              : Colors.grey.shade300,
-          label: Text(e.productName),
-          onDeleted: () {
-            ref.read(salesCartProvider.notifier).remove(e.productId);
-          },
-          deleteIcon: const Icon(Icons.close),
-        ),
-      );
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     Sale? currentSale = ref.watch(selectedSales);
+    final cart = ref.watch(salesCartProvider);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -65,69 +45,106 @@ class _StockDetails extends ConsumerState<StockDetails> {
           size: 24,
           weight: FontWeight.bold,
         ),
-        Wrap(spacing: 10, children: salesCart(ref)),
-        const SizedBox(height: 24),
-        const MyText(
-          text: "product cost",
+        const ListTile(
+          leading: MyText(text: "Item"),
+          title: MyText(text: "price per unit"),
+          trailing: MyText(text: "quantity"),
+        ),
+        SizedBox(
+          // height: 100,
+          child: ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (_, i) {
+                final item = cart[i];
+                return ProductTile(item);
+              },
+              separatorBuilder: (_, i) {
+                return Divider();
+              },
+              itemCount: cart.length),
+        ),
+      ]),
+    );
+  }
+}
+
+class ProductTile extends ConsumerStatefulWidget {
+  const ProductTile(
+    this.sale, {
+    super.key,
+  });
+  final Sale sale;
+
+  @override
+  ConsumerState<ProductTile> createState() => _ProductTileState();
+}
+
+class _ProductTileState extends ConsumerState<ProductTile> {
+  final TextEditingController controller = TextEditingController();
+  @override
+  void initState() {
+    controller.text = widget.sale.quantitySold.toString();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: Key(widget.sale.productId),
+      onDismissed: (direction) {
+        ref.read(salesCartProvider.notifier).remove(widget.sale.productId);
+      },
+      child: ListTile(
+        leading: MyText(
+          text: widget.sale.productName,
           weight: FontWeight.bold,
           size: 16,
         ),
-        const SizedBox(height: 12),
-        TextFieldWithDivider(
-          label: "${currentSale?.productPrice ?? 0.00}",
-          enabled: false,
+        title: MyText(
+          text: widget.sale.productPrice.toString(),
+          size: 16,
+          weight: FontWeight.bold,
         ),
-        const SizedBox(height: 24),
-        MyTextFieldWithTitle(
-          name: "quentity sold",
-          controller: _quentityController,
-          label: "${currentSale?.quantitySold}",
-          onChanged: (val) {
-            try {
-              currentSale?.quantitySold = int.parse(val);
-              ref
-                  .read(selectedSales.notifier)
-                  .update(quentity: currentSale!.quantitySold);
-            } catch (e) {
-              //TODO
-            }
-          },
-          onEditingComplete: () {
-            _quentityController.clear();
-            primaryFocus?.unfocus();
-          },
-          keyboadType: TextInputType.number,
-        ),
-        const SizedBox(height: 24),
-        MyTextFieldWithTitle(
-          name: " date sold",
-          label: currentSale?.saleDate == null
-              ? ""
-              : format(currentSale!.saleDate),
-          readOnly: true,
-          ontap: () async {
-            final date = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now().subtract(const Duration(days: 1000)),
-                lastDate: DateTime.now().add(const Duration(days: 1000)));
-
-            ref.read(selectedSales.notifier).update(saleDate: date);
-            primaryFocus?.unfocus();
-          },
-          trailing: const Icon(Icons.calendar_month),
-        ),
-        const SizedBox(height: 50),
-        CustomButton(
-          label: "Add sales",
-          ontap: () {
-            final salesCart = ref.read(salesCartProvider);
-
-            ref.read(addProductProvider.notifier).addAllSales(salesCart);
-          },
-          width: double.infinity,
-        )
-      ]),
+        trailing: Container(
+            height: 40,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey.shade100),
+            width: 140,
+            child: Row(
+              children: [
+                GestureDetector(
+                  child: Icon(Icons.add),
+                ),
+                VerticalDivider(),
+                SizedBox(
+                    width: 40,
+                    child: TextField(
+                      controller: controller,
+                      keyboardType: TextInputType.number,
+                      onChanged: (val) {
+                        final quentity = int.tryParse(val);
+                        final updatedSale =
+                            widget.sale.copyWith(quantitySold: quentity ?? 0);
+                        ref
+                            .read(salesCartProvider.notifier)
+                            .update(updatedSale);
+                      },
+                      decoration: InputDecoration(border: InputBorder.none),
+                    )),
+                VerticalDivider(),
+                Icon(Icons.remove)
+              ],
+            )),
+      ),
     );
   }
 }

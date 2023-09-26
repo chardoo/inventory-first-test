@@ -1,8 +1,6 @@
 part of '../add_product_screen.dart';
 class _AddSupplierDialog extends ConsumerStatefulWidget {
-  const _AddSupplierDialog({
-    super.key,
-  });
+  const _AddSupplierDialog();
 
   @override
   ConsumerState<_AddSupplierDialog> createState() => _AddSupplierDialogState();
@@ -51,9 +49,7 @@ class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
 }
 
 class _AddBrandDialog extends ConsumerStatefulWidget {
-  const _AddBrandDialog({
-    super.key,
-  });
+  const _AddBrandDialog();
 
   @override
   ConsumerState<_AddBrandDialog> createState() => _AddBrandDialogState();

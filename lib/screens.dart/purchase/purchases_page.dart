@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
 
 class Purchases extends ConsumerStatefulWidget {
-  Purchases({super.key});
+  const Purchases({super.key});
 
   @override
   ConsumerState<Purchases> createState() => _PurchasesState();
@@ -41,7 +41,7 @@ void fkdksdkjsd()async{
 
        ElevatedButton(onPressed:  () {
         // ref.read(purchaseProvider.notifier).changeinter();
-       }, child: Text("presds"))
+       }, child: const Text("presds"))
 
       ])
     

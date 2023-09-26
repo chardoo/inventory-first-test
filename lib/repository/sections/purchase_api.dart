@@ -1,5 +1,6 @@
-import 'package:rich_co_inventory/models/product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
+import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 class PurchaseApis extends FireStoreAPIs<Purchase> {
@@ -7,32 +8,34 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
   String get mainCollection => Collections.purchases.name;
 
   @override
-  String get dependantCollection => "";
+  String get dependantCollection => Collections.stock.name;
 
   @override
-  Future<String?>  add(Purchase item) async {
-    final purchaseToAdd =  Purchase.generateId(item.toJson());
+  Future<String?> add(Purchase item) async {
+    final purchaseToAdd = Purchase.generateId(item.toJson());
+    final batch = FirebaseFirestore.instance.batch();
     print(purchaseToAdd.product);
     try {
-      // final isProductExist =
-      //     await checkPath(collection: mainCollection, id: item.purchaseId!);
-      // if (isProductExist) {
-      //   //TODO: prevent user from adding
-     
-      // } else {
-         
-        instance
-            .collection(mainCollection)
-            .doc(purchaseToAdd.purchaseId)
-            .set(purchaseToAdd.toJson());
+      final stockRef = await instance
+          .collection(dependantCollection)
+          .where("productId", isEqualTo: item.productId)
+          .get();
 
-            return purchaseToAdd.purchaseId;
-     // }
+      final purchaseRef =
+          instance.collection(mainCollection).doc(purchaseToAdd.purchaseId);
+      final stock = Stock.fromJson(stockRef.docs.first.data());
+
+      batch.update(stockRef.docs.first.reference,
+          {'currentQuantity': stock.currentQuantity + item.quantityPurchased});
+      batch.set(purchaseRef, purchaseToAdd.toJson());
+      batch.commit();
+
+      return purchaseToAdd.purchaseId;
     } catch (e) {
-
       print("error happen pleas");
       print(e.toString());
     }
+    return null;
   }
 
   @override
@@ -108,18 +111,18 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
       //   result.add(fulproduct);
       // });
       // });
-      
-       final res = await instance.collection(mainCollection).get();
+
+      final res = await instance.collection(mainCollection).get();
       if (res.docs.isEmpty) return [];
-       
-        // List<String> names = res.docs.map((e) => e.data()['productId'] as String).toList();
-        
-        // print("name is here man");
-        // print(names);
-        // var product = await instance.collection(Collections.products.name).where('productId', whereIn: names).get();
-       
-        //  print("product is herer man ss");
-        //  print( product.docs);
+
+      // List<String> names = res.docs.map((e) => e.data()['productId'] as String).toList();
+
+      // print("name is here man");
+      // print(names);
+      // var product = await instance.collection(Collections.products.name).where('productId', whereIn: names).get();
+
+      //  print("product is herer man ss");
+      //  print( product.docs);
       // await Future.forEach(res.docs, (element) async {
       //   var product = await instance
       //       .collection(Collections.products.name)
@@ -132,13 +135,9 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
     } catch (e) {
       return [];
     }
-
-
-    
   }
 
-
- Future<List<Purchase>> searchPruchaseByName(String name) async {
+  Future<List<Purchase>> searchPruchaseByName(String name) async {
     try {
       final res = await instance
           .collection(mainCollection)
@@ -146,12 +145,12 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
           .where('productName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
           .get();
 
-        
       if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Purchase.fromJson(e.data())).toList();
     } catch (e) {
       return [];
     }
   }
-
 }
+
+

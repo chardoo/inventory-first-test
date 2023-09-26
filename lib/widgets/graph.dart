@@ -62,10 +62,10 @@ class _CustomGraphState extends State<CustomGraph> {
       ),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: AxisTitles(
+        rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
         bottomTitles: AxisTitles(
@@ -105,7 +105,7 @@ class _CustomGraphState extends State<CustomGraph> {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  stops: [
+                  stops: const [
                     0,
                     0.2,
                     0.6

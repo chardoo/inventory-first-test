@@ -2,13 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
-import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/providers/inventory_provider.dart';
-import 'package:rich_co_inventory/providers/product_provider.dart';
-import 'package:rich_co_inventory/providers/purchase_provider.dart';
-import 'package:rich_co_inventory/screens.dart/add_to_product/add_product_screen.dart';
 import 'package:rich_co_inventory/screens.dart/inventory/add_inventory.dart';
-import 'package:rich_co_inventory/screens.dart/purchase/add_purchase_page.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/shimmer.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
@@ -32,14 +27,14 @@ class _ProductsScreenState extends State<AllInventory> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
           title:
-              MyText(text: "All Inventory", weight: FontWeight.bold, size: 24)),
+              const MyText(text: "All Inventory", weight: FontWeight.bold, size: 24)),
       body: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8), topRight: Radius.circular(8)),
             color: Colors.white),
-        margin: EdgeInsets.only(top: 24),
+        margin: const EdgeInsets.only(top: 24),
         child: Column(children: [
           Row(
             children: [
@@ -54,17 +49,17 @@ class _ProductsScreenState extends State<AllInventory> {
               )),
               const SizedBox(width: 12),
               MyFilledIconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.add,
                   size: 12,
                 ),
-                label: MyText(
+                label: const MyText(
                   text: "Add  ",
                   size: 12,
                   color: Colors.blue,
                 ),
                 ontap: () {
-                  MyNavigator.goto(context, AddInventoryScreen());
+                  MyNavigator.goto(context, const AddInventoryScreen());
                 },
               )
             ],
@@ -79,7 +74,7 @@ class _ProductsScreenState extends State<AllInventory> {
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListView.separated(
-                          separatorBuilder: (_, i) => SizedBox(height: 12),
+                          separatorBuilder: (_, i) => const SizedBox(height: 12),
                           itemCount: 10,
                           itemBuilder: (_, i) {
                             return const ListTile(
@@ -111,7 +106,7 @@ class _ProductsScreenState extends State<AllInventory> {
                         );
                       }
                       return ListView.separated(
-                          separatorBuilder: (_, i) => SizedBox(height: 12),
+                          separatorBuilder: (_, i) => const SizedBox(height: 12),
                           itemCount: snapshot.requireData.length,
                           itemBuilder: (_, i) {
 
@@ -120,7 +115,7 @@ class _ProductsScreenState extends State<AllInventory> {
                             return PurchaseCard(
                               //  date: inventory.purchaseDate,
                                 productName: inventory.productName!,
-                                quantity: inventory.currentQuantity ?? 0,
+                                quantity: inventory.currentQuantity ,
                                 price:  20
 
                                 )
@@ -178,13 +173,13 @@ class PurchaseCard extends StatelessWidget {
         ),
         leading: Column(children: [
            MyText(
-          text: "cost:" + price.toString(),
+          text: "cost:$price",
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
         ),
            MyText(
-          text:"Qnt: " + quantity.toString(),
+          text:"Qnt: $quantity",
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
@@ -198,7 +193,7 @@ class PurchaseCard extends StatelessWidget {
         //   maxLines: 1,
         //   color: Colors.blueGrey,
         // ),
-        trailing: Icon(
+        trailing: const Icon(
           Icons.edit,
           color: Colors.blueGrey,
         ),

@@ -1,5 +1,4 @@
 import 'package:rich_co_inventory/models/product.dart';
-import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 class ProductApis extends FireStoreAPIs<Product> {
@@ -114,6 +113,7 @@ class ProductApis extends FireStoreAPIs<Product> {
     } catch (e) {
       return null;
     }
+    return null;
   }
 
   @override

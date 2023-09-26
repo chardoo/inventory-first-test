@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -6,6 +5,7 @@ part '.generated/sales_cart_provider.g.dart';
 
 @riverpod
 class SalesCartProvider extends _$SalesCartProvider {
+  @override
   List<Sale> build() {
     return [];
   }
@@ -48,6 +48,7 @@ class SalesCartProvider extends _$SalesCartProvider {
 
 @riverpod
 class SelectedSales extends _$SelectedSales {
+  @override
   Sale? build() {
     return null;
   }
