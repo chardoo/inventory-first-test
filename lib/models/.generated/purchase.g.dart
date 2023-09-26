@@ -10,7 +10,7 @@ _$_Purchase _$$_PurchaseFromJson(Map<String, dynamic> json) => _$_Purchase(
       purchaseId: json['purchaseId'] as String?,
       productId: json['productId'] as String,
       productName: json['productName'] as String,
-      purchaseDate: json['purchaseDate'] as String,
+      purchaseDate: json['purchaseDate'] as int,
       quantityPurchased: json['quantityPurchased'] as int,
       supplierId: json['supplierId'] as String?,
       cost: (json['cost'] as num).toDouble(),

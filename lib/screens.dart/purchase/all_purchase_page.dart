@@ -116,7 +116,7 @@ class _ProductsScreenState extends State<AllPurchaseScreen> {
                             //  return Text("richOCDE");
                             final purchase = snapshot.requireData[i];
                             return PurchaseCard(
-                               date: purchase.purchaseDate,
+                               date:  DateTime.fromMillisecondsSinceEpoch(purchase.purchaseDate).toString()  ,
                                 productName: purchase.productName,
                                 quantity: purchase.quantityPurchased ?? 0,
                                 price:  int.parse(purchase.cost.toString())

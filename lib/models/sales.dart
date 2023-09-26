@@ -8,7 +8,7 @@ abstract class Sale with _$Sale {
   const factory Sale({
     required String saleId,
     required String productId,
-    required DateTime saleDate,
+    required int saleDate,
     required int quantitySold,
     required double totalRevenue,
     

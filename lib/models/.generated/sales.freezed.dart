@@ -22,7 +22,7 @@ Sale _$SaleFromJson(Map<String, dynamic> json) {
 mixin _$Sale {
   String get saleId => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
-  DateTime get saleDate => throw _privateConstructorUsedError;
+  int get saleDate => throw _privateConstructorUsedError;
   int get quantitySold => throw _privateConstructorUsedError;
   double get totalRevenue => throw _privateConstructorUsedError;
   int? get salesmanId => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $SaleCopyWith<$Res> {
   $Res call(
       {String saleId,
       String productId,
-      DateTime saleDate,
+      int saleDate,
       int quantitySold,
       double totalRevenue,
       int? salesmanId,
@@ -81,7 +81,7 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
       saleDate: null == saleDate
           ? _value.saleDate
           : saleDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       quantitySold: null == quantitySold
           ? _value.quantitySold
           : quantitySold // ignore: cast_nullable_to_non_nullable
@@ -111,7 +111,7 @@ abstract class _$$_SaleCopyWith<$Res> implements $SaleCopyWith<$Res> {
   $Res call(
       {String saleId,
       String productId,
-      DateTime saleDate,
+      int saleDate,
       int quantitySold,
       double totalRevenue,
       int? salesmanId,
@@ -147,7 +147,7 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
       saleDate: null == saleDate
           ? _value.saleDate
           : saleDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       quantitySold: null == quantitySold
           ? _value.quantitySold
           : quantitySold // ignore: cast_nullable_to_non_nullable
@@ -188,7 +188,7 @@ class _$_Sale implements _Sale {
   @override
   final String productId;
   @override
-  final DateTime saleDate;
+  final int saleDate;
   @override
   final int quantitySold;
   @override
@@ -259,7 +259,7 @@ abstract class _Sale implements Sale {
   const factory _Sale(
       {required final String saleId,
       required final String productId,
-      required final DateTime saleDate,
+      required final int saleDate,
       required final int quantitySold,
       required final double totalRevenue,
       final int? salesmanId,
@@ -272,7 +272,7 @@ abstract class _Sale implements Sale {
   @override
   String get productId;
   @override
-  DateTime get saleDate;
+  int get saleDate;
   @override
   int get quantitySold;
   @override

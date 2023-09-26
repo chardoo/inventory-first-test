@@ -146,7 +146,7 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                 label: "Add Purchase",
                 width: double.infinity,
                 ontap: () async{
-                  Purchase purchase = Purchase( productId: productid.text,supplierId: supplierId.text!, productName: productName.text, purchaseDate: purchaseDate.text, quantityPurchased: int.parse( quantity.text), cost: double.tryParse(price.text)!);
+                  Purchase purchase = Purchase( productId: productid.text,supplierId: supplierId.text!, productName: productName.text, purchaseDate: currentDate.millisecondsSinceEpoch, quantityPurchased: int.parse( quantity.text), cost: double.tryParse(price.text)!);
                     
                     ref.read(purchaseProvider.notifier).addPurchase(purchase);
                 },

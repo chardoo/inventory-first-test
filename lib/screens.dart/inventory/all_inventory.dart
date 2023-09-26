@@ -121,7 +121,7 @@ class _ProductsScreenState extends State<AllInventory> {
                               //  date: inventory.purchaseDate,
                                 productName: inventory.productName!,
                                 quantity: inventory.currentQuantity ?? 0,
-                                price:  20
+                                price:  int.parse( inventory.productPrice!.toString())
 
                                 )
                                 

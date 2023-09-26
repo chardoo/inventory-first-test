@@ -43,7 +43,7 @@ class PurchaseProvider extends _$PurchaseProvider {
   Future<String?> addPurchase(Purchase purchase) async {
     final id = PurchaseApis().add(purchase);
     var currentStock = await StockApis().getStockByProductId(purchase.productId);
-     StockApis().update(Stock(productName: currentStock[0]!.productName,  stockId: currentStock[0]!.stockId,  productId: currentStock[0]!.productId!, currentQuantity: currentStock[0]!.currentQuantity+purchase.quantityPurchased, minimumRequiredQuantity: currentStock[0]!.minimumRequiredQuantity));
+     StockApis().update(Stock( productPrice: currentStock[0]!.productPrice, productName: currentStock[0]!.productName,  stockId: currentStock[0]!.stockId,  productId: currentStock[0]!.productId!, currentQuantity: currentStock[0]!.currentQuantity+purchase.quantityPurchased, minimumRequiredQuantity: currentStock[0]!.minimumRequiredQuantity));
     return id;
   }   
 
