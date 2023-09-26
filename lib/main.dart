@@ -1,16 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rich_co_inventory/screens.dart/auth/log_in.dart';
+import 'package:rich_co_inventory/screens.dart/add_to_sales/add_sales.dart';
 import 'package:rich_co_inventory/screens.dart/dashboard.dart';
 import 'package:rich_co_inventory/screens.dart/inventory/all_inventory.dart';
 import 'package:rich_co_inventory/screens.dart/product_display/products_screen.dart';
-import 'package:rich_co_inventory/screens.dart/profile_screen.dart';
 import 'package:rich_co_inventory/screens.dart/purchase/all_purchase_page.dart';
-import 'package:rich_co_inventory/screens.dart/stocks_screen.dart';
 import 'package:rich_co_inventory/widgets/bottom_navigation.dart';
 
 import 'firebase_options.dart';
+import 'helpers/navigator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: HomeScreen()),
+          home: const HomeScreen()),
     );
   }
 }
@@ -44,7 +43,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> screens = [
+  final List<Widget> screens = const [
     DashBoard(),
     ProductsScreen(),
     AllInventory(),
@@ -60,7 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         elevation: 0,
         disabledElevation: 0,
-        onPressed: () {},
+        onPressed: () {
+          MyNavigator.goto(context, AddSalesScreen());
+        },
+        child: const Text("Add"),
       ),
       bottomNavigationBar: BottomNavigation(
         ontap: (val) {

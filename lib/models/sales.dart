@@ -1,20 +1,29 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part '.generated/sales.freezed.dart';
 part '.generated/sales.g.dart';
 
-@freezed
+@unfreezed
 abstract class Sale with _$Sale {
-  const factory Sale({
-    required String saleId,
+  factory Sale({
+    String? saleId,
     required String productId,
     required DateTime saleDate,
-    required int quantitySold,
-    required double totalRevenue,
-    
+    @Default(0) int quantitySold,
+    required String productName,
+    required double productPrice,
+    @Default(0) double totalRevenue,
     int? salesmanId,
-     List<Sale> ? sales,
+    List<Sale>? sales,
   }) = _Sale;
 
   factory Sale.fromJson(Map<String, dynamic> json) => _$SaleFromJson(json);
+
+  factory Sale.generateId(Map<String, dynamic> json) {
+    const uuid = Uuid();
+    json["saleId"] = uuid.v4();
+
+    return Sale.fromJson(json);
+  }
 }

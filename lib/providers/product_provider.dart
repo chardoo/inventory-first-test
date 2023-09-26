@@ -1,8 +1,10 @@
 import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
+import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/models/supplier.dart';
 import 'package:rich_co_inventory/repository/sections/product_apis.dart';
+import 'package:rich_co_inventory/repository/sections/sales_apis.dart';
 import 'package:rich_co_inventory/repository/sections/stock.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,8 +19,10 @@ class AddProductProvider extends _$AddProductProvider {
   final SuppliersApis supplierApis;
   final ProductApis productApis;
   final StockApis stockApis;
+  final SalesApi salesApi;
   AddProductProvider()
       : brandApis = BrandAPIs(),
+        salesApi = SalesApi(),
         productApis = ProductApis(),
         stockApis = StockApis(),
         supplierApis = SuppliersApis();
@@ -39,10 +43,32 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addStock(Stock stock) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    await Future.delayed(Duration(seconds: 2));
+    final res = await Future.delayed(Duration(seconds: 2));
     stockApis.add(stock);
     loadingState.finish();
     loadingState.diactivate();
+    return res;
+  }
+
+  Future<String?> addSales(Sale sales) async {
+    final loadingState = ref.read(loadingStateProvider.notifier);
+    loadingState.activate();
+    final res = await Future.delayed(Duration(seconds: 2));
+    salesApi.add(sales);
+
+    loadingState.finish();
+    loadingState.diactivate();
+    return res;
+  }
+
+  Future<String?> addAllSales(List<Sale> sales) async {
+    final loadingState = ref.read(loadingStateProvider.notifier);
+    loadingState.activate();
+    final res = await Future.delayed(const Duration(seconds: 5));
+    salesApi.addAll(sales);
+    loadingState.finish();
+    loadingState.diactivate();
+    return res;
   }
 
   Future<List> getSuppliers() async {
@@ -51,7 +77,6 @@ class AddProductProvider extends _$AddProductProvider {
   }
 
   Future<List<Supplier>> searchSuppliers(String supplierName) async {
-    print("I runnedsdsaf");
     return supplierApis.searchByName(supplierName);
   }
 
@@ -82,12 +107,9 @@ class AddProductProvider extends _$AddProductProvider {
     return id;
   }
 
-  
-
   Future<List<Product>> searchProductByName(String name) async {
     return productApis.searchByName(name);
   }
- 
 
   Future<List<Brand>> searchByName(String name) async {
     return brandApis.searchByName(name);

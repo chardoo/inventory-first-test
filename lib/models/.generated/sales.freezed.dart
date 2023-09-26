@@ -20,13 +20,24 @@ Sale _$SaleFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Sale {
-  String get saleId => throw _privateConstructorUsedError;
+  String? get saleId => throw _privateConstructorUsedError;
+  set saleId(String? value) => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
+  set productId(String value) => throw _privateConstructorUsedError;
   DateTime get saleDate => throw _privateConstructorUsedError;
+  set saleDate(DateTime value) => throw _privateConstructorUsedError;
   int get quantitySold => throw _privateConstructorUsedError;
+  set quantitySold(int value) => throw _privateConstructorUsedError;
+  String get productName => throw _privateConstructorUsedError;
+  set productName(String value) => throw _privateConstructorUsedError;
+  double get productPrice => throw _privateConstructorUsedError;
+  set productPrice(double value) => throw _privateConstructorUsedError;
   double get totalRevenue => throw _privateConstructorUsedError;
+  set totalRevenue(double value) => throw _privateConstructorUsedError;
   int? get salesmanId => throw _privateConstructorUsedError;
+  set salesmanId(int? value) => throw _privateConstructorUsedError;
   List<Sale>? get sales => throw _privateConstructorUsedError;
+  set sales(List<Sale>? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,10 +50,12 @@ abstract class $SaleCopyWith<$Res> {
       _$SaleCopyWithImpl<$Res, Sale>;
   @useResult
   $Res call(
-      {String saleId,
+      {String? saleId,
       String productId,
       DateTime saleDate,
       int quantitySold,
+      String productName,
+      double productPrice,
       double totalRevenue,
       int? salesmanId,
       List<Sale>? sales});
@@ -61,19 +74,21 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? saleId = null,
+    Object? saleId = freezed,
     Object? productId = null,
     Object? saleDate = null,
     Object? quantitySold = null,
+    Object? productName = null,
+    Object? productPrice = null,
     Object? totalRevenue = null,
     Object? salesmanId = freezed,
     Object? sales = freezed,
   }) {
     return _then(_value.copyWith(
-      saleId: null == saleId
+      saleId: freezed == saleId
           ? _value.saleId
           : saleId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       productId: null == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
@@ -86,6 +101,14 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
           ? _value.quantitySold
           : quantitySold // ignore: cast_nullable_to_non_nullable
               as int,
+      productName: null == productName
+          ? _value.productName
+          : productName // ignore: cast_nullable_to_non_nullable
+              as String,
+      productPrice: null == productPrice
+          ? _value.productPrice
+          : productPrice // ignore: cast_nullable_to_non_nullable
+              as double,
       totalRevenue: null == totalRevenue
           ? _value.totalRevenue
           : totalRevenue // ignore: cast_nullable_to_non_nullable
@@ -109,10 +132,12 @@ abstract class _$$_SaleCopyWith<$Res> implements $SaleCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String saleId,
+      {String? saleId,
       String productId,
       DateTime saleDate,
       int quantitySold,
+      String productName,
+      double productPrice,
       double totalRevenue,
       int? salesmanId,
       List<Sale>? sales});
@@ -127,19 +152,21 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? saleId = null,
+    Object? saleId = freezed,
     Object? productId = null,
     Object? saleDate = null,
     Object? quantitySold = null,
+    Object? productName = null,
+    Object? productPrice = null,
     Object? totalRevenue = null,
     Object? salesmanId = freezed,
     Object? sales = freezed,
   }) {
     return _then(_$_Sale(
-      saleId: null == saleId
+      saleId: freezed == saleId
           ? _value.saleId
           : saleId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       productId: null == productId
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
@@ -152,6 +179,14 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
           ? _value.quantitySold
           : quantitySold // ignore: cast_nullable_to_non_nullable
               as int,
+      productName: null == productName
+          ? _value.productName
+          : productName // ignore: cast_nullable_to_non_nullable
+              as String,
+      productPrice: null == productPrice
+          ? _value.productPrice
+          : productPrice // ignore: cast_nullable_to_non_nullable
+              as double,
       totalRevenue: null == totalRevenue
           ? _value.totalRevenue
           : totalRevenue // ignore: cast_nullable_to_non_nullable
@@ -161,7 +196,7 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
           : salesmanId // ignore: cast_nullable_to_non_nullable
               as int?,
       sales: freezed == sales
-          ? _value._sales
+          ? _value.sales
           : sales // ignore: cast_nullable_to_non_nullable
               as List<Sale>?,
     ));
@@ -171,75 +206,44 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
 /// @nodoc
 @JsonSerializable()
 class _$_Sale implements _Sale {
-  const _$_Sale(
-      {required this.saleId,
+  _$_Sale(
+      {this.saleId,
       required this.productId,
       required this.saleDate,
-      required this.quantitySold,
-      required this.totalRevenue,
+      this.quantitySold = 0,
+      required this.productName,
+      required this.productPrice,
+      this.totalRevenue = 0,
       this.salesmanId,
-      final List<Sale>? sales})
-      : _sales = sales;
+      this.sales});
 
   factory _$_Sale.fromJson(Map<String, dynamic> json) => _$$_SaleFromJson(json);
 
   @override
-  final String saleId;
+  String? saleId;
   @override
-  final String productId;
+  String productId;
   @override
-  final DateTime saleDate;
+  DateTime saleDate;
   @override
-  final int quantitySold;
+  @JsonKey()
+  int quantitySold;
   @override
-  final double totalRevenue;
+  String productName;
   @override
-  final int? salesmanId;
-  final List<Sale>? _sales;
+  double productPrice;
   @override
-  List<Sale>? get sales {
-    final value = _sales;
-    if (value == null) return null;
-    if (_sales is EqualUnmodifiableListView) return _sales;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
+  @JsonKey()
+  double totalRevenue;
+  @override
+  int? salesmanId;
+  @override
+  List<Sale>? sales;
 
   @override
   String toString() {
-    return 'Sale(saleId: $saleId, productId: $productId, saleDate: $saleDate, quantitySold: $quantitySold, totalRevenue: $totalRevenue, salesmanId: $salesmanId, sales: $sales)';
+    return 'Sale(saleId: $saleId, productId: $productId, saleDate: $saleDate, quantitySold: $quantitySold, productName: $productName, productPrice: $productPrice, totalRevenue: $totalRevenue, salesmanId: $salesmanId, sales: $sales)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_Sale &&
-            (identical(other.saleId, saleId) || other.saleId == saleId) &&
-            (identical(other.productId, productId) ||
-                other.productId == productId) &&
-            (identical(other.saleDate, saleDate) ||
-                other.saleDate == saleDate) &&
-            (identical(other.quantitySold, quantitySold) ||
-                other.quantitySold == quantitySold) &&
-            (identical(other.totalRevenue, totalRevenue) ||
-                other.totalRevenue == totalRevenue) &&
-            (identical(other.salesmanId, salesmanId) ||
-                other.salesmanId == salesmanId) &&
-            const DeepCollectionEquality().equals(other._sales, _sales));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      saleId,
-      productId,
-      saleDate,
-      quantitySold,
-      totalRevenue,
-      salesmanId,
-      const DeepCollectionEquality().hash(_sales));
 
   @JsonKey(ignore: true)
   @override
@@ -256,31 +260,46 @@ class _$_Sale implements _Sale {
 }
 
 abstract class _Sale implements Sale {
-  const factory _Sale(
-      {required final String saleId,
-      required final String productId,
-      required final DateTime saleDate,
-      required final int quantitySold,
-      required final double totalRevenue,
-      final int? salesmanId,
-      final List<Sale>? sales}) = _$_Sale;
+  factory _Sale(
+      {String? saleId,
+      required String productId,
+      required DateTime saleDate,
+      int quantitySold,
+      required String productName,
+      required double productPrice,
+      double totalRevenue,
+      int? salesmanId,
+      List<Sale>? sales}) = _$_Sale;
 
   factory _Sale.fromJson(Map<String, dynamic> json) = _$_Sale.fromJson;
 
   @override
-  String get saleId;
+  String? get saleId;
+  set saleId(String? value);
   @override
   String get productId;
+  set productId(String value);
   @override
   DateTime get saleDate;
+  set saleDate(DateTime value);
   @override
   int get quantitySold;
+  set quantitySold(int value);
+  @override
+  String get productName;
+  set productName(String value);
+  @override
+  double get productPrice;
+  set productPrice(double value);
   @override
   double get totalRevenue;
+  set totalRevenue(double value);
   @override
   int? get salesmanId;
+  set salesmanId(int? value);
   @override
   List<Sale>? get sales;
+  set sales(List<Sale>? value);
   @override
   @JsonKey(ignore: true)
   _$$_SaleCopyWith<_$_Sale> get copyWith => throw _privateConstructorUsedError;

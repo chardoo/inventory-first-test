@@ -12,7 +12,7 @@ import '../repository/sections/brand_apis.dart';
 import '../repository/sections/suppliers_api.dart';
 import 'app_state_provider.dart';
 
-
+    part '.generated/sales_provider.g.dart';
 @Riverpod(keepAlive: true)
 class SalesProvider extends _$SalesProvider {
 

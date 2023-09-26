@@ -1,24 +1,45 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
-class ProductApis extends FireStoreAPIs<Sale> {
+class SalesApi extends FireStoreAPIs<Sale> {
   @override
-  String get mainCollection => Collections.products.name;
+  String get mainCollection => Collections.sales.name;
 
   @override
   String get dependantCollection => "";
 
+  addAll(List<Sale> sales) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    try {
+      for (var val in sales) {
+        final sale = Sale.generateId(val.toJson());
+        final docRef = instance.collection(mainCollection).doc(sale.saleId);
+        batch.set(docRef, sale.toJson());
+      }
+      await batch.commit();
+    } on FirebaseException catch (e) {
+      print("error firebase $e");
+    } catch (e) {}
+  }
+
   @override
   add(Sale item) async {
+    final sale = Sale.generateId(item.toJson());
     try {
-      final isProductExist =
-          await checkPath(collection: mainCollection, id: item.saleId);
-      if (isProductExist) {
-        //TODO: prevent user from adding
-      } else {
-        instance.collection(mainCollection).doc(item.saleId).set(item.toJson());
-      }
-    } catch (e) {}
+      final res = await instance
+          .collection(mainCollection)
+          .doc(sale.saleId)
+          .set(sale.toJson());
+
+      print("success");
+    } on FirebaseException catch (e) {
+      print("error firebase $e");
+    } catch (e) {
+      //TODO:
+      print("error $e");
+    }
   }
 
   @override
@@ -68,4 +89,21 @@ class ProductApis extends FireStoreAPIs<Sale> {
       return [];
     }
   }
+
+  // Future<List<Sale>> searchByName(String name) async {
+  //   try {
+  //     final res = await instance
+  //         .collection(mainCollection)
+  //         .where('supplierName', isGreaterThanOrEqualTo: name.toLowerCase())
+  //         .where('supplierName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+  //         .get();
+  //     if (res.docs.isEmpty) return [];
+
+  //     final a = res.docs.map((e) => Sale.fromJson(e.data())).toList();
+  //     print("data is $a");
+  //     return a;
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
 }

@@ -8,13 +8,20 @@ class MyTextFieldWithTitle extends StatelessWidget {
       this.trailing,
       // this.obsureText = false,
       this.readOnly,
-      required this.controller,
+      this.controller,
       this.lines,
-      this.ontap});
+      this.ontap,
+      this.onChanged,
+      this.onEditingComplete,
+      this.keyboadType});
   final String name;
   final String label;
   final Widget? trailing;
-  final TextEditingController controller;
+  final Function(String val)? onChanged;
+  final Function()? onEditingComplete;
+  final TextInputType? keyboadType;
+
+  final TextEditingController? controller;
   // final bool obsureText;
   final int? lines;
   final bool? readOnly;
@@ -35,8 +42,9 @@ class MyTextFieldWithTitle extends StatelessWidget {
         SizedBox(height: 7),
         MyTextField(
           controller: controller,
-          label: label,
-          readOnly: readOnly,
+          label: label, keyboadType: keyboadType,
+          onChanged: onChanged,
+          readOnly: readOnly, onEditingComplete: onEditingComplete,
           ontap: ontap,
           trailing: trailing,
           line: lines,
@@ -50,7 +58,7 @@ class MyTextFieldWithTitle extends StatelessWidget {
 class MyTextField extends StatelessWidget {
   MyTextField(
       {super.key,
-      required this.controller,
+      this.controller,
       this.onChanged,
       // this.obsureText = false,
       this.trailing,
@@ -58,22 +66,28 @@ class MyTextField extends StatelessWidget {
       this.line,
       this.readOnly,
       this.ontap,
-      this.bgColor});
-  final TextEditingController controller;
+      this.bgColor,
+      this.onEditingComplete,
+      this.keyboadType});
+  final TextEditingController? controller;
   // final bool obsureText;
   final bool? readOnly;
   final Widget? trailing;
+  final TextInputType? keyboadType;
   final String? label;
   final Color? bgColor;
   final int? line;
   final Function()? ontap;
   final Function(String val)? onChanged;
+  final Function()? onEditingComplete;
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      // obscureText: obsureText,
+      keyboardType: keyboadType,
+      //obscureText: obsureText,
       maxLines: line,
+      onEditingComplete: onEditingComplete,
       onTap: ontap,
       readOnly: readOnly ?? false,
       onChanged: onChanged,
@@ -96,12 +110,12 @@ class MyTextField extends StatelessWidget {
 }
 
 class TextFieldWithDivider extends StatelessWidget {
-  const TextFieldWithDivider({
-    super.key,
-    required this.controller,
-  });
+  const TextFieldWithDivider(
+      {super.key, this.controller, this.enabled = true, this.label});
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final String? label;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -116,12 +130,14 @@ class TextFieldWithDivider extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("GHC"),
-          VerticalDivider(),
+          const Text("GHC"),
+          const VerticalDivider(),
           Expanded(
             child: TextField(
               controller: controller,
-              decoration: InputDecoration(border: InputBorder.none),
+              enabled: enabled,
+              decoration:
+                  InputDecoration(border: InputBorder.none, labelText: label),
             ),
           ),
         ],
