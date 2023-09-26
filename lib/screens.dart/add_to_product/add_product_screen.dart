@@ -112,6 +112,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     Stock stock = Stock(
         productName: productController.text,
         productId: productId,
+        productPrice: double.tryParse(priceCont.text),
         // currentQuantity: int.tryParse(initialStockCont.text) ?? 0,
         currentQuantity: 0,
         minimumRequiredQuantity: 10);

@@ -10,6 +10,7 @@ abstract class Stock with _$Stock {
     String? stockId,
     required String productId,
      String? productName,
+       double ? productPrice,
     required int currentQuantity,
     required int minimumRequiredQuantity,
   }) = _Stock;

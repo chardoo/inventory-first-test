@@ -92,6 +92,28 @@ class ProductApis extends FireStoreAPIs<Product> {
     }
   }
 
+   @override
+  Future<Product?> getProductStatistic(String productId) async {
+    try {
+      // final salesResults = await instance.collection(Collections.sales.name).where("productId", isEqualTo: productId).get();
+      // final stocksResults =  await instance.collection(Collections.stock.name).where("productId", isEqualTo: productId).get();
+
+      
+
+
+      // Map<String, dynamic> productData = res.data()!;
+
+      // await instance.collection(salesCollection).get();
+      // if (res.exists) {
+      //   return Product.fromJson(res.data()!);
+      // } else {
+      //   return null;
+      // }
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<Product?> getproductwithSale(String name) async {
     try {
       var salesResults;

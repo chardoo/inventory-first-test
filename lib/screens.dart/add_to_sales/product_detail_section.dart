@@ -65,7 +65,7 @@ class _ProductDetailsState extends State<_ProductDetails> {
               onSelected: (val) {
                 Sale sale = Sale(
                     productId: val.productId!,
-                    saleDate: DateTime.now(),
+                    saleDate: DateTime.now().millisecondsSinceEpoch,
                     quantitySold: 0,
                     productName: val.productName,
                     productPrice: val.price,

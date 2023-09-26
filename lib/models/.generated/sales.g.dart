@@ -9,7 +9,7 @@ part of '../sales.dart';
 _$_Sale _$$_SaleFromJson(Map<String, dynamic> json) => _$_Sale(
       saleId: json['saleId'] as String?,
       productId: json['productId'] as String,
-      saleDate: DateTime.parse(json['saleDate'] as String),
+      saleDate: json['saleDate'] as int,
       quantitySold: json['quantitySold'] as int? ?? 0,
       productName: json['productName'] as String,
       productPrice: (json['productPrice'] as num).toDouble(),
@@ -23,7 +23,7 @@ _$_Sale _$$_SaleFromJson(Map<String, dynamic> json) => _$_Sale(
 Map<String, dynamic> _$$_SaleToJson(_$_Sale instance) => <String, dynamic>{
       'saleId': instance.saleId,
       'productId': instance.productId,
-      'saleDate': instance.saleDate.toIso8601String(),
+      'saleDate': instance.saleDate,
       'quantitySold': instance.quantitySold,
       'productName': instance.productName,
       'productPrice': instance.productPrice,

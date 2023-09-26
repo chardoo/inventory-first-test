@@ -23,6 +23,7 @@ mixin _$Stock {
   String? get stockId => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
   String? get productName => throw _privateConstructorUsedError;
+  double? get productPrice => throw _privateConstructorUsedError;
   int get currentQuantity => throw _privateConstructorUsedError;
   int get minimumRequiredQuantity => throw _privateConstructorUsedError;
 
@@ -40,6 +41,7 @@ abstract class $StockCopyWith<$Res> {
       {String? stockId,
       String productId,
       String? productName,
+      double? productPrice,
       int currentQuantity,
       int minimumRequiredQuantity});
 }
@@ -60,6 +62,7 @@ class _$StockCopyWithImpl<$Res, $Val extends Stock>
     Object? stockId = freezed,
     Object? productId = null,
     Object? productName = freezed,
+    Object? productPrice = freezed,
     Object? currentQuantity = null,
     Object? minimumRequiredQuantity = null,
   }) {
@@ -76,6 +79,10 @@ class _$StockCopyWithImpl<$Res, $Val extends Stock>
           ? _value.productName
           : productName // ignore: cast_nullable_to_non_nullable
               as String?,
+      productPrice: freezed == productPrice
+          ? _value.productPrice
+          : productPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
       currentQuantity: null == currentQuantity
           ? _value.currentQuantity
           : currentQuantity // ignore: cast_nullable_to_non_nullable
@@ -98,6 +105,7 @@ abstract class _$$_StockCopyWith<$Res> implements $StockCopyWith<$Res> {
       {String? stockId,
       String productId,
       String? productName,
+      double? productPrice,
       int currentQuantity,
       int minimumRequiredQuantity});
 }
@@ -114,6 +122,7 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res, _$_Stock>
     Object? stockId = freezed,
     Object? productId = null,
     Object? productName = freezed,
+    Object? productPrice = freezed,
     Object? currentQuantity = null,
     Object? minimumRequiredQuantity = null,
   }) {
@@ -130,6 +139,10 @@ class __$$_StockCopyWithImpl<$Res> extends _$StockCopyWithImpl<$Res, _$_Stock>
           ? _value.productName
           : productName // ignore: cast_nullable_to_non_nullable
               as String?,
+      productPrice: freezed == productPrice
+          ? _value.productPrice
+          : productPrice // ignore: cast_nullable_to_non_nullable
+              as double?,
       currentQuantity: null == currentQuantity
           ? _value.currentQuantity
           : currentQuantity // ignore: cast_nullable_to_non_nullable
@@ -149,6 +162,7 @@ class _$_Stock implements _Stock {
       {this.stockId,
       required this.productId,
       this.productName,
+      this.productPrice,
       required this.currentQuantity,
       required this.minimumRequiredQuantity});
 
@@ -162,13 +176,15 @@ class _$_Stock implements _Stock {
   @override
   final String? productName;
   @override
+  final double? productPrice;
+  @override
   final int currentQuantity;
   @override
   final int minimumRequiredQuantity;
 
   @override
   String toString() {
-    return 'Stock(stockId: $stockId, productId: $productId, productName: $productName, currentQuantity: $currentQuantity, minimumRequiredQuantity: $minimumRequiredQuantity)';
+    return 'Stock(stockId: $stockId, productId: $productId, productName: $productName, productPrice: $productPrice, currentQuantity: $currentQuantity, minimumRequiredQuantity: $minimumRequiredQuantity)';
   }
 
   @override
@@ -181,6 +197,8 @@ class _$_Stock implements _Stock {
                 other.productId == productId) &&
             (identical(other.productName, productName) ||
                 other.productName == productName) &&
+            (identical(other.productPrice, productPrice) ||
+                other.productPrice == productPrice) &&
             (identical(other.currentQuantity, currentQuantity) ||
                 other.currentQuantity == currentQuantity) &&
             (identical(
@@ -191,7 +209,7 @@ class _$_Stock implements _Stock {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, stockId, productId, productName,
-      currentQuantity, minimumRequiredQuantity);
+      productPrice, currentQuantity, minimumRequiredQuantity);
 
   @JsonKey(ignore: true)
   @override
@@ -212,6 +230,7 @@ abstract class _Stock implements Stock {
       {final String? stockId,
       required final String productId,
       final String? productName,
+      final double? productPrice,
       required final int currentQuantity,
       required final int minimumRequiredQuantity}) = _$_Stock;
 
@@ -223,6 +242,8 @@ abstract class _Stock implements Stock {
   String get productId;
   @override
   String? get productName;
+  @override
+  double? get productPrice;
   @override
   int get currentQuantity;
   @override

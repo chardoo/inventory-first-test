@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
@@ -19,15 +18,13 @@ class AllInventory extends StatefulWidget {
 class _ProductsScreenState extends State<AllInventory> {
   final TextEditingController searchCtrl = TextEditingController(text: "");
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-          title:
-              const MyText(text: "All Inventory", weight: FontWeight.bold, size: 24)),
+          title: const MyText(
+              text: "All Inventory", weight: FontWeight.bold, size: 24)),
       body: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(
@@ -74,7 +71,8 @@ class _ProductsScreenState extends State<AllInventory> {
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListView.separated(
-                          separatorBuilder: (_, i) => const SizedBox(height: 12),
+                          separatorBuilder: (_, i) =>
+                              const SizedBox(height: 12),
                           itemCount: 10,
                           itemBuilder: (_, i) {
                             return const ListTile(
@@ -106,21 +104,17 @@ class _ProductsScreenState extends State<AllInventory> {
                         );
                       }
                       return ListView.separated(
-                          separatorBuilder: (_, i) => const SizedBox(height: 12),
+                          separatorBuilder: (_, i) =>
+                              const SizedBox(height: 12),
                           itemCount: snapshot.requireData.length,
                           itemBuilder: (_, i) {
-
                             //  return Text("richOCDE");
                             final inventory = snapshot.requireData[i];
                             return PurchaseCard(
                               //  date: inventory.purchaseDate,
-                                productName: inventory.productName!,
-                                quantity: inventory.currentQuantity ,
-                                price:  20
-
-                                )
-                                
-                                ;
+                              productName: inventory.productName!,
+                              quantity: inventory.currentQuantity ?? 0,
+                            );
                           });
                     }
                     return Center(
@@ -143,14 +137,12 @@ class PurchaseCard extends StatelessWidget {
   const PurchaseCard({
     super.key,
     required this.productName,
-     required this.quantity,
-    required this.price,
+    required this.quantity,
     // required this.date
   });
 
   final String productName;
   final int quantity;
-  final int price;
   // final String date;
 
   @override
@@ -160,39 +152,19 @@ class PurchaseCard extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
           color: Colors.grey.shade100),
-      child:
-       
-      
-      
-       ListTile(
+      child: ListTile(
         title: MyText(
           text: productName,
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
         ),
-        leading: Column(children: [
-           MyText(
-          text: "cost:$price",
-          weight: FontWeight.bold,
+        subtitle: MyText(
+          text: "Qnt: $quantity",
+          color: Colors.grey,
           size: 16,
           maxLines: 1,
         ),
-           MyText(
-          text:"Qnt: $quantity",
-          weight: FontWeight.bold,
-          size: 16,
-          maxLines: 1,
-        ),
-        ],),
-        
-        
-        // subtitle: MyText(
-        //   text: date,
-        //   size: 14,
-        //   maxLines: 1,
-        //   color: Colors.blueGrey,
-        // ),
         trailing: const Icon(
           Icons.edit,
           color: Colors.blueGrey,

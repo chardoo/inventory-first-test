@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
@@ -19,15 +18,13 @@ class AllPurchaseScreen extends StatefulWidget {
 class _ProductsScreenState extends State<AllPurchaseScreen> {
   final TextEditingController searchCtrl = TextEditingController(text: "");
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-          title:
-              const MyText(text: "All Purchases", weight: FontWeight.bold, size: 24)),
+          title: const MyText(
+              text: "All Purchases", weight: FontWeight.bold, size: 24)),
       body: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(
@@ -74,7 +71,8 @@ class _ProductsScreenState extends State<AllPurchaseScreen> {
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListView.separated(
-                          separatorBuilder: (_, i) => const SizedBox(height: 12),
+                          separatorBuilder: (_, i) =>
+                              const SizedBox(height: 12),
                           itemCount: 10,
                           itemBuilder: (_, i) {
                             return const ListTile(
@@ -106,21 +104,19 @@ class _ProductsScreenState extends State<AllPurchaseScreen> {
                         );
                       }
                       return ListView.separated(
-                          separatorBuilder: (_, i) => const SizedBox(height: 12),
+                          separatorBuilder: (_, i) =>
+                              const SizedBox(height: 12),
                           itemCount: snapshot.requireData.length,
                           itemBuilder: (_, i) {
-
                             //  return Text("richOCDE");
                             final purchase = snapshot.requireData[i];
                             return PurchaseCard(
-                               date: purchase.purchaseDate,
+                                date: DateTime.fromMillisecondsSinceEpoch(
+                                        purchase.purchaseDate)
+                                    .toString(),
                                 productName: purchase.productName,
-                                quantity: purchase.quantityPurchased ,
-                                price:  int.parse(purchase.cost.toString())
-
-                                )
-                                
-                                ;
+                                quantity: purchase.quantityPurchased,
+                                price: int.parse(purchase.cost.toString()));
                           });
                     }
                     return Center(
@@ -140,13 +136,12 @@ class _ProductsScreenState extends State<AllPurchaseScreen> {
 }
 
 class PurchaseCard extends StatelessWidget {
-  const PurchaseCard({
-    super.key,
-    required this.productName,
-     required this.quantity,
-    required this.price,
-    required this.date
-  });
+  const PurchaseCard(
+      {super.key,
+      required this.productName,
+      required this.quantity,
+      required this.price,
+      required this.date});
 
   final String productName;
   final int quantity;
@@ -160,33 +155,29 @@ class PurchaseCard extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
           color: Colors.grey.shade100),
-      child:
-       
-      
-      
-       ListTile(
+      child: ListTile(
         title: MyText(
           text: productName,
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
         ),
-        leading: Column(children: [
-           MyText(
-          text: "cost:$price",
-          weight: FontWeight.bold,
-          size: 16,
-          maxLines: 1,
+        leading: Column(
+          children: [
+            MyText(
+              text: "cost:$price",
+              weight: FontWeight.bold,
+              size: 16,
+              maxLines: 1,
+            ),
+            MyText(
+              text: "Qnt: $quantity",
+              weight: FontWeight.bold,
+              size: 16,
+              maxLines: 1,
+            ),
+          ],
         ),
-           MyText(
-          text:"Qnt: $quantity",
-          weight: FontWeight.bold,
-          size: 16,
-          maxLines: 1,
-        ),
-        ],),
-        
-        
         subtitle: MyText(
           text: date,
           size: 14,

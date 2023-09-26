@@ -23,7 +23,7 @@ mixin _$Purchase {
   String? get purchaseId => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
   String get productName => throw _privateConstructorUsedError;
-  String get purchaseDate => throw _privateConstructorUsedError;
+  int get purchaseDate => throw _privateConstructorUsedError;
   int get quantityPurchased => throw _privateConstructorUsedError;
   String? get supplierId => throw _privateConstructorUsedError;
   double get cost => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $PurchaseCopyWith<$Res> {
       {String? purchaseId,
       String productId,
       String productName,
-      String purchaseDate,
+      int purchaseDate,
       int quantityPurchased,
       String? supplierId,
       double cost,
@@ -91,7 +91,7 @@ class _$PurchaseCopyWithImpl<$Res, $Val extends Purchase>
       purchaseDate: null == purchaseDate
           ? _value.purchaseDate
           : purchaseDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       quantityPurchased: null == quantityPurchased
           ? _value.quantityPurchased
           : quantityPurchased // ignore: cast_nullable_to_non_nullable
@@ -135,7 +135,7 @@ abstract class _$$_PurchaseCopyWith<$Res> implements $PurchaseCopyWith<$Res> {
       {String? purchaseId,
       String productId,
       String productName,
-      String purchaseDate,
+      int purchaseDate,
       int quantityPurchased,
       String? supplierId,
       double cost,
@@ -181,7 +181,7 @@ class __$$_PurchaseCopyWithImpl<$Res>
       purchaseDate: null == purchaseDate
           ? _value.purchaseDate
           : purchaseDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       quantityPurchased: null == quantityPurchased
           ? _value.quantityPurchased
           : quantityPurchased // ignore: cast_nullable_to_non_nullable
@@ -225,7 +225,7 @@ class _$_Purchase implements _Purchase {
   @override
   final String productName;
   @override
-  final String purchaseDate;
+  final int purchaseDate;
   @override
   final int quantityPurchased;
   @override
@@ -285,7 +285,7 @@ abstract class _Purchase implements Purchase {
       {final String? purchaseId,
       required final String productId,
       required final String productName,
-      required final String purchaseDate,
+      required final int purchaseDate,
       required final int quantityPurchased,
       final String? supplierId,
       required final double cost,
@@ -300,7 +300,7 @@ abstract class _Purchase implements Purchase {
   @override
   String get productName;
   @override
-  String get purchaseDate;
+  int get purchaseDate;
   @override
   int get quantityPurchased;
   @override

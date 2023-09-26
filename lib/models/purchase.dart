@@ -11,7 +11,7 @@ abstract class Purchase with _$Purchase {
     String? purchaseId,
    required String productId,
       required String productName,
-    required String purchaseDate,
+    required int purchaseDate,
     required int quantityPurchased,
     String? supplierId,
     required double cost,

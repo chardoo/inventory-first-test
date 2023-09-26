@@ -9,7 +9,7 @@ abstract class Sale with _$Sale {
   factory Sale({
     String? saleId,
     required String productId,
-    required DateTime saleDate,
+    required int saleDate,
     @Default(0) int quantitySold,
     required String productName,
     required double productPrice,

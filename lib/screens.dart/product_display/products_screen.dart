@@ -8,7 +8,7 @@ import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/shimmer.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 import 'package:rich_co_inventory/widgets/texts.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+
 
 class ProductsScreen extends ConsumerStatefulWidget {
   const ProductsScreen({super.key});

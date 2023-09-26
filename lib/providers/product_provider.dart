@@ -115,6 +115,11 @@ class AddProductProvider extends _$AddProductProvider {
   Future<List<Brand>> searchByName(String name) async {
     return brandApis.searchByName(name);
   }
+//  Future<List<Brand>> getProductStatistic(String productId) async {
+//     // return productApis.searchByName(name);
+//     return;
+//   }
+
 }
 
 class AddProductState {

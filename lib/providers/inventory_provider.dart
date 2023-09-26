@@ -21,12 +21,10 @@ class InventoryProvider extends _$InventoryProvider {
 
     var currentStock =
         await StockApis().getStockByProductId(stock.productId);
-    print("current stock");
-    print(currentStock);
-
     StockApis().update(Stock(
         stockId: currentStock[0]!.stockId,
-        productId: currentStock[0]!.productId,
+        productId: currentStock[0]!.productId!,
+        productPrice: currentStock[0]!.productPrice,
         productName: stock.productName,
         currentQuantity:
             currentStock[0]!.currentQuantity + stock.currentQuantity,

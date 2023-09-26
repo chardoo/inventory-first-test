@@ -24,8 +24,8 @@ mixin _$Sale {
   set saleId(String? value) => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
   set productId(String value) => throw _privateConstructorUsedError;
-  DateTime get saleDate => throw _privateConstructorUsedError;
-  set saleDate(DateTime value) => throw _privateConstructorUsedError;
+  int get saleDate => throw _privateConstructorUsedError;
+  set saleDate(int value) => throw _privateConstructorUsedError;
   int get quantitySold => throw _privateConstructorUsedError;
   set quantitySold(int value) => throw _privateConstructorUsedError;
   String get productName => throw _privateConstructorUsedError;
@@ -52,7 +52,7 @@ abstract class $SaleCopyWith<$Res> {
   $Res call(
       {String? saleId,
       String productId,
-      DateTime saleDate,
+      int saleDate,
       int quantitySold,
       String productName,
       double productPrice,
@@ -96,7 +96,7 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
       saleDate: null == saleDate
           ? _value.saleDate
           : saleDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       quantitySold: null == quantitySold
           ? _value.quantitySold
           : quantitySold // ignore: cast_nullable_to_non_nullable
@@ -134,7 +134,7 @@ abstract class _$$_SaleCopyWith<$Res> implements $SaleCopyWith<$Res> {
   $Res call(
       {String? saleId,
       String productId,
-      DateTime saleDate,
+      int saleDate,
       int quantitySold,
       String productName,
       double productPrice,
@@ -174,7 +174,7 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
       saleDate: null == saleDate
           ? _value.saleDate
           : saleDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       quantitySold: null == quantitySold
           ? _value.quantitySold
           : quantitySold // ignore: cast_nullable_to_non_nullable
@@ -224,7 +224,7 @@ class _$_Sale implements _Sale {
   @override
   String productId;
   @override
-  DateTime saleDate;
+  int saleDate;
   @override
   @JsonKey()
   int quantitySold;
@@ -263,7 +263,7 @@ abstract class _Sale implements Sale {
   factory _Sale(
       {String? saleId,
       required String productId,
-      required DateTime saleDate,
+      required int saleDate,
       int quantitySold,
       required String productName,
       required double productPrice,
@@ -280,8 +280,8 @@ abstract class _Sale implements Sale {
   String get productId;
   set productId(String value);
   @override
-  DateTime get saleDate;
-  set saleDate(DateTime value);
+  int get saleDate;
+  set saleDate(int value);
   @override
   int get quantitySold;
   set quantitySold(int value);

@@ -13,7 +13,7 @@ class SalesCartProvider extends _$SalesCartProvider {
   add(Product product) {
     final sale = Sale(
         productId: product.productId ?? "",
-        saleDate: DateTime.now(),
+        saleDate: DateTime.now().millisecondsSinceEpoch,
         quantitySold: 0,
         totalRevenue: 0,
         productName: product.productName,
@@ -59,7 +59,7 @@ class SelectedSales extends _$SelectedSales {
 
   update(
       {String? productId,
-      DateTime? saleDate,
+      int? saleDate,
       int? quentity,
       String? productName,
       double? price}) {
