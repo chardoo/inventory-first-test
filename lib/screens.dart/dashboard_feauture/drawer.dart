@@ -4,6 +4,8 @@ import 'package:rich_co_inventory/screens.dart/sales_feature/sales_page.dart';
 import 'package:rich_co_inventory/screens.dart/stocks_screen.dart';
 
 import '../../widgets/texts.dart';
+import 'package:rich_co_inventory/screens.dart/stocks_screen.dart';
+
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({

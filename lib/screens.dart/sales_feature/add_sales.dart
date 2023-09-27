@@ -50,7 +50,13 @@ class AddSalesScreen extends ConsumerWidget {
                         return;
                       }
 
-                      MyDialogs.showConfirm(context, ontap: () async {
+                      MyDialogs.showConfirm(
+                        
+                        
+                        context,
+                        title: "Add",
+                        
+                         ontap: () async {
                         MyNavigator.back(context);
 
                         final res = await ref

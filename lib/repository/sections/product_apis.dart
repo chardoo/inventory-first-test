@@ -1,4 +1,5 @@
 import 'package:rich_co_inventory/models/product.dart';
+import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 class ProductApis extends FireStoreAPIs<Product> {
@@ -161,6 +162,25 @@ class ProductApis extends FireStoreAPIs<Product> {
         
       if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Product.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+
+  Future<List<Sale>> getSalesforAProductForToday(String productId) async {
+    try {
+      print(productId);
+       var today = DateTime.now().millisecondsSinceEpoch;
+      final res = await instance
+          .collection(Collections.sales.name)
+          .where('productId', isEqualTo: productId)
+       //    .where('saleDate', isLessThanOrEqualTo: today)
+          .get();
+
+        
+      if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Sale.fromJson(e.data())).toList();
     } catch (e) {
       return [];
     }

@@ -160,8 +160,10 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                         }
 
                         MyDialogs.showConfirm(context,
+                        title: "Add a Purchase",
                             message: "Do u really want to add this purchase",
-                            ontap: () async {
+                          
+                            onAcceptLabel: () async {
                           MyNavigator.back(context);
                           Purchase purchase = Purchase(
                               productId: selectedProduct!.productId!,

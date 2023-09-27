@@ -12,6 +12,7 @@ import 'package:rich_co_inventory/widgets/texts.dart';
 
 import '../dashboard_feauture/dashboard.dart';
 
+
 class LogInScreen extends ConsumerStatefulWidget {
   const LogInScreen({super.key});
 

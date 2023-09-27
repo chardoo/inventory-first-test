@@ -45,6 +45,11 @@ class DisplayProductsProvider extends _$DisplayProductsProvider {
     final data = await salesApi.getAll();
     state = SalesSuccessState(data);
   }
+
+  search(String searchValue) {
+    state = LoadingState();
+    // 
+  }
 }
 
 abstract class ProductDisplayState {
@@ -126,6 +131,7 @@ class ProductSuccessState extends SuccessState<List<Product>> {
           itemBuilder: (_, i) {
             final product = data[i];
             return ProductCard(
+                productId: product.productId!,
                 name: product.productName,
                 description: product.productDescription ?? "");
           }),

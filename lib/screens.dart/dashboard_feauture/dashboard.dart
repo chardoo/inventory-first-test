@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rich_co_inventory/screens.dart/dashboard_feauture/drawer.dart';
 import 'package:rich_co_inventory/widgets/graph.dart';
 
 import '../../widgets/texts.dart';
-import 'drawer.dart';
+
 
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});

@@ -116,7 +116,7 @@ class _ProductsScreenState extends State<AllPurchaseScreen> {
                                     .toString(),
                                 productName: purchase.productName,
                                 quantity: purchase.quantityPurchased,
-                                price: purchase.cost.toInt());
+                                price: purchase.cost.toDouble());
                           });
                     }
                     return Center(
@@ -145,7 +145,7 @@ class PurchaseCard extends StatelessWidget {
 
   final String productName;
   final int quantity;
-  final int price;
+  final double price;
   final String date;
 
   @override

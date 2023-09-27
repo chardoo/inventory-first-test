@@ -28,7 +28,7 @@ class AddProductProvider extends _$AddProductProvider {
         supplierApis = SuppliersApis();
   @override
   AddProductState build() {
-    return AddProductState();
+    return AddProductState(totalSalesforProduct: 0, sales: []);
   }
 
   Future addSupplier(Supplier supplier) async {
@@ -114,25 +114,41 @@ class AddProductProvider extends _$AddProductProvider {
 
   Future<List<Brand>> searchByName(String name) async {
     return brandApis.searchByName(name);
+  
+  
   }
-//  Future<List<Brand>> getProductStatistic(String productId) async {
-//     // return productApis.searchByName(name);
-//     return;
-//   }
+
+ Future<List<Sale>> getsalesForAProduct(String productId) async {
+   var results  = await productApis.getSalesforAProductForToday(productId);
+   print(results);
+   print("djjsdjsdjsd");
+    var total = 0.0;
+    for (var element in results) {
+       total = total + element.productPrice* element.quantitySold!;
+    }
+   
+    state =  AddProductState(totalSalesforProduct:total, sales: results );
+    return results;
+  }
 }
 
 class AddProductState {
   final Product? product;
   final Supplier? supplier;
   final Brand? brand;
+  final double totalSalesforProduct;
+  List<Sale> sales = [];
 
   AddProductState copyWith(
-      {Product? product, Supplier? supplier, Brand? brand}) {
+      {Product? product, Supplier? supplier, Brand? brand, double ?totalSalesforProduct, List<Sale> ?sales}) {
     return AddProductState(
+        sales: sales?? this.sales,
         brand: brand ?? this.brand,
         product: product ?? this.product,
-        supplier: supplier ?? this.supplier);
+        supplier: supplier ?? this.supplier,
+        totalSalesforProduct:  totalSalesforProduct ?? this.totalSalesforProduct
+        );
   }
 
-  AddProductState({this.product, this.supplier, this.brand});
+  AddProductState({this.product, this.supplier, this.brand, required this.totalSalesforProduct, required this.sales});
 }
