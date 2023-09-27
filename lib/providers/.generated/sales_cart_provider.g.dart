@@ -6,7 +6,7 @@ part of '../sales_cart_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$salesCartProviderHash() => r'60e55a2740de3f974af7e4ac9a9f4955a674e85a';
+String _$salesCartProviderHash() => r'882b5fc3608950de4e089ba78820f313e0264b34';
 
 /// See also [SalesCartProvider].
 @ProviderFor(SalesCartProvider)
@@ -22,7 +22,7 @@ final salesCartProvider =
 );
 
 typedef _$SalesCartProvider = AutoDisposeNotifier<List<Sale>>;
-String _$selectedSalesHash() => r'd7aad39392e7318fa63b7e44725c89c0bab917bc';
+String _$selectedSalesHash() => r'3ad9d5d513e8637f5689e958615187189183054b';
 
 /// See also [SelectedSales].
 @ProviderFor(SelectedSales)

@@ -6,7 +6,7 @@ import 'package:rich_co_inventory/providers/auth_provider.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 
-import '../dashboard.dart';
+import '../home/dashboard.dart';
 
 class LogInScreen extends ConsumerStatefulWidget {
   const LogInScreen({super.key});

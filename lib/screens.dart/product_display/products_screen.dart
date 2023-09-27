@@ -4,6 +4,7 @@ import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/providers/display_products_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/screens.dart/add_to_product/add_product_screen.dart';
+import 'package:rich_co_inventory/screens.dart/product/product_details.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/shimmer.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
@@ -85,14 +86,23 @@ class ProductCard extends StatelessWidget {
     super.key,
     required this.name,
     required this.description,
+    required this.productId
   });
 
   final String name;
   final String description;
+  final String productId;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return 
+    GestureDetector(
+      onTap: () async{
+            MyNavigator.goto(context,  ProductDetailScreen(productId: productId! , productName: name));
+      },
+      
+    child: 
+    Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
@@ -115,6 +125,6 @@ class ProductCard extends StatelessWidget {
           color: Colors.blueGrey,
         ),
       ),
-    );
+    ));
   }
 }

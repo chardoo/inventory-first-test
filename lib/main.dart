@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/screens.dart/add_to_sales/add_sales.dart';
-import 'package:rich_co_inventory/screens.dart/dashboard.dart';
+import 'package:rich_co_inventory/screens.dart/home/dashboard.dart';
 import 'package:rich_co_inventory/screens.dart/inventory/all_inventory.dart';
 import 'package:rich_co_inventory/screens.dart/product_display/products_screen.dart';
 import 'package:rich_co_inventory/screens.dart/purchase/all_purchase_page.dart';
@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: screens[index],
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,

@@ -99,6 +99,7 @@ class SuccessState extends ProductDisplayState {
           itemBuilder: (_, i) {
             final product = sales[i];
             return ProductCard(
+                productId: product.productId!,
                 name: product.productName,
                 description: product.productDescription ?? "");
           }),
