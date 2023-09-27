@@ -14,7 +14,8 @@ class SearchDropDownMenu<T> extends StatelessWidget {
       required this.suggestionsCallback,
       this.onFetchData,
       this.trailing,
-      this.label});
+      this.label,
+      this.onChange});
 
   final Widget Function(BuildContext context, T data) itemBuilder;
   final TextEditingController controller;
@@ -23,12 +24,14 @@ class SearchDropDownMenu<T> extends StatelessWidget {
   final Function(String val) suggestionsCallback;
   final Widget? trailing;
   final String? label;
+  final Function(String val)? onChange;
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       return TypeAheadField<T>(
         textFieldConfiguration: TextFieldConfiguration(
           controller: controller,
+          onChanged: onChange,
           style: const TextStyle(fontSize: 14),
           decoration: InputDecoration(
             fillColor: Colors.grey.shade100,
@@ -48,8 +51,8 @@ class SearchDropDownMenu<T> extends StatelessWidget {
           return errorBuilder();
         },
         noItemsFoundBuilder: (_) => shimer(context),
-        onSuggestionSelected: (T city) {
-          onSelected(city);
+        onSuggestionSelected: (T val) {
+          onSelected(val);
         },
         debounceDuration: const Duration(seconds: 1),
         suggestionsCallback: (val) => suggestionsCallback(val),

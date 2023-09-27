@@ -112,6 +112,7 @@ class ProductApis extends FireStoreAPIs<Product> {
     } catch (e) {
       return null;
     }
+    return null;
   }
 
   Future<Product?> getproductwithSale(String name) async {

@@ -31,7 +31,6 @@ class _StockDetails extends ConsumerState<StockDetails> {
 
   @override
   Widget build(BuildContext context) {
-    Sale? currentSale = ref.watch(selectedSales);
     final cart = ref.watch(salesCartProvider);
     return Container(
       decoration: BoxDecoration(
@@ -53,14 +52,14 @@ class _StockDetails extends ConsumerState<StockDetails> {
         SizedBox(
           // height: 100,
           child: ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (_, i) {
                 final item = cart[i];
                 return ProductTile(item);
               },
               separatorBuilder: (_, i) {
-                return Divider();
+                return const Divider();
               },
               itemCount: cart.length),
         ),
@@ -84,7 +83,7 @@ class _ProductTileState extends ConsumerState<ProductTile> {
   final TextEditingController controller = TextEditingController();
   @override
   void initState() {
-    controller.text = widget.sale.quantitySold.toString();
+    controller.text = widget.sale.quantitySold?.toString() ?? "1";
     super.initState();
   }
 
@@ -94,9 +93,15 @@ class _ProductTileState extends ConsumerState<ProductTile> {
     super.dispose();
   }
 
+  bool isError = false;
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
+      background: Container(
+        color: Colors.redAccent,
+        width: double.infinity,
+      ),
       key: Key(widget.sale.productId),
       onDismissed: (direction) {
         ref.read(salesCartProvider.notifier).remove(widget.sale.productId);
@@ -122,29 +127,57 @@ class _ProductTileState extends ConsumerState<ProductTile> {
             child: Row(
               children: [
                 GestureDetector(
-                  child: Icon(Icons.add),
+                  onTap: () => inCreaseOrDecreasePrice(true),
+                  child: const Icon(Icons.add),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 SizedBox(
                     width: 40,
                     child: TextField(
                       controller: controller,
+                      style:
+                          TextStyle(color: isError ? Colors.red : Colors.black),
                       keyboardType: TextInputType.number,
                       onChanged: (val) {
                         final quentity = int.tryParse(val);
+                        if (quentity == null) {
+                          setState(() {
+                            isError = true;
+                          });
+                        } else {
+                          setState(() {
+                            isError = false;
+                          });
+                        }
                         final updatedSale =
-                            widget.sale.copyWith(quantitySold: quentity ?? 0);
+                            widget.sale.copyWith(quantitySold: quentity);
                         ref
                             .read(salesCartProvider.notifier)
                             .update(updatedSale);
                       },
-                      decoration: InputDecoration(border: InputBorder.none),
+                      decoration:
+                          const InputDecoration(border: InputBorder.none),
                     )),
-                VerticalDivider(),
-                Icon(Icons.remove)
+                const VerticalDivider(),
+                GestureDetector(
+                    onTap: () => inCreaseOrDecreasePrice(false),
+                    child: const Icon(Icons.remove))
               ],
             )),
       ),
     );
+  }
+
+  inCreaseOrDecreasePrice(bool increase) {
+    int? quentity = int.tryParse(controller.text);
+    if (quentity == null) return;
+    if (quentity <= 1 && increase == false) {
+    } else {
+      increase ? quentity++ : quentity--;
+    }
+
+    final updatedSale = widget.sale.copyWith(quantitySold: quentity);
+    ref.read(salesCartProvider.notifier).update(updatedSale);
+    controller.text = quentity.toString();
   }
 }

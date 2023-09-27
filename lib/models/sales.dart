@@ -10,7 +10,7 @@ abstract class Sale with _$Sale {
     String? saleId,
     required String productId,
     required int saleDate,
-    @Default(0) int quantitySold,
+     int? quantitySold,
     required String productName,
     required double productPrice,
     @Default(0) double totalRevenue,

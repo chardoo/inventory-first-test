@@ -6,12 +6,10 @@ import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/providers/sales_cart_provider.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
+import 'package:rich_co_inventory/widgets/dialogs.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
 import 'package:rich_co_inventory/widgets/loading_layout.dart';
 import 'package:rich_co_inventory/widgets/snac_bar.dart';
-import 'package:rich_co_inventory/widgets/text_fields.dart';
-
-import '../../models/stock.dart';
 import '../../providers/product_provider.dart';
 import '../../widgets/texts.dart';
 part './product_detail_section.dart';
@@ -23,11 +21,14 @@ class AddSalesScreen extends ConsumerWidget {
       5, (index) => const Product(productName: "productName", price: 2342));
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cart = ref.watch(salesCartProvider);
     return LoadingLayout(
       child: Scaffold(
           backgroundColor: Colors.grey.shade100,
           appBar: AppBar(
-            leading: BackButton(onPressed: () => MyNavigator.back(context)),
+            leading: BackButton(
+                color: Colors.black,
+                onPressed: () => MyNavigator.back(context)),
             title: const MyText(
               text: "Add Sales",
               weight: FontWeight.bold,
@@ -38,14 +39,35 @@ class AddSalesScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
               label: "Add sales",
-              ontap: () async {
-                final salesCart = ref.read(salesCartProvider);
+              ontap: cart.isEmpty
+                  ? null
+                  : () async {
+                      final salesCart = ref.read(salesCartProvider);
+                      if (salesCart
+                          .any((element) => element.quantitySold == null)) {
+                        MySnackBar.showSnack(
+                            "please enter a correct quantity", context);
+                        return;
+                      }
 
-                final res = await ref
-                    .read(addProductProvider.notifier)
-                    .addAllSales(salesCart);
-                MySnackBar.showSnack(res ?? "", context);
-              },
+                      MyDialogs.showConfirm(context, ontap: () async {
+                        MyNavigator.back(context);
+
+                        final res = await ref
+                            .read(addProductProvider.notifier)
+                            .addAllSales(salesCart);
+                        if (res == "successfull") {
+                          if (context.mounted) {
+                            MyNavigator.backTo(context);
+                          }
+                          return;
+                        }
+                        if (context.mounted) {
+                          MySnackBar.showSnack(
+                              res ?? "a problem occured", context);
+                        }
+                      }, message: "Do you really want to add ?");
+                    },
               width: double.infinity,
             ),
           ),

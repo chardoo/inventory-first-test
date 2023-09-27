@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/providers/display_products_provider.dart';
-import 'package:rich_co_inventory/providers/product_provider.dart';
-import 'package:rich_co_inventory/screens.dart/add_to_product/add_product_screen.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
-import 'package:rich_co_inventory/widgets/shimmer.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 import 'package:rich_co_inventory/widgets/texts.dart';
 
+import 'add_product_screen.dart';
 
 class ProductsScreen extends ConsumerStatefulWidget {
   const ProductsScreen({super.key});
@@ -23,7 +22,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   @override
   void initState() {
     Future.microtask(
-        () => ref.read(displayProductsProvider.notifier).getData());
+        () => ref.read(displayProductsProvider.notifier).getProducts());
     super.initState();
   }
 

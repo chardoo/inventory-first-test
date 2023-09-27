@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
-import 'package:rich_co_inventory/screens.dart/sales_page.dart';
+import 'package:rich_co_inventory/screens.dart/sales_feature/sales_page.dart';
 import 'package:rich_co_inventory/screens.dart/stocks_screen.dart';
 
-import '../widgets/texts.dart';
+import '../../widgets/texts.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
