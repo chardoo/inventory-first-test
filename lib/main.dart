@@ -5,6 +5,7 @@ import 'package:rich_co_inventory/helpers/secure_store.dart';
 import 'package:rich_co_inventory/screens.dart/auth/log_in.dart';
 
 import 'package:rich_co_inventory/screens.dart/dashboard_feauture/dashboard.dart';
+import 'package:rich_co_inventory/screens.dart/dashboard_feauture/drawer.dart';
 
 import 'package:rich_co_inventory/screens.dart/inventory/all_inventory.dart';
 import 'package:rich_co_inventory/screens.dart/product_feature/add_product_screen.dart';
@@ -62,21 +63,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> screens =  [
+  final List<Widget> screens = [
     DashBoard(),
     ProductsScreen(),
     AllInventory(),
     AllPurchaseScreen()
   ];
-
   int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: index == 0
+          ? AppBar(
+              actions: const [
+                Icon(Icons.calendar_month_outlined),
+                SizedBox(width: 10)
+              ],
+            )
+          : null,
       resizeToAvoidBottomInset: false,
       body: screens[index],
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      drawer: const MyDrawer(),
       floatingActionButton: FloatingActionButton(
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

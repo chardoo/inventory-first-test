@@ -4,7 +4,6 @@ import 'package:rich_co_inventory/widgets/graph.dart';
 
 import '../../widgets/texts.dart';
 
-
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
 
@@ -12,13 +11,6 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      drawer: const MyDrawer(),
-      appBar: AppBar(
-        actions: const [
-          Icon(Icons.calendar_month_outlined),
-          SizedBox(width: 10)
-        ],
-      ),
       body: const Padding(
         padding: EdgeInsets.all(8.0),
         child: SingleChildScrollView(

@@ -77,8 +77,8 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
   }
 }
 
-class PurchaseCard extends StatelessWidget {
-  const PurchaseCard({
+class StockCard extends StatelessWidget {
+  const StockCard({
     super.key,
     required this.productName,
     required this.quantity,
