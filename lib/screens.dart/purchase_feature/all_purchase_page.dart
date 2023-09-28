@@ -1,30 +1,41 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
 import 'package:rich_co_inventory/screens.dart/purchase_feature/add_purchase_page.dart';
-import 'package:rich_co_inventory/widgets/button.dart';
-import 'package:rich_co_inventory/widgets/shimmer.dart';
-import 'package:rich_co_inventory/widgets/text_fields.dart';
-import 'package:rich_co_inventory/widgets/texts.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/shimmer.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
 
-class AllPurchaseScreen extends StatefulWidget {
+class AllPurchaseScreen extends ConsumerStatefulWidget {
   const AllPurchaseScreen({super.key});
 
   @override
-  State<AllPurchaseScreen> createState() => _ProductsScreenState();
+  ConsumerState<AllPurchaseScreen> createState() => _ProductsScreenState();
 }
 
-class _ProductsScreenState extends State<AllPurchaseScreen> {
+class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
   final TextEditingController searchCtrl = TextEditingController(text: "");
 
+  @override
+  void initState() {
+    Future.microtask(
+        () => ref.read(displayProductsProvider.notifier).getPurchase());
+    super.initState();
+  }
+
+  Timer? timer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
           title: const MyText(
-              text: "All Purchases", weight: FontWeight.bold, size: 24)),
+              text: "All  Purchases", weight: FontWeight.bold, size: 24)),
       body: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(
@@ -40,8 +51,13 @@ class _ProductsScreenState extends State<AllPurchaseScreen> {
                 controller: searchCtrl,
                 label: "Type item name",
                 onChanged: (val) {
-                  searchCtrl.text = val;
-                  setState(() {});
+                  timer?.cancel();
+                  timer = null;
+                  timer = Timer(const Duration(seconds: 2), () {
+                    ref
+                        .read(displayProductsProvider.notifier)
+                        .searchPurchases(val);
+                  });
                 },
               )),
               const SizedBox(width: 12),
@@ -62,73 +78,7 @@ class _ProductsScreenState extends State<AllPurchaseScreen> {
             ],
           ),
           const SizedBox(height: 24),
-          Expanded(
-            child: Consumer(builder: (context, ref, _) {
-              return FutureBuilder(
-                  future: ref
-                      .read(purchaseProvider.notifier)
-                      .getPurchases(searchCtrl.text),
-                  builder: (_, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return ListView.separated(
-                          separatorBuilder: (_, i) =>
-                              const SizedBox(height: 12),
-                          itemCount: 10,
-                          itemBuilder: (_, i) {
-                            return const ListTile(
-                              title: ShimmerLayout(
-                                height: 20,
-                                width: 50,
-                              ),
-                              subtitle: ShimmerLayout(
-                                height: 20,
-                                width: 80,
-                              ),
-                              trailing: ShimmerLayout(
-                                height: 20,
-                                width: 20,
-                                shape: BoxShape.circle,
-                              ),
-                            );
-                          });
-                    }
-
-                    if (snapshot.hasData) {
-                      if (snapshot.requireData.isEmpty) {
-                        return const Center(
-                          child: MyText(
-                            text: "No purchase yet",
-                            size: 24,
-                            weight: FontWeight.bold,
-                          ),
-                        );
-                      }
-                      return ListView.separated(
-                          separatorBuilder: (_, i) =>
-                              const SizedBox(height: 12),
-                          itemCount: snapshot.requireData.length,
-                          itemBuilder: (_, i) {
-                            //  return Text("richOCDE");
-                            final purchase = snapshot.requireData[i];
-                            return PurchaseCard(
-                                date: DateTime.fromMillisecondsSinceEpoch(
-                                        purchase.purchaseDate)
-                                    .toString(),
-                                productName: purchase.productName,
-                                quantity: purchase.quantityPurchased,
-                                price: purchase.cost.toDouble());
-                          });
-                    }
-                    return Center(
-                      child: MyText(
-                        text: snapshot.error?.toString() ?? "",
-                        size: 24,
-                        weight: FontWeight.bold,
-                      ),
-                    );
-                  });
-            }),
-          )
+          ref.watch(displayProductsProvider).display()
         ]),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rich_co_inventory/providers/display_products_provider.dart';
-import 'package:rich_co_inventory/widgets/texts.dart';
+import 'package:rich_co_inventory/providers/show_items_provider.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
 
 class SalesPage extends ConsumerStatefulWidget {
   const SalesPage({super.key});
@@ -28,33 +28,3 @@ class _SalesPageState extends ConsumerState<SalesPage> {
   }
 }
 
-class SalesCard extends StatelessWidget {
-  const SalesCard({
-    super.key,
-    required this.name,
-  });
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(name),
-      subtitle: const MyText(
-        text: "View detail",
-        color: Colors.blue,
-      ),
-      trailing: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(
-              8,
-            )),
-        child: const Icon(
-          Icons.delete,
-          color: Colors.black54,
-        ),
-      ),
-    );
-  }
-}

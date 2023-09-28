@@ -32,6 +32,8 @@ mixin _$Sale {
   set productName(String value) => throw _privateConstructorUsedError;
   double get productPrice => throw _privateConstructorUsedError;
   set productPrice(double value) => throw _privateConstructorUsedError;
+  String get time => throw _privateConstructorUsedError;
+  set time(String value) => throw _privateConstructorUsedError;
   double get totalRevenue => throw _privateConstructorUsedError;
   set totalRevenue(double value) => throw _privateConstructorUsedError;
   int? get salesmanId => throw _privateConstructorUsedError;
@@ -56,6 +58,7 @@ abstract class $SaleCopyWith<$Res> {
       int? quantitySold,
       String productName,
       double productPrice,
+      String time,
       double totalRevenue,
       int? salesmanId,
       List<Sale>? sales});
@@ -80,6 +83,7 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
     Object? quantitySold = freezed,
     Object? productName = null,
     Object? productPrice = null,
+    Object? time = null,
     Object? totalRevenue = null,
     Object? salesmanId = freezed,
     Object? sales = freezed,
@@ -109,6 +113,10 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
           ? _value.productPrice
           : productPrice // ignore: cast_nullable_to_non_nullable
               as double,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
       totalRevenue: null == totalRevenue
           ? _value.totalRevenue
           : totalRevenue // ignore: cast_nullable_to_non_nullable
@@ -138,6 +146,7 @@ abstract class _$$_SaleCopyWith<$Res> implements $SaleCopyWith<$Res> {
       int? quantitySold,
       String productName,
       double productPrice,
+      String time,
       double totalRevenue,
       int? salesmanId,
       List<Sale>? sales});
@@ -158,6 +167,7 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
     Object? quantitySold = freezed,
     Object? productName = null,
     Object? productPrice = null,
+    Object? time = null,
     Object? totalRevenue = null,
     Object? salesmanId = freezed,
     Object? sales = freezed,
@@ -187,6 +197,10 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
           ? _value.productPrice
           : productPrice // ignore: cast_nullable_to_non_nullable
               as double,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
       totalRevenue: null == totalRevenue
           ? _value.totalRevenue
           : totalRevenue // ignore: cast_nullable_to_non_nullable
@@ -213,6 +227,7 @@ class _$_Sale implements _Sale {
       this.quantitySold,
       required this.productName,
       required this.productPrice,
+      required this.time,
       this.totalRevenue = 0,
       this.salesmanId,
       this.sales});
@@ -232,6 +247,8 @@ class _$_Sale implements _Sale {
   @override
   double productPrice;
   @override
+  String time;
+  @override
   @JsonKey()
   double totalRevenue;
   @override
@@ -241,7 +258,7 @@ class _$_Sale implements _Sale {
 
   @override
   String toString() {
-    return 'Sale(saleId: $saleId, productId: $productId, saleDate: $saleDate, quantitySold: $quantitySold, productName: $productName, productPrice: $productPrice, totalRevenue: $totalRevenue, salesmanId: $salesmanId, sales: $sales)';
+    return 'Sale(saleId: $saleId, productId: $productId, saleDate: $saleDate, quantitySold: $quantitySold, productName: $productName, productPrice: $productPrice, time: $time, totalRevenue: $totalRevenue, salesmanId: $salesmanId, sales: $sales)';
   }
 
   @JsonKey(ignore: true)
@@ -266,6 +283,7 @@ abstract class _Sale implements Sale {
       int? quantitySold,
       required String productName,
       required double productPrice,
+      required String time,
       double totalRevenue,
       int? salesmanId,
       List<Sale>? sales}) = _$_Sale;
@@ -290,6 +308,9 @@ abstract class _Sale implements Sale {
   @override
   double get productPrice;
   set productPrice(double value);
+  @override
+  String get time;
+  set time(String value);
   @override
   double get totalRevenue;
   set totalRevenue(double value);

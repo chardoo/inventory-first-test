@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:uuid/uuid.dart';
@@ -13,6 +14,8 @@ abstract class Purchase with _$Purchase {
       required String productName,
     required int purchaseDate,
     required int quantityPurchased,
+        required String time,
+
     String? supplierId,
     required double cost,
     Product ? product,

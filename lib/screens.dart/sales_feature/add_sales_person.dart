@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rich_co_inventory/models/product.dart';
-import 'package:rich_co_inventory/widgets/button.dart';
-import 'package:rich_co_inventory/widgets/text_fields.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
 
-import '../../widgets/texts.dart';
+import '../shared/widgets/texts.dart';
 
 class AddSalesPerson extends StatelessWidget {
   AddSalesPerson({super.key});

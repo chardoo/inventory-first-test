@@ -14,16 +14,15 @@ abstract class Supplier with _$Supplier {
     String? supplierContact,
     String? supplierEmail,
     String? supplierAddress,
-     List<Purchase> ? purchases, 
-      List<Product> ? products, 
+    List<Purchase>? purchases,
+    List<Product>? products,
   }) = _Supplier;
- factory Supplier.generateId(Map<String, dynamic> json) {
+  factory Supplier.generateId(Map<String, dynamic> json) {
     const uuid = Uuid();
     json["supplierId"] = uuid.v4();
 
     return Supplier.fromJson(json);
   }
-  factory Supplier.fromJson(Map<String, dynamic> json) => _$SupplierFromJson(json);
+  factory Supplier.fromJson(Map<String, dynamic> json) =>
+      _$SupplierFromJson(json);
 }
-
-

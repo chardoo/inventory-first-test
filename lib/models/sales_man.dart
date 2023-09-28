@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part '.generated/sales_man.freezed.dart';
@@ -11,6 +12,7 @@ abstract class Salesman with _$Salesman {
     String? lastName,
     String? email,
     String? contactNumber,
+    required String time,
     DateTime? hireDate,
   }) = _Salesman;
 

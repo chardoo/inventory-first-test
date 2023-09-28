@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/screens.dart/sales_feature/sales_page.dart';
-import 'package:rich_co_inventory/screens.dart/stocks_screen.dart';
+import 'package:rich_co_inventory/screens.dart/stocks_feature/stocks_screen.dart';
 
-import '../../widgets/texts.dart';
-import 'package:rich_co_inventory/screens.dart/stocks_screen.dart';
+import '../shared/widgets/texts.dart';
+import 'package:rich_co_inventory/screens.dart/stocks_feature/stocks_screen.dart';
 
+import '../brand_feature/brand_screen.dart';
+import '../supplier_feature.dart/suppliers_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -15,7 +17,8 @@ class MyDrawer extends StatelessWidget {
   final data = const [
     _DrawerData("Stock", Icon(Icons.inventory), StocksScreen()),
     _DrawerData("See All Sales", Icon(Icons.food_bank), SalesPage()),
-    _DrawerData("Brand", Icon(Icons.money), StocksScreen())
+    _DrawerData("Brand", Icon(Icons.money), AllBrandScreen()),
+    _DrawerData("Supplier", Icon(Icons.person), SuppliersScreen()),
   ];
 
   @override

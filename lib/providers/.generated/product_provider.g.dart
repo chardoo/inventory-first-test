@@ -7,7 +7,7 @@ part of '../product_provider.dart';
 // **************************************************************************
 
 String _$addProductProviderHash() =>
-    r'542c4c31e14a054d631e297474ff4c6adce6b93a';
+    r'b2c679ca1de1462d34fc987ce2383fffcc1fea16';
 
 /// See also [AddProductProvider].
 @ProviderFor(AddProductProvider)

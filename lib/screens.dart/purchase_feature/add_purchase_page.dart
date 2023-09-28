@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -7,14 +8,15 @@ import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
-import 'package:rich_co_inventory/widgets/button.dart';
-import 'package:rich_co_inventory/widgets/dialogs.dart';
-import 'package:rich_co_inventory/widgets/drop_down_field.dart';
-import 'package:rich_co_inventory/widgets/loading_layout.dart';
-import 'package:rich_co_inventory/widgets/snac_bar.dart';
-import 'package:rich_co_inventory/widgets/text_fields.dart';
+import 'package:rich_co_inventory/providers/show_items_provider.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/dialogs.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/drop_down_field.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/loading_layout.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/snac_bar.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
 
-import '../../widgets/texts.dart';
+import '../shared/widgets/texts.dart';
 import '../product_feature/add_product_screen.dart';
 
 class AddPurchaseScreen extends ConsumerStatefulWidget {
@@ -160,12 +162,13 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                         }
 
                         MyDialogs.showConfirm(context,
-                        title: "Add a Purchase",
+                            title: "Add a Purchase",
                             message: "Do u really want to add this purchase",
-                          
                             onAcceptLabel: () async {
                           MyNavigator.back(context);
                           Purchase purchase = Purchase(
+                              time:
+                                  Timestamp.fromDate(DateTime.now()).toString(),
                               productId: selectedProduct!.productId!,
                               supplierId: selectedProduct!.supplierId,
                               productName: selectedProduct!.productName,
@@ -176,10 +179,14 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                           await ref
                               .read(purchaseProvider.notifier)
                               .addPurchase(purchase);
+
                           if (mounted) {
                             MyNavigator.backTo(
                               context,
                             );
+                            ref
+                                .read(displayProductsProvider.notifier)
+                                .getPurchase();
                           }
                         });
                       },

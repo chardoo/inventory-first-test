@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -10,9 +11,10 @@ abstract class Sale with _$Sale {
     String? saleId,
     required String productId,
     required int saleDate,
-     int? quantitySold,
+    int? quantitySold,
     required String productName,
     required double productPrice,
+    required String time,
     @Default(0) double totalRevenue,
     int? salesmanId,
     List<Sale>? sales,

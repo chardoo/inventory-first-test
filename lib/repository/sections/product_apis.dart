@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
@@ -24,8 +25,6 @@ class ProductApis extends FireStoreAPIs<Product> {
             .doc(productToAdd.productId)
             .set(productToAdd.toJson());
 
-
-            
         return productToAdd.productId;
       }
       return null;
@@ -93,14 +92,11 @@ class ProductApis extends FireStoreAPIs<Product> {
     }
   }
 
-   @override
+  @override
   Future<Product?> getProductStatistic(String productId) async {
     try {
       // final salesResults = await instance.collection(Collections.sales.name).where("productId", isEqualTo: productId).get();
       // final stocksResults =  await instance.collection(Collections.stock.name).where("productId", isEqualTo: productId).get();
-
-      
-
 
       // Map<String, dynamic> productData = res.data()!;
 
@@ -159,7 +155,6 @@ class ProductApis extends FireStoreAPIs<Product> {
           .where('productName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
           .get();
 
-        
       if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Product.fromJson(e.data())).toList();
     } catch (e) {
@@ -167,20 +162,34 @@ class ProductApis extends FireStoreAPIs<Product> {
     }
   }
 
-
-  Future<List<Sale>> getSalesforAProductForToday(String productId) async {
+  Future<List<Sale>> getSalesforAProductForToday(
+      String productId, DateTime? start, DateTime? end) async {
     try {
       print(productId);
-       var today = DateTime.now().millisecondsSinceEpoch;
-      final res = await instance
-          .collection(Collections.sales.name)
-          .where('productId', isEqualTo: productId)
-       //    .where('saleDate', isLessThanOrEqualTo: today)
-          .get();
+      var t = DateTime.now();
+      final today = DateTime(t.year, t.month, t.day);
+      final tomorrow = today.add(const Duration(hours: 24));
+      print(
+          "object $productId  ${start?.microsecondsSinceEpoch}  end ${t.millisecondsSinceEpoch}");
 
-        
-      if (res.docs.isEmpty) return [];
-      return res.docs.map((e) => Sale.fromJson(e.data())).toList();
+      var res = await instance
+          .collection(Collections.sales.name)
+          .where('productId', isEqualTo: productId);
+
+      //  instance
+      //   .collection(Collections.sales.name) .where('saleDate',
+      //       isGreaterThanOrEqualTo:
+      //           start?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch)
+      //   .where("saleDate",
+      //       isLessThanOrEqualTo: end?.millisecondsSinceEpoch ??
+      //           tomorrow.millisecondsSinceEpoch)
+      //   .get();1695859240000
+
+      final results =
+          await res.where("saleDate", isEqualTo: 1695859240000).get();
+
+      if (results.docs.isEmpty) return [];
+      return results.docs.map((e) => Sale.fromJson(e.data())).toList();
     } catch (e) {
       return [];
     }

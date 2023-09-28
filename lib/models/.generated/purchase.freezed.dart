@@ -25,6 +25,7 @@ mixin _$Purchase {
   String get productName => throw _privateConstructorUsedError;
   int get purchaseDate => throw _privateConstructorUsedError;
   int get quantityPurchased => throw _privateConstructorUsedError;
+  String get time => throw _privateConstructorUsedError;
   String? get supplierId => throw _privateConstructorUsedError;
   double get cost => throw _privateConstructorUsedError;
   Product? get product => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $PurchaseCopyWith<$Res> {
       String productName,
       int purchaseDate,
       int quantityPurchased,
+      String time,
       String? supplierId,
       double cost,
       Product? product});
@@ -71,6 +73,7 @@ class _$PurchaseCopyWithImpl<$Res, $Val extends Purchase>
     Object? productName = null,
     Object? purchaseDate = null,
     Object? quantityPurchased = null,
+    Object? time = null,
     Object? supplierId = freezed,
     Object? cost = null,
     Object? product = freezed,
@@ -96,6 +99,10 @@ class _$PurchaseCopyWithImpl<$Res, $Val extends Purchase>
           ? _value.quantityPurchased
           : quantityPurchased // ignore: cast_nullable_to_non_nullable
               as int,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
       supplierId: freezed == supplierId
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
@@ -137,6 +144,7 @@ abstract class _$$_PurchaseCopyWith<$Res> implements $PurchaseCopyWith<$Res> {
       String productName,
       int purchaseDate,
       int quantityPurchased,
+      String time,
       String? supplierId,
       double cost,
       Product? product});
@@ -161,6 +169,7 @@ class __$$_PurchaseCopyWithImpl<$Res>
     Object? productName = null,
     Object? purchaseDate = null,
     Object? quantityPurchased = null,
+    Object? time = null,
     Object? supplierId = freezed,
     Object? cost = null,
     Object? product = freezed,
@@ -186,6 +195,10 @@ class __$$_PurchaseCopyWithImpl<$Res>
           ? _value.quantityPurchased
           : quantityPurchased // ignore: cast_nullable_to_non_nullable
               as int,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
       supplierId: freezed == supplierId
           ? _value.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
@@ -211,6 +224,7 @@ class _$_Purchase implements _Purchase {
       required this.productName,
       required this.purchaseDate,
       required this.quantityPurchased,
+      required this.time,
       this.supplierId,
       required this.cost,
       this.product});
@@ -229,6 +243,8 @@ class _$_Purchase implements _Purchase {
   @override
   final int quantityPurchased;
   @override
+  final String time;
+  @override
   final String? supplierId;
   @override
   final double cost;
@@ -237,7 +253,7 @@ class _$_Purchase implements _Purchase {
 
   @override
   String toString() {
-    return 'Purchase(purchaseId: $purchaseId, productId: $productId, productName: $productName, purchaseDate: $purchaseDate, quantityPurchased: $quantityPurchased, supplierId: $supplierId, cost: $cost, product: $product)';
+    return 'Purchase(purchaseId: $purchaseId, productId: $productId, productName: $productName, purchaseDate: $purchaseDate, quantityPurchased: $quantityPurchased, time: $time, supplierId: $supplierId, cost: $cost, product: $product)';
   }
 
   @override
@@ -255,6 +271,7 @@ class _$_Purchase implements _Purchase {
                 other.purchaseDate == purchaseDate) &&
             (identical(other.quantityPurchased, quantityPurchased) ||
                 other.quantityPurchased == quantityPurchased) &&
+            (identical(other.time, time) || other.time == time) &&
             (identical(other.supplierId, supplierId) ||
                 other.supplierId == supplierId) &&
             (identical(other.cost, cost) || other.cost == cost) &&
@@ -263,8 +280,17 @@ class _$_Purchase implements _Purchase {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, purchaseId, productId,
-      productName, purchaseDate, quantityPurchased, supplierId, cost, product);
+  int get hashCode => Object.hash(
+      runtimeType,
+      purchaseId,
+      productId,
+      productName,
+      purchaseDate,
+      quantityPurchased,
+      time,
+      supplierId,
+      cost,
+      product);
 
   @JsonKey(ignore: true)
   @override
@@ -287,6 +313,7 @@ abstract class _Purchase implements Purchase {
       required final String productName,
       required final int purchaseDate,
       required final int quantityPurchased,
+      required final String time,
       final String? supplierId,
       required final double cost,
       final Product? product}) = _$_Purchase;
@@ -303,6 +330,8 @@ abstract class _Purchase implements Purchase {
   int get purchaseDate;
   @override
   int get quantityPurchased;
+  @override
+  String get time;
   @override
   String? get supplierId;
   @override

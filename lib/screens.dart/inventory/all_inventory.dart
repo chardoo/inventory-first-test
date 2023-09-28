@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
-import 'package:rich_co_inventory/providers/display_products_provider.dart';
+import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/screens.dart/inventory/add_inventory.dart';
-import 'package:rich_co_inventory/widgets/button.dart';
-import 'package:rich_co_inventory/widgets/text_fields.dart';
-import 'package:rich_co_inventory/widgets/texts.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
 
 class AllInventory extends ConsumerStatefulWidget {
   const AllInventory({super.key});
@@ -23,7 +25,7 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
   }
 
   final TextEditingController searchCtrl = TextEditingController(text: "");
-
+  Timer? timer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,10 +46,13 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
               Expanded(
                   child: MyTextField(
                 controller: searchCtrl,
-                label: "Type item name",
+                label: "Type stock name",
                 onChanged: (val) {
-                  searchCtrl.text = val;
-                  setState(() {});
+                  timer?.cancel();
+                  timer = null;
+                  timer = Timer(Duration(seconds: 2), () {
+                    ref.read(displayProductsProvider.notifier).searchStock(val);
+                  });
                 },
               )),
               const SizedBox(width: 12),
@@ -77,8 +82,8 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
   }
 }
 
-class PurchaseCard extends StatelessWidget {
-  const PurchaseCard({
+class StockCard extends StatelessWidget {
+  const StockCard({
     super.key,
     required this.productName,
     required this.quantity,

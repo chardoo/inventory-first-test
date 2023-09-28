@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rich_co_inventory/screens.dart/dashboard_feauture/drawer.dart';
-import 'package:rich_co_inventory/widgets/graph.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/graph.dart';
 
-import '../../widgets/texts.dart';
-
+import '../shared/widgets/texts.dart';
 
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
@@ -12,13 +11,6 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      drawer: const MyDrawer(),
-      appBar: AppBar(
-        actions: const [
-          Icon(Icons.calendar_month_outlined),
-          SizedBox(width: 10)
-        ],
-      ),
       body: const Padding(
         padding: EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -82,6 +74,7 @@ class SummaryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyIconButton(
         label: '',
+        ontap: () {},
         bgColor: color ?? Colors.deepPurple.shade100,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -250,6 +243,7 @@ class MyIconButton extends StatelessWidget {
     this.icon,
     this.forgroundColor,
     this.child,
+    this.ontap,
   });
   final Color? borderColor;
   final Color? bgColor;
@@ -257,10 +251,11 @@ class MyIconButton extends StatelessWidget {
   final Color? forgroundColor;
   final Widget? child;
   final Widget? icon;
+  final Function()? ontap;
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      onPressed: () {},
+      onPressed: ontap ?? () {},
       style: FilledButton.styleFrom(
           elevation: 2,
           backgroundColor: bgColor,
