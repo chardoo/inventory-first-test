@@ -25,6 +25,7 @@ mixin _$Salesman {
   String? get lastName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get contactNumber => throw _privateConstructorUsedError;
+  String get time => throw _privateConstructorUsedError;
   DateTime? get hireDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $SalesmanCopyWith<$Res> {
       String? lastName,
       String? email,
       String? contactNumber,
+      String time,
       DateTime? hireDate});
 }
 
@@ -65,6 +67,7 @@ class _$SalesmanCopyWithImpl<$Res, $Val extends Salesman>
     Object? lastName = freezed,
     Object? email = freezed,
     Object? contactNumber = freezed,
+    Object? time = null,
     Object? hireDate = freezed,
   }) {
     return _then(_value.copyWith(
@@ -88,6 +91,10 @@ class _$SalesmanCopyWithImpl<$Res, $Val extends Salesman>
           ? _value.contactNumber
           : contactNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
       hireDate: freezed == hireDate
           ? _value.hireDate
           : hireDate // ignore: cast_nullable_to_non_nullable
@@ -109,6 +116,7 @@ abstract class _$$_SalesmanCopyWith<$Res> implements $SalesmanCopyWith<$Res> {
       String? lastName,
       String? email,
       String? contactNumber,
+      String time,
       DateTime? hireDate});
 }
 
@@ -128,6 +136,7 @@ class __$$_SalesmanCopyWithImpl<$Res>
     Object? lastName = freezed,
     Object? email = freezed,
     Object? contactNumber = freezed,
+    Object? time = null,
     Object? hireDate = freezed,
   }) {
     return _then(_$_Salesman(
@@ -151,6 +160,10 @@ class __$$_SalesmanCopyWithImpl<$Res>
           ? _value.contactNumber
           : contactNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      time: null == time
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as String,
       hireDate: freezed == hireDate
           ? _value.hireDate
           : hireDate // ignore: cast_nullable_to_non_nullable
@@ -168,6 +181,7 @@ class _$_Salesman implements _Salesman {
       this.lastName,
       this.email,
       this.contactNumber,
+      required this.time,
       this.hireDate});
 
   factory _$_Salesman.fromJson(Map<String, dynamic> json) =>
@@ -184,11 +198,13 @@ class _$_Salesman implements _Salesman {
   @override
   final String? contactNumber;
   @override
+  final String time;
+  @override
   final DateTime? hireDate;
 
   @override
   String toString() {
-    return 'Salesman(salesmanId: $salesmanId, firstName: $firstName, lastName: $lastName, email: $email, contactNumber: $contactNumber, hireDate: $hireDate)';
+    return 'Salesman(salesmanId: $salesmanId, firstName: $firstName, lastName: $lastName, email: $email, contactNumber: $contactNumber, time: $time, hireDate: $hireDate)';
   }
 
   @override
@@ -205,6 +221,7 @@ class _$_Salesman implements _Salesman {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.contactNumber, contactNumber) ||
                 other.contactNumber == contactNumber) &&
+            (identical(other.time, time) || other.time == time) &&
             (identical(other.hireDate, hireDate) ||
                 other.hireDate == hireDate));
   }
@@ -212,7 +229,7 @@ class _$_Salesman implements _Salesman {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, salesmanId, firstName, lastName,
-      email, contactNumber, hireDate);
+      email, contactNumber, time, hireDate);
 
   @JsonKey(ignore: true)
   @override
@@ -235,6 +252,7 @@ abstract class _Salesman implements Salesman {
       final String? lastName,
       final String? email,
       final String? contactNumber,
+      required final String time,
       final DateTime? hireDate}) = _$_Salesman;
 
   factory _Salesman.fromJson(Map<String, dynamic> json) = _$_Salesman.fromJson;
@@ -249,6 +267,8 @@ abstract class _Salesman implements Salesman {
   String? get email;
   @override
   String? get contactNumber;
+  @override
+  String get time;
   @override
   DateTime? get hireDate;
   @override

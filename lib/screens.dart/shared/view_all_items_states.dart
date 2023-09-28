@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:rich_co_inventory/screens.dart/shared/widgets/shimmer.dart';
 import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
@@ -70,6 +69,3 @@ abstract class SuccessState<T> extends ProductDisplayState {
 
   SuccessState(this.data);
 }
-
-
-

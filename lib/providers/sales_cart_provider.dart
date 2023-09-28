@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,6 +13,7 @@ class SalesCartProvider extends _$SalesCartProvider {
 
   add(Product product) {
     final sale = Sale(
+        time: Timestamp.fromDate(DateTime.now()).toString(),
         productId: product.productId ?? "",
         saleDate: DateTime.now().millisecondsSinceEpoch,
         productName: product.productName,

@@ -74,6 +74,7 @@ class SummaryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyIconButton(
         label: '',
+        ontap: () {},
         bgColor: color ?? Colors.deepPurple.shade100,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -242,6 +243,7 @@ class MyIconButton extends StatelessWidget {
     this.icon,
     this.forgroundColor,
     this.child,
+    this.ontap,
   });
   final Color? borderColor;
   final Color? bgColor;
@@ -249,10 +251,11 @@ class MyIconButton extends StatelessWidget {
   final Color? forgroundColor;
   final Widget? child;
   final Widget? icon;
+  final Function()? ontap;
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      onPressed: () {},
+      onPressed: ontap ?? () {},
       style: FilledButton.styleFrom(
           elevation: 2,
           backgroundColor: bgColor,

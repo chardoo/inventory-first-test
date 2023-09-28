@@ -29,6 +29,9 @@ class _ProductsScreenState extends ConsumerState<ProductDetailScreen> {
     super.initState();
   }
 
+  DateTime? startTime;
+  DateTime? endTime;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,39 +61,47 @@ class _ProductsScreenState extends ConsumerState<ProductDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                  onTap: () async {
-                        final selectedDate = await showDatePicker(
-                // currentDate: currentDate,
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now().subtract(const Duration(days: 1000)),
-                lastDate: DateTime.now().add(const Duration(days: 1000)));
-
-                  },
-                  child: MyIconButton(
-                      label: "start",
-                      forgroundColor: Colors.grey,
-                      borderColor: Colors.grey,
-                      bgColor: Colors.white,
-                      icon: RotatedBox(
-                          quarterTurns: 3, child: Icon(Icons.chevron_left)))),
-              GestureDetector(
-                  onTap: () async {
+              MyIconButton(
+                label: "start",
+                forgroundColor: Colors.grey,
+                borderColor: Colors.grey,
+                bgColor: Colors.white,
+                icon: const RotatedBox(
+                    quarterTurns: 3, child: Icon(Icons.chevron_left)),
+                ontap: () async {
+                  startTime = null;
+                  final selectedDate = await showDatePicker(
+                      // currentDate: currentDate,
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate:
+                          DateTime.now().subtract(const Duration(days: 1000)),
+                      lastDate: DateTime.now().add(const Duration(days: 1000)));
+                  startTime = selectedDate;
+                },
+              ),
+              MyIconButton(
+                  label: "endDate",
+                  forgroundColor: Colors.grey,
+                  borderColor: Colors.grey,
+                  bgColor: Colors.white,
+                  ontap: () async {
                     final selectedDate = await showDatePicker(
-                // currentDate: currentDate,
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now().subtract(const Duration(days: 1000)),
-                lastDate: DateTime.now().add(const Duration(days: 1000)));
+                        // currentDate: currentDate,
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate:
+                            DateTime.now().subtract(const Duration(days: 1000)),
+                        lastDate:
+                            DateTime.now().add(const Duration(days: 1000)));
+                    endTime = selectedDate;
+
+                    if (startTime != null && endTime != null) {
+                      setState(() {});
+                    }
                   },
-                  child: MyIconButton(
-                      label: "endDate",
-                      forgroundColor: Colors.grey,
-                      borderColor: Colors.grey,
-                      bgColor: Colors.white,
-                      icon: RotatedBox(
-                          quarterTurns: 3, child: Icon(Icons.chevron_left)))),
+                  icon: const RotatedBox(
+                      quarterTurns: 3, child: Icon(Icons.chevron_left))),
             ],
           ),
           const SizedBox(height: 24),
@@ -99,7 +110,8 @@ class _ProductsScreenState extends ConsumerState<ProductDetailScreen> {
               return FutureBuilder(
                   future: ref
                       .read(addProductProvider.notifier)
-                      .getsalesForAProduct(widget.productId),
+                      .getsalesForAProduct(
+                          widget.productId, startTime, endTime),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListView.separated(

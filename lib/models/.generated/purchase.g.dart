@@ -12,6 +12,7 @@ _$_Purchase _$$_PurchaseFromJson(Map<String, dynamic> json) => _$_Purchase(
       productName: json['productName'] as String,
       purchaseDate: json['purchaseDate'] as int,
       quantityPurchased: json['quantityPurchased'] as int,
+      time: json['time'] as String,
       supplierId: json['supplierId'] as String?,
       cost: (json['cost'] as num).toDouble(),
       product: json['product'] == null
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$_PurchaseToJson(_$_Purchase instance) =>
       'productName': instance.productName,
       'purchaseDate': instance.purchaseDate,
       'quantityPurchased': instance.quantityPurchased,
+      'time': instance.time,
       'supplierId': instance.supplierId,
       'cost': instance.cost,
       'product': instance.product?.toJson(),

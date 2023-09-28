@@ -17,7 +17,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../screens.dart/brand_feature/view_brand_state.dart';
 import '../screens.dart/inventory/all_inventory.dart';
 import '../screens.dart/product_feature/products_screen.dart';
-import '../screens.dart/product_feature/view_all_products_state.dart';
 import '../screens.dart/purchase_feature/all_purchase_page.dart';
 import '../screens.dart/purchase_feature/view_all_purchase_state.dart';
 import '../screens.dart/sales_feature/sales_page.dart';
@@ -49,10 +48,8 @@ class DisplayProductsProvider extends _$DisplayProductsProvider {
     return EmptyState();
   }
 
-  getProducts() async {
-    state = LoadingState();
-    final data = await productApis.getAll();
-    state = ProductSuccessState(data);
+  Future<List<Product>> getProducts() async {
+    return await productApis.getAll();
   }
 
   seachProducts(String string) async {
@@ -62,7 +59,6 @@ class DisplayProductsProvider extends _$DisplayProductsProvider {
       state = EmptyState();
       return;
     }
-    state = ProductSuccessState(data);
   }
 
   searchStock(String string) async {
