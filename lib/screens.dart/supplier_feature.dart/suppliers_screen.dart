@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../helpers/navigator.dart';
-import '../../providers/display_products_provider.dart';
-import '../../widgets/button.dart';
-import '../../widgets/texts.dart';
+import '../../providers/show_items_provider.dart';
+import '../shared/widgets/button.dart';
+import '../shared/widgets/texts.dart';
 
 class SuppliersScreen extends ConsumerStatefulWidget {
   const SuppliersScreen({super.key});

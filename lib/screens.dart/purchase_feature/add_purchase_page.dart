@@ -7,14 +7,14 @@ import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
-import 'package:rich_co_inventory/widgets/button.dart';
-import 'package:rich_co_inventory/widgets/dialogs.dart';
-import 'package:rich_co_inventory/widgets/drop_down_field.dart';
-import 'package:rich_co_inventory/widgets/loading_layout.dart';
-import 'package:rich_co_inventory/widgets/snac_bar.dart';
-import 'package:rich_co_inventory/widgets/text_fields.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/dialogs.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/drop_down_field.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/loading_layout.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/snac_bar.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
 
-import '../../widgets/texts.dart';
+import '../shared/widgets/texts.dart';
 import '../product_feature/add_product_screen.dart';
 
 class AddPurchaseScreen extends ConsumerStatefulWidget {

@@ -1,13 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/models/product.dart';
-import 'package:rich_co_inventory/providers/display_products_provider.dart';
+import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
-import 'package:rich_co_inventory/screens.dart/product/product_details.dart';
-import 'package:rich_co_inventory/widgets/button.dart';
-import 'package:rich_co_inventory/widgets/text_fields.dart';
-import 'package:rich_co_inventory/widgets/texts.dart';
+import 'package:rich_co_inventory/screens.dart/product_feature/product_details.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
 
 import 'add_product_screen.dart';
 
@@ -27,6 +29,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         () => ref.read(displayProductsProvider.notifier).getProducts());
     super.initState();
   }
+
+  Timer? timer;
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +52,16 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               Expanded(
                   child: MyTextField(
                 controller: searchCtrl,
-                label: "Type item name",
-                onChanged: (val) {},
+                label: "Type product name",
+                onChanged: (val) {
+                  timer?.cancel();
+                  timer = null;
+                  timer = Timer(Duration(seconds: 2), () {
+                    ref
+                        .read(displayProductsProvider.notifier)
+                        .seachProducts(val);
+                  });
+                },
               )),
               const SizedBox(width: 12),
               MyFilledIconButton(

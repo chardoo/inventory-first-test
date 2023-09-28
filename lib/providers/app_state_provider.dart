@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rich_co_inventory/widgets/dialogs.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/dialogs.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part '.generated/app_state_provider.g.dart';
 

@@ -54,13 +54,14 @@ class StockApis extends FireStoreAPIs<Stock> {
     }
   }
 
-   
-  Future <List<Stock?>> getStockByProductId(String  productId) async {
+  Future<List<Stock?>> getStockByProductId(String productId) async {
     try {
-     var res =  await instance
-          .collection(mainCollection).where("productId", isEqualTo: productId).get();
- 
-        if (res.docs.isEmpty) return [];
+      var res = await instance
+          .collection(mainCollection)
+          .where("productId", isEqualTo: productId)
+          .get();
+
+      if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Stock.fromJson(e.data())).toList();
     } catch (e) {
       return [];
@@ -92,7 +93,6 @@ class StockApis extends FireStoreAPIs<Stock> {
     }
   }
 
-   @override
   Future<List<Stock>> getStockByProductName(String name) async {
     try {
       // final res = await instance.collection(mainCollection).get();

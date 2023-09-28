@@ -1,13 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
-import 'package:rich_co_inventory/providers/display_products_provider.dart';
+import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
 import 'package:rich_co_inventory/screens.dart/purchase_feature/add_purchase_page.dart';
-import 'package:rich_co_inventory/widgets/button.dart';
-import 'package:rich_co_inventory/widgets/shimmer.dart';
-import 'package:rich_co_inventory/widgets/text_fields.dart';
-import 'package:rich_co_inventory/widgets/texts.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/shimmer.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
+import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
 
 class AllPurchaseScreen extends ConsumerStatefulWidget {
   const AllPurchaseScreen({super.key});
@@ -26,13 +28,14 @@ class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
     super.initState();
   }
 
+  Timer? timer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
           title: const MyText(
-              text: "All sdf Purchases", weight: FontWeight.bold, size: 24)),
+              text: "All  Purchases", weight: FontWeight.bold, size: 24)),
       body: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(
@@ -48,8 +51,13 @@ class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
                 controller: searchCtrl,
                 label: "Type item name",
                 onChanged: (val) {
-                  searchCtrl.text = val;
-                  setState(() {});
+                  timer?.cancel();
+                  timer = null;
+                  timer = Timer(Duration(seconds: 2), () {
+                    ref
+                        .read(displayProductsProvider.notifier)
+                        .searchPurchases(val);
+                  });
                 },
               )),
               const SizedBox(width: 12),

@@ -3,7 +3,7 @@ import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/screens.dart/sales_feature/sales_page.dart';
 import 'package:rich_co_inventory/screens.dart/stocks_feature/stocks_screen.dart';
 
-import '../../widgets/texts.dart';
+import '../shared/widgets/texts.dart';
 import 'package:rich_co_inventory/screens.dart/stocks_feature/stocks_screen.dart';
 
 import '../brand_feature/brand_screen.dart';
