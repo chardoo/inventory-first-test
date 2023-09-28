@@ -63,17 +63,9 @@ class _ProductDetailsState extends State<_ProductDetails> {
               },
               controller: productCntl,
               onSelected: (val) {
-                Sale sale = Sale(
-                    productId: val.productId!,
-                    saleDate: DateTime.now().millisecondsSinceEpoch,
-                    quantitySold: 0,
-                    productName: val.productName,
-                    productPrice: val.price,
-                    totalRevenue: 0);
-                ref.read(selectedSales.notifier).set(sale);
-
                 ref.read(salesCartProvider.notifier).add(val);
                 productCntl.text = val.productName;
+                productCntl.clear();
               },
               suggestionsCallback: (val) async {
                 return ref

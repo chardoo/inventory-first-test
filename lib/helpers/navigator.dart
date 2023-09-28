@@ -8,4 +8,8 @@ class MyNavigator {
   static back(BuildContext context) {
     return Navigator.pop(context);
   }
+
+  static backTo(BuildContext context, {String path = "/"}) {
+    return Navigator.popUntil(context, ModalRoute.withName(path));
+  }
 }

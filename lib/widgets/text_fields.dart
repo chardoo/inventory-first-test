@@ -85,7 +85,7 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      keyboardType: keyboadType,
+      keyboardType: keyboadType ?? TextInputType.text,
       //obscureText: obsureText,
       maxLines: line,
       onEditingComplete: onEditingComplete,
@@ -112,11 +112,16 @@ class MyTextField extends StatelessWidget {
 
 class TextFieldWithDivider extends StatelessWidget {
   const TextFieldWithDivider(
-      {super.key, this.controller, this.enabled = true, this.label});
+      {super.key,
+      this.controller,
+      this.enabled = true,
+      this.label,
+      this.onChanged});
 
   final TextEditingController? controller;
   final String? label;
   final bool enabled;
+  final Function(String val)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +142,7 @@ class TextFieldWithDivider extends StatelessWidget {
             child: TextField(
               controller: controller,
               enabled: enabled,
+              onChanged: onChanged,
               decoration:
                   InputDecoration(border: InputBorder.none, labelText: label),
             ),

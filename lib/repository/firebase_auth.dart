@@ -12,7 +12,7 @@ class AuthState {
 class AuthRepo extends FireStoreAPIs<User> {
   String get userCollection => Collections.user.name;
   Future<AuthState> logIn(
-      String email, String password, dynamic Function(String) onError) async {
+      String email, String password,) async {
     try {
       final res = await instance
           .collection(userCollection)

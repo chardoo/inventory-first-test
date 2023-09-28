@@ -3,7 +3,7 @@ import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 
-import '../widgets/texts.dart';
+import '../../widgets/texts.dart';
 
 class AddSalesPerson extends StatelessWidget {
   AddSalesPerson({super.key});

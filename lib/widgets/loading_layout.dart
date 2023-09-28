@@ -12,7 +12,7 @@ class LoadingLayout extends ConsumerWidget {
       child,
       WillPopScope(
           onWillPop: () async =>
-              ref.read(loadingStateProvider.notifier).isAppLoading,
+              !ref.read(loadingStateProvider.notifier).isAppLoading,
           child: loadingState.show(context))
     ]);
   }

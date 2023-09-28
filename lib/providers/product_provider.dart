@@ -101,7 +101,7 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addProduct(Product product) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 200));
     final id = productApis.add(product);
     loadingState.finish();
     loadingState.diactivate();
@@ -124,13 +124,12 @@ class AddProductProvider extends _$AddProductProvider {
    print("djjsdjsdjsd");
     var total = 0.0;
     for (var element in results) {
-       total = total + element.productPrice* element.quantitySold;
+       total = total + element.productPrice* element.quantitySold!;
     }
    
     state =  AddProductState(totalSalesforProduct:total, sales: results );
     return results;
   }
-
 }
 
 class AddProductState {

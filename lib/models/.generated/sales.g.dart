@@ -10,7 +10,7 @@ _$_Sale _$$_SaleFromJson(Map<String, dynamic> json) => _$_Sale(
       saleId: json['saleId'] as String?,
       productId: json['productId'] as String,
       saleDate: json['saleDate'] as int,
-      quantitySold: json['quantitySold'] as int? ?? 0,
+      quantitySold: json['quantitySold'] as int?,
       productName: json['productName'] as String,
       productPrice: (json['productPrice'] as num).toDouble(),
       totalRevenue: (json['totalRevenue'] as num?)?.toDouble() ?? 0,

@@ -26,8 +26,8 @@ mixin _$Sale {
   set productId(String value) => throw _privateConstructorUsedError;
   int get saleDate => throw _privateConstructorUsedError;
   set saleDate(int value) => throw _privateConstructorUsedError;
-  int get quantitySold => throw _privateConstructorUsedError;
-  set quantitySold(int value) => throw _privateConstructorUsedError;
+  int? get quantitySold => throw _privateConstructorUsedError;
+  set quantitySold(int? value) => throw _privateConstructorUsedError;
   String get productName => throw _privateConstructorUsedError;
   set productName(String value) => throw _privateConstructorUsedError;
   double get productPrice => throw _privateConstructorUsedError;
@@ -53,7 +53,7 @@ abstract class $SaleCopyWith<$Res> {
       {String? saleId,
       String productId,
       int saleDate,
-      int quantitySold,
+      int? quantitySold,
       String productName,
       double productPrice,
       double totalRevenue,
@@ -77,7 +77,7 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
     Object? saleId = freezed,
     Object? productId = null,
     Object? saleDate = null,
-    Object? quantitySold = null,
+    Object? quantitySold = freezed,
     Object? productName = null,
     Object? productPrice = null,
     Object? totalRevenue = null,
@@ -97,10 +97,10 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
           ? _value.saleDate
           : saleDate // ignore: cast_nullable_to_non_nullable
               as int,
-      quantitySold: null == quantitySold
+      quantitySold: freezed == quantitySold
           ? _value.quantitySold
           : quantitySold // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       productName: null == productName
           ? _value.productName
           : productName // ignore: cast_nullable_to_non_nullable
@@ -135,7 +135,7 @@ abstract class _$$_SaleCopyWith<$Res> implements $SaleCopyWith<$Res> {
       {String? saleId,
       String productId,
       int saleDate,
-      int quantitySold,
+      int? quantitySold,
       String productName,
       double productPrice,
       double totalRevenue,
@@ -155,7 +155,7 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
     Object? saleId = freezed,
     Object? productId = null,
     Object? saleDate = null,
-    Object? quantitySold = null,
+    Object? quantitySold = freezed,
     Object? productName = null,
     Object? productPrice = null,
     Object? totalRevenue = null,
@@ -175,10 +175,10 @@ class __$$_SaleCopyWithImpl<$Res> extends _$SaleCopyWithImpl<$Res, _$_Sale>
           ? _value.saleDate
           : saleDate // ignore: cast_nullable_to_non_nullable
               as int,
-      quantitySold: null == quantitySold
+      quantitySold: freezed == quantitySold
           ? _value.quantitySold
           : quantitySold // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       productName: null == productName
           ? _value.productName
           : productName // ignore: cast_nullable_to_non_nullable
@@ -210,7 +210,7 @@ class _$_Sale implements _Sale {
       {this.saleId,
       required this.productId,
       required this.saleDate,
-      this.quantitySold = 0,
+      this.quantitySold,
       required this.productName,
       required this.productPrice,
       this.totalRevenue = 0,
@@ -226,8 +226,7 @@ class _$_Sale implements _Sale {
   @override
   int saleDate;
   @override
-  @JsonKey()
-  int quantitySold;
+  int? quantitySold;
   @override
   String productName;
   @override
@@ -264,7 +263,7 @@ abstract class _Sale implements Sale {
       {String? saleId,
       required String productId,
       required int saleDate,
-      int quantitySold,
+      int? quantitySold,
       required String productName,
       required double productPrice,
       double totalRevenue,
@@ -283,8 +282,8 @@ abstract class _Sale implements Sale {
   int get saleDate;
   set saleDate(int value);
   @override
-  int get quantitySold;
-  set quantitySold(int value);
+  int? get quantitySold;
+  set quantitySold(int? value);
   @override
   String get productName;
   set productName(String value);

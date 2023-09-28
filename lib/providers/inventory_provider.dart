@@ -1,5 +1,6 @@
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/models/stock.dart';
+import 'package:rich_co_inventory/providers/app_state_provider.dart';
 import 'package:rich_co_inventory/repository/sections/stock.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,18 +18,19 @@ class InventoryProvider extends _$InventoryProvider {
   }
 
   Future<String?> addInventory(Stock stock) async {
-   // final id = PurchaseApis().add(purchase);
-
-    var currentStock =
-        await StockApis().getStockByProductId(stock.productId);
+    // final id = PurchaseApis().add(purchase);
+    final loadingState = ref.read(loadingStateProvider.notifier);
+    loadingState.activate();
+    var currentStock = await StockApis().getStockByProductId(stock.productId);
     StockApis().update(Stock(
         stockId: currentStock[0]!.stockId,
-        productId: currentStock[0]!.productId!,
+        productId: currentStock[0]!.productId,
         productPrice: currentStock[0]!.productPrice,
         productName: stock.productName,
         currentQuantity:
             currentStock[0]!.currentQuantity + stock.currentQuantity,
         minimumRequiredQuantity: currentStock[0]!.minimumRequiredQuantity));
+    loadingState.diactivate();
 
     return '';
   }

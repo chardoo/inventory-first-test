@@ -27,8 +27,9 @@ class SalesApi extends FireStoreAPIs<Sale> {
 
         final updateStock =
             stockRef.docs.map((e) => Stock.fromJson(e.data())).toList();
+        final quantity = sale.quantitySold ?? 0;
         final data = {
-          "currentQuantity": updateStock[0].currentQuantity - sale.quantitySold
+          "currentQuantity": updateStock[0].currentQuantity - quantity
         };
         batch.update(stockRef.docs.first.reference, data);
         batch.set(docRef, sale.toJson());
@@ -102,6 +103,7 @@ class SalesApi extends FireStoreAPIs<Sale> {
       if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Sale.fromJson(e.data())).toList();
     } catch (e) {
+      print("object $e");
       return [];
     }
   }

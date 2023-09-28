@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/providers/display_products_provider.dart';
 import 'package:rich_co_inventory/providers/inventory_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
-import 'package:rich_co_inventory/screens.dart/home/dashboard.dart';
+import 'package:rich_co_inventory/screens.dart/dashboard_feauture/dashboard.dart';
+
 import 'package:rich_co_inventory/screens.dart/inventory/all_inventory.dart';
 import 'package:rich_co_inventory/widgets/shimmer.dart';
 import 'package:rich_co_inventory/widgets/texts.dart';

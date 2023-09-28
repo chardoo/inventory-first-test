@@ -6,7 +6,7 @@ part of '../sales_cart_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$salesCartProviderHash() => r'882b5fc3608950de4e089ba78820f313e0264b34';
+String _$salesCartProviderHash() => r'11cca010cb6266ec5f4efd68402675bfa2dde25e';
 
 /// See also [SalesCartProvider].
 @ProviderFor(SalesCartProvider)
@@ -22,21 +22,5 @@ final salesCartProvider =
 );
 
 typedef _$SalesCartProvider = AutoDisposeNotifier<List<Sale>>;
-String _$selectedSalesHash() => r'3ad9d5d513e8637f5689e958615187189183054b';
-
-/// See also [SelectedSales].
-@ProviderFor(SelectedSales)
-final selectedSales =
-    AutoDisposeNotifierProvider<SelectedSales, Sale?>.internal(
-  SelectedSales.new,
-  name: r'selectedSales',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$selectedSalesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$SelectedSales = AutoDisposeNotifier<Sale?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

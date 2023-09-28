@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rich_co_inventory/helpers/secure_store.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -22,20 +23,20 @@ class AuthProvider extends _$AuthProvider {
     loadingStateNotifier = ref.read(loadingStateProvider.notifier);
   }
 
-  Future logIn(
-      {required String email,
-      required String pwd,
-      required Function(String err) onError,
-     required Function() onSuccess}) async {
+  Future<(bool, String)> logIn({
+    required String email,
+    required String pwd,
+  }) async {
     initLoader();
     loadingStateNotifier?.activate();
-    var logInState = await repo.logIn(email, pwd, onError);
-    if (!logInState.isSuccess) {
-      onError(logInState.message!);
-    } else {
-      onSuccess();
-    }
+    var logInState = await repo.logIn(
+      email,
+      pwd,
+    );
+
+    Storage.setLogIn(logInState.isSuccess);
     loadingStateNotifier?.finish();
     loadingStateNotifier?.diactivate();
+    return (logInState.isSuccess, logInState.message ?? "");
   }
 }

@@ -1,4 +1,5 @@
 part of '../add_product_screen.dart';
+
 class _AddSupplierDialog extends ConsumerStatefulWidget {
   const _AddSupplierDialog();
 
@@ -39,6 +40,7 @@ class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
                 supplierEmail: controllers[1].text,
                 supplierAddress: controllers[2].text,
                 supplierContact: controllers[3].text);
+            MyNavigator.back(context);
             ref.read(addProductProvider.notifier).addSupplier(supplier);
           },
         ),
@@ -84,6 +86,8 @@ class _AddBrandDialogState extends ConsumerState<_AddBrandDialog> {
               brandName: controllers[0].text,
               brandDescription: controllers[1].text,
             );
+            MyNavigator.back(context);
+
             ref.read(addProductProvider.notifier).addBrand(brand);
           },
         ),
