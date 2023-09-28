@@ -10,8 +10,8 @@ import 'package:rich_co_inventory/widgets/snac_bar.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 import 'package:rich_co_inventory/widgets/texts.dart';
 
+import '../../main.dart';
 import '../dashboard_feauture/dashboard.dart';
-
 
 class LogInScreen extends ConsumerStatefulWidget {
   const LogInScreen({super.key});
@@ -133,10 +133,9 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                                         email: _emailController.text,
                                         pwd: _pwdController.text,
                                       );
-                              print("response $res");
                               if (mounted) {
                                 if (res.$1) {
-                                  MyNavigator.goto(context, const DashBoard());
+                                  MyNavigator.goto(context, const HomeScreen());
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(res.$2)));

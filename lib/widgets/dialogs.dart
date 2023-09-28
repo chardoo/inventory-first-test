@@ -28,29 +28,36 @@ class MyDialogs {
         context: context,
         builder: (_) {
           return Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Align(
                     alignment: Alignment.center,
                     child: MyText(
                       text: title,
+                      size: 24,
                       weight: FontWeight.bold,
                     )),
+                const SizedBox(height: 20),
                 MyText(
                   text: message,
                   size: 24,
                 ),
                 const SizedBox(height: 12),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomButton(
                       label: cancelButtonLabel,
+                      width: 100,
                       bgColor: Colors.redAccent,
                       ontap: onCancel ?? () => MyNavigator.back(context),
                     ),
                     CustomButton(
                       label: acceptLabel,
+                      width: 100,
                       ontap: onAcceptLabel,
                     )
                   ],
