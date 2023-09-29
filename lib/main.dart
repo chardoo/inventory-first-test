@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primaryColor: Colors.white,
+          primarySwatch: Colors.pink,
           appBarTheme: const AppBarTheme(
               foregroundColor: Colors.black,
               backgroundColor: Colors.white,
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           MyNavigator.goto(context, AddSalesScreen());
         },
-        child: const Text("Add"),
+        child: const Icon(Icons.shopping_cart),
       ),
       bottomNavigationBar: BottomNavigation(
         ontap: (val) {

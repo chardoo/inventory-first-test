@@ -18,16 +18,17 @@ class SalesProvider extends _$SalesProvider {
 
   Future<List<Purchase>> getPurchases(String date) async {
     var resutl = await PurchaseApis().getPurchaseByDate(date);
-    print("her this here man");
-    print(resutl);
+
     return resutl;
   }
 
   Future<List<Sale>> getSalesForDuration(DateTime? start, DateTime? end) async {
     final sales = await SalesApi().getSalesForRange(start, end);
-    final total = sales
-        .map((e) => e.productPrice)
-        .reduce((value, element) => value + element);
+    final total = sales.isEmpty
+        ? 0.0
+        : sales
+            .map((e) => e.productPrice)
+            .reduce((value, element) => value + element);
     state = SalesState(total: total);
     return sales;
   }
@@ -37,8 +38,6 @@ class SalesProvider extends _$SalesProvider {
 
     var currentStock =
         await StockApis().getStockByProductId(purchase.productId);
-    print("current stock");
-    print(currentStock);
 
     StockApis().update(Stock(
         stockId: currentStock[0]!.stockId,
