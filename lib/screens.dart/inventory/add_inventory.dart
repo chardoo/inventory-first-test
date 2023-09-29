@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -9,14 +7,14 @@ import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/inventory_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/drop_down_field.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/loading_layout.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/snac_bar.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
+import 'package:rich_co_inventory/widgets/button.dart';
+import 'package:rich_co_inventory/widgets/drop_down_field.dart';
+import 'package:rich_co_inventory/widgets/loading_layout.dart';
+import 'package:rich_co_inventory/widgets/snac_bar.dart';
+import 'package:rich_co_inventory/widgets/text_fields.dart';
 
 import '../../helpers/validators.dart';
-import '../shared/widgets/texts.dart';
+import '../../widgets/texts.dart';
 import '../product_feature/add_product_screen.dart';
 
 class AddInventoryScreen extends ConsumerStatefulWidget {
@@ -191,7 +189,6 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                             .addInventory(purchase, widget.stock != null);
 
                         MyNavigator.back(context);
-                        ref.read(displayProductsProvider.notifier).getStocks();
                       },
                     )
                   ]),

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../helpers/navigator.dart';
 import '../../providers/show_items_provider.dart';
-import '../shared/widgets/button.dart';
-import '../shared/widgets/texts.dart';
+import '../../widgets/button.dart';
+import '../../widgets/texts.dart';
 
 class AllBrandScreen extends ConsumerStatefulWidget {
   const AllBrandScreen({super.key});

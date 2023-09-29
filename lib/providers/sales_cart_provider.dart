@@ -12,10 +12,13 @@ class SalesCartProvider extends _$SalesCartProvider {
   }
 
   add(Product product) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
     final sale = Sale(
         time: Timestamp.fromDate(DateTime.now()).toString(),
         productId: product.productId ?? "",
-        saleDate: DateTime.now().millisecondsSinceEpoch,
+        saleDate: today.microsecondsSinceEpoch,
         productName: product.productName,
         productPrice: product.price);
     final containsProduct =

@@ -6,8 +6,8 @@ import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/screens.dart/dashboard_feauture/dashboard.dart';
 
 import 'package:rich_co_inventory/screens.dart/inventory/all_inventory.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/shimmer.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
+import 'package:rich_co_inventory/widgets/shimmer.dart';
+import 'package:rich_co_inventory/widgets/texts.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final String productId;

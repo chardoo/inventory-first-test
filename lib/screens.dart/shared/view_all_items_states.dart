@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/shimmer.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
+import 'package:rich_co_inventory/widgets/shimmer.dart';
+import 'package:rich_co_inventory/widgets/texts.dart';
 
 abstract class ProductDisplayState {
   Widget display();

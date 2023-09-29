@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/shimmer.dart';
+import 'package:rich_co_inventory/widgets/shimmer.dart';
 
 // ignore: must_be_immutable
 class SearchDropDownMenu<T> extends StatelessWidget {

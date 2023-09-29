@@ -4,11 +4,11 @@ import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/helpers/validators.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
 import 'package:rich_co_inventory/providers/auth_provider.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/loading_layout.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/snac_bar.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
+import 'package:rich_co_inventory/widgets/button.dart';
+import 'package:rich_co_inventory/widgets/loading_layout.dart';
+import 'package:rich_co_inventory/widgets/snac_bar.dart';
+import 'package:rich_co_inventory/widgets/text_fields.dart';
+import 'package:rich_co_inventory/widgets/texts.dart';
 
 import '../../main.dart';
 import '../dashboard_feauture/dashboard.dart';

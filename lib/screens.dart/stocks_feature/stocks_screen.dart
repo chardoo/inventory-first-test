@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/show_items_provider.dart';
-import '../shared/widgets/texts.dart';
+import '../../widgets/texts.dart';
 
 class StocksScreen extends ConsumerStatefulWidget {
   const StocksScreen({super.key});

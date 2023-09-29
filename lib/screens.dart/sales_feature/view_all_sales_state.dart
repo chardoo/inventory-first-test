@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/sales.dart';
 import '../shared/view_all_items_states.dart';
-import '../shared/widgets/list_tile_card.dart';
+import '../../widgets/list_tile_card.dart';
 
 class SalesSuccessState extends SuccessState<List<Sale>> {
   SalesSuccessState(super.data);

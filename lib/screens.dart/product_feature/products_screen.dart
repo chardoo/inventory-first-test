@@ -7,10 +7,11 @@ import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/screens.dart/product_feature/product_details.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
+import 'package:rich_co_inventory/widgets/button.dart';
+import 'package:rich_co_inventory/widgets/text_fields.dart';
+import 'package:rich_co_inventory/widgets/texts.dart';
 
+import '../../widgets/shimmer_loader.dart';
 import 'add_product_screen.dart';
 
 class ProductsScreen extends ConsumerStatefulWidget {
@@ -31,6 +32,10 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   }
 
   Timer? timer;
+  refresh() {
+    setState(() {});
+    return;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +86,49 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             ],
           ),
           const SizedBox(height: 24),
-          Consumer(builder: (_, ref, __) {
-            return ref.watch(displayProductsProvider).display();
-          })
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async => refresh(),
+              child: FutureBuilder(
+                  future: ref
+                      .read(addProductProvider.notifier)
+                      .searchProductByName(searchCtrl.text),
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const ShimmerLoader();
+                    }
+
+                    if (snapshot.hasData) {
+                      if (snapshot.requireData.isEmpty) {
+                        return const Center(
+                          child: MyText(
+                            text: "No Sales yet",
+                            size: 24,
+                            weight: FontWeight.bold,
+                          ),
+                        );
+                      }
+                      return ListView.separated(
+                          separatorBuilder: (_, i) =>
+                              const SizedBox(height: 12),
+                          itemCount: snapshot.requireData.length,
+                          itemBuilder: (_, i) {
+                            final product = snapshot.requireData[i];
+                            return ProductCard(description: product.productDescription!, name: product.productName, productId: product.productId!,
+                             
+                            );
+                          });
+                    }
+                    return Center(
+                      child: MyText(
+                        text: snapshot.error?.toString() ?? "",
+                        size: 24,
+                        weight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+            ),
+          )
         ]),
       ),
     );

@@ -59,14 +59,15 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
   }
 
   @override
-  update(Purchase product) async {
+  Future<String?> update(Purchase product) async {
     try {
       await instance
           .collection(mainCollection)
           .doc(product.purchaseId)
           .update(product.toJson());
+      return product.productId;
     } catch (e) {
-      //TODO: do something
+      return null;
     }
   }
 
@@ -152,5 +153,3 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
     }
   }
 }
-
-

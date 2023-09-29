@@ -3,13 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
 import 'package:rich_co_inventory/screens.dart/purchase_feature/add_purchase_page.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/shimmer.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
+import 'package:rich_co_inventory/widgets/button.dart';
+import 'package:rich_co_inventory/widgets/shimmer.dart';
+import 'package:rich_co_inventory/widgets/text_fields.dart';
+import 'package:rich_co_inventory/widgets/texts.dart';
+
+import '../../widgets/shimmer_loader.dart';
 
 class AllPurchaseScreen extends ConsumerStatefulWidget {
   const AllPurchaseScreen({super.key});
@@ -21,11 +24,9 @@ class AllPurchaseScreen extends ConsumerStatefulWidget {
 class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
   final TextEditingController searchCtrl = TextEditingController(text: "");
 
-  @override
-  void initState() {
-    Future.microtask(
-        () => ref.read(displayProductsProvider.notifier).getPurchase());
-    super.initState();
+  void refresh() {
+    setState(() {});
+    return;
   }
 
   Timer? timer;
@@ -54,9 +55,7 @@ class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
                   timer?.cancel();
                   timer = null;
                   timer = Timer(const Duration(seconds: 2), () {
-                    ref
-                        .read(displayProductsProvider.notifier)
-                        .searchPurchases(val);
+                    ref.read(purchaseProvider.notifier).getPurchases(val);
                   });
                 },
               )),
@@ -78,7 +77,49 @@ class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
             ],
           ),
           const SizedBox(height: 24),
-          ref.watch(displayProductsProvider).display()
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async => refresh(),
+              child: FutureBuilder(
+                  future: ref
+                      .read(purchaseProvider.notifier)
+                      .getPurchases(searchCtrl.text),
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const ShimmerLoader();
+                    }
+
+                    if (snapshot.hasData) {
+                      if (snapshot.requireData.isEmpty) {
+                        return const Center(
+                          child: MyText(
+                            text: "No Purchases yet",
+                            size: 24,
+                            weight: FontWeight.bold,
+                          ),
+                        );
+                      }
+                      return ListView.separated(
+                          separatorBuilder: (_, i) =>
+                              const SizedBox(height: 12),
+                          itemCount: snapshot.requireData.length,
+                          itemBuilder: (_, i) {
+                            final purchase = snapshot.requireData[i];
+                            return PurchaseCard(
+                              purchase: purchase,
+                            );
+                          });
+                    }
+                    return Center(
+                      child: MyText(
+                        text: snapshot.error?.toString() ?? "",
+                        size: 24,
+                        weight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+            ),
+          )
         ]),
       ),
     );
@@ -86,17 +127,9 @@ class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
 }
 
 class PurchaseCard extends StatelessWidget {
-  const PurchaseCard(
-      {super.key,
-      required this.productName,
-      required this.quantity,
-      required this.price,
-      required this.date});
+  const PurchaseCard({super.key, required this.purchase});
 
-  final String productName;
-  final int quantity;
-  final double price;
-  final String date;
+  final Purchase purchase;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +140,7 @@ class PurchaseCard extends StatelessWidget {
           color: Colors.grey.shade100),
       child: ListTile(
         title: MyText(
-          text: productName,
+          text: purchase.productName,
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
@@ -115,13 +148,13 @@ class PurchaseCard extends StatelessWidget {
         leading: Column(
           children: [
             MyText(
-              text: "cost:$price",
+              text: "cost:${purchase.cost}",
               weight: FontWeight.bold,
               size: 16,
               maxLines: 1,
             ),
             MyText(
-              text: "Qnt: $quantity",
+              text: "Qnt: ${purchase.quantityPurchased}",
               weight: FontWeight.bold,
               size: 16,
               maxLines: 1,
@@ -129,14 +162,24 @@ class PurchaseCard extends StatelessWidget {
           ],
         ),
         subtitle: MyText(
-          text: date,
+          text: DateTime.fromMillisecondsSinceEpoch(purchase.purchaseDate)
+              .toString(),
           size: 14,
           maxLines: 1,
           color: Colors.blueGrey,
         ),
-        trailing: const Icon(
-          Icons.edit,
-          color: Colors.blueGrey,
+        trailing: GestureDetector(
+          onTap: () {
+            MyNavigator.goto(
+                context,
+                AddPurchaseScreen(
+                  purchase: purchase,
+                ));
+          },
+          child: const Icon(
+            Icons.edit,
+            color: Colors.blueGrey,
+          ),
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,19 +11,19 @@ import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/dialogs.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/drop_down_field.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/loading_layout.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/snac_bar.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
+import 'package:rich_co_inventory/widgets/button.dart';
+import 'package:rich_co_inventory/widgets/dialogs.dart';
+import 'package:rich_co_inventory/widgets/drop_down_field.dart';
+import 'package:rich_co_inventory/widgets/loading_layout.dart';
+import 'package:rich_co_inventory/widgets/snac_bar.dart';
+import 'package:rich_co_inventory/widgets/text_fields.dart';
 
-import '../shared/widgets/texts.dart';
+import '../../widgets/texts.dart';
 import '../product_feature/add_product_screen.dart';
 
 class AddPurchaseScreen extends ConsumerStatefulWidget {
-  const AddPurchaseScreen({super.key});
-
+  const AddPurchaseScreen({this.purchase, super.key});
+  final Purchase? purchase;
   @override
   ConsumerState<AddPurchaseScreen> createState() => _AddProductScreenState();
 }
@@ -32,8 +34,35 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
   final TextEditingController quantity = TextEditingController();
   final TextEditingController purchaseDate = TextEditingController();
   final TextEditingController productCntl = TextEditingController();
-  final TextEditingController productName = TextEditingController();
+
   DateTime currentDate = DateTime.now();
+
+  @override
+  void initState() {
+    if (widget.purchase != null) {
+      final p = widget.purchase!;
+      priceCont.text = p.cost.toString();
+      final date = DateTime.fromMillisecondsSinceEpoch(p.purchaseDate);
+      purchaseDate.text = format.format(date);
+      quantity.text = p.quantityPurchased.toString();
+      productCntl.text = p.productName;
+      productInfo = (
+        name: p.productName,
+        productId: p.productId,
+        supplierId: p.supplierId!,
+        purchaseId: p.purchaseId
+      );
+    }
+    super.initState();
+  }
+
+  ({
+    String name,
+    String productId,
+    String supplierId,
+    String? purchaseId
+  })? productInfo;
+
   final format = DateFormat(DateFormat.YEAR_MONTH_DAY);
   @override
   void dispose() {
@@ -41,13 +70,12 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
     quantity.dispose();
     productCntl.dispose();
     purchaseDate.dispose();
-    productName.dispose();
     super.dispose();
   }
 
-  Product? selectedProduct;
   @override
   Widget build(BuildContext context) {
+    final product = widget.purchase;
     purchaseDate.text = format.format(currentDate);
     return LoadingLayout(
       child: Scaffold(
@@ -77,17 +105,27 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                                       title: Text(value.productName));
                                 },
                                 onChange: (val) {
-                                  selectedProduct = null;
+                                  if (product == null) {
+                                    productInfo = null;
+                                  }
                                 },
                                 controller: productCntl,
                                 onSelected: (val) {
-                                  selectedProduct = val;
-                                  productCntl.text = val.productName;
+                                  if (product == null) {
+                                    productInfo = (
+                                      name: val.productName,
+                                      productId: val.productId!,
+                                      supplierId: val.supplierId!,
+                                      purchaseId: null
+                                    );
+                                    productCntl.text = val.productName;
+                                  }
                                 },
                                 suggestionsCallback: (val) async {
                                   return ref
                                       .read(addProductProvider.notifier)
-                                      .searchProductByName(val);
+                                      .searchProductByName(
+                                          product?.productName ?? val);
                                 })),
                         const SizedBox(
                           width: 12,
@@ -141,7 +179,7 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                       label: "Add Purchase",
                       width: double.infinity,
                       ontap: () async {
-                        if (selectedProduct == null) {
+                        if (productInfo == null) {
                           MySnackBar.showSnack(
                               "please select a product", context);
                           return;
@@ -167,26 +205,24 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                             onAcceptLabel: () async {
                           MyNavigator.back(context);
                           Purchase purchase = Purchase(
+                              purchaseId: productInfo!.purchaseId,
                               time:
                                   Timestamp.fromDate(DateTime.now()).toString(),
-                              productId: selectedProduct!.productId!,
-                              supplierId: selectedProduct!.supplierId,
-                              productName: selectedProduct!.productName,
+                              productId: productInfo!.productId,
+                              supplierId: productInfo!.supplierId,
+                              productName: productInfo!.name,
                               purchaseDate: currentDate.millisecondsSinceEpoch,
                               quantityPurchased: int.parse(quantity.text),
                               cost: double.tryParse(priceCont.text)!);
 
                           await ref
                               .read(purchaseProvider.notifier)
-                              .addPurchase(purchase);
+                              .addPurchase(purchase, product != null);
 
                           if (mounted) {
                             MyNavigator.backTo(
                               context,
                             );
-                            ref
-                                .read(displayProductsProvider.notifier)
-                                .getPurchase();
                           }
                         });
                       },

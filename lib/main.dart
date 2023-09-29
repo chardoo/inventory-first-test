@@ -12,7 +12,7 @@ import 'package:rich_co_inventory/screens.dart/product_feature/add_product_scree
 import 'package:rich_co_inventory/screens.dart/product_feature/products_screen.dart';
 import 'package:rich_co_inventory/screens.dart/purchase_feature/all_purchase_page.dart';
 import 'package:rich_co_inventory/screens.dart/sales_feature/add_sales.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/bottom_navigation.dart';
+import 'package:rich_co_inventory/widgets/bottom_navigation.dart';
 
 import 'firebase_options.dart';
 import 'helpers/navigator.dart';

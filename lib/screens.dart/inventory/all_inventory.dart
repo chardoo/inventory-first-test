@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/models/stock.dart';
-import 'package:rich_co_inventory/providers/show_items_provider.dart';
+import 'package:rich_co_inventory/providers/inventory_provider.dart';
 import 'package:rich_co_inventory/screens.dart/inventory/add_inventory.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
+import 'package:rich_co_inventory/widgets/button.dart';
+import 'package:rich_co_inventory/widgets/shimmer_loader.dart';
+import 'package:rich_co_inventory/widgets/text_fields.dart';
+import 'package:rich_co_inventory/widgets/texts.dart';
 
 class AllInventory extends ConsumerStatefulWidget {
   const AllInventory({super.key});
@@ -18,14 +19,18 @@ class AllInventory extends ConsumerStatefulWidget {
 }
 
 class _ProductsScreenState extends ConsumerState<AllInventory> {
+  final TextEditingController searchCtrl = TextEditingController(text: "");
   @override
-  void initState() {
-    Future.microtask(
-        () => ref.read(displayProductsProvider.notifier).getStocks());
-    super.initState();
+  void dispose() {
+    searchCtrl.dispose();
+    super.dispose();
   }
 
-  final TextEditingController searchCtrl = TextEditingController(text: "");
+  void refresh() {
+    setState(() {});
+    return;
+  }
+
   Timer? timer;
   @override
   Widget build(BuildContext context) {
@@ -51,8 +56,8 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
                 onChanged: (val) {
                   timer?.cancel();
                   timer = null;
-                  timer = Timer(Duration(seconds: 2), () {
-                    ref.read(displayProductsProvider.notifier).searchStock(val);
+                  timer = Timer(const Duration(seconds: 2), () {
+                    refresh();
                   });
                 },
               )),
@@ -74,9 +79,51 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
             ],
           ),
           const SizedBox(height: 24),
-          Consumer(builder: (_, ref, __) {
-            return ref.watch(displayProductsProvider).display();
-          })
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async => refresh(),
+              child: FutureBuilder(
+                  future: ref
+                      .read(inventoryProvider.notifier)
+                      .getInventory(searchCtrl.text),
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const ShimmerLoader();
+                    }
+
+                    if (snapshot.hasData) {
+                      if (snapshot.requireData.isEmpty) {
+                        return const Center(
+                          child: MyText(
+                            text: "No Sales yet",
+                            size: 24,
+                            weight: FontWeight.bold,
+                          ),
+                        );
+                      }
+                      return ListView.separated(
+                        separatorBuilder: (_, i) => const SizedBox(height: 12),
+                        itemCount: snapshot.requireData.length,
+                        itemBuilder: (_, i) {
+                          //  return Text("richOCDE");
+                          final inventory = snapshot.requireData[i];
+                          return StockCard(
+                            //  date: inventory.purchaseDate,
+                            stock: inventory,
+                          );
+                        },
+                      );
+                    }
+                    return Center(
+                      child: MyText(
+                        text: snapshot.error?.toString() ?? "",
+                        size: 24,
+                        weight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+            ),
+          )
         ]),
       ),
     );
@@ -84,11 +131,9 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
 }
 
 class StockCard extends StatelessWidget {
-  const StockCard({
-    super.key,
-  required this.stock
-    // required this.date
-  });
+  const StockCard({super.key, required this.stock
+      // required this.date
+      });
 
   final Stock stock;
   // final String date;
@@ -115,7 +160,11 @@ class StockCard extends StatelessWidget {
         ),
         trailing: GestureDetector(
           onTap: () {
-            MyNavigator.goto(context, AddInventoryScreen(stock: stock,));
+            MyNavigator.goto(
+                context,
+                AddInventoryScreen(
+                  stock: stock,
+                ));
           },
           child: const Icon(
             Icons.edit,

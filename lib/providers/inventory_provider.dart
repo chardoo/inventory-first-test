@@ -17,6 +17,7 @@ class InventoryProvider extends _$InventoryProvider {
     return await StockApis().getStockByProductName(name);
   }
 
+
   Future<String?> addInventory(Stock stock, bool update) async {
     // final id = PurchaseApis().add(purchase);
     final loadingState = ref.read(loadingStateProvider.notifier);

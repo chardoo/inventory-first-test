@@ -63,7 +63,6 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addAllSales(List<Sale> sales) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    Future.delayed(const Duration(seconds: 5));
     final res = await salesApi.addAll(sales);
     print("res $res");
     loadingState.finish();

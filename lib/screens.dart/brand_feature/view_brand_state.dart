@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/brand.dart';
 import '../shared/view_all_items_states.dart';
-import '../shared/widgets/list_tile_card.dart';
+import '../../widgets/list_tile_card.dart';
 
 class BrandSuccessState extends SuccessState<List<Brand>> {
   BrandSuccessState(super.data);

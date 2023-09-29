@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/text_fields.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
+import 'package:rich_co_inventory/widgets/text_fields.dart';
+import 'package:rich_co_inventory/widgets/texts.dart';
 
 import 'button.dart';
 

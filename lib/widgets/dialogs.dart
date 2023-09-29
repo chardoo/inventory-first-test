@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
-import 'package:rich_co_inventory/screens.dart/shared/widgets/texts.dart';
+import 'package:rich_co_inventory/widgets/texts.dart';
 
 import 'button.dart';
 
