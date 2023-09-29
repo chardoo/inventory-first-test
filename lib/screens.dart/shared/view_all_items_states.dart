@@ -9,7 +9,6 @@ abstract class ProductDisplayState {
 class LoadingState extends ProductDisplayState {
   @override
   display() {
-    print("hello here");
     return Expanded(
       child: ListView.separated(
           separatorBuilder: (_, i) => const SizedBox(height: 12),

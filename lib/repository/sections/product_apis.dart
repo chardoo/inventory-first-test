@@ -165,31 +165,23 @@ class ProductApis extends FireStoreAPIs<Product> {
   Future<List<Sale>> getSalesforAProductForToday(
       String productId, DateTime? start, DateTime? end) async {
     try {
-      print(productId);
       var t = DateTime.now();
-      final today = DateTime(t.year, t.month, t.day);
-      final tomorrow = today.add(const Duration(hours: 24));
-      print(
-          "object $productId  ${start?.microsecondsSinceEpoch}  end ${t.millisecondsSinceEpoch}");
-
+      final days = [];
+      DateTime currentDay = start ?? DateTime(t.year, t.month, t.day);
+      final DateTime endDay = end ?? currentDay.add(const Duration(days: 1));
+      while (currentDay.isBefore(endDay)) {
+        days.add(currentDay.millisecondsSinceEpoch);
+        currentDay = currentDay.add(const Duration(days: 1));
+      }
+     // print("days $days");
       var res = await instance
           .collection(Collections.sales.name)
-          .where('productId', isEqualTo: productId);
+          .where('productId', isEqualTo: productId)
+          .where("saleDate", whereIn: days)
+          .get();
 
-      //  instance
-      //   .collection(Collections.sales.name) .where('saleDate',
-      //       isGreaterThanOrEqualTo:
-      //           start?.millisecondsSinceEpoch ?? today.millisecondsSinceEpoch)
-      //   .where("saleDate",
-      //       isLessThanOrEqualTo: end?.millisecondsSinceEpoch ??
-      //           tomorrow.millisecondsSinceEpoch)
-      //   .get();1695859240000
-
-      final results =
-          await res.where("saleDate", isEqualTo: 1695859240000).get();
-
-      if (results.docs.isEmpty) return [];
-      return results.docs.map((e) => Sale.fromJson(e.data())).toList();
+      if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Sale.fromJson(e.data())).toList();
     } catch (e) {
       return [];
     }

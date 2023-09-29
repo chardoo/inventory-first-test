@@ -117,8 +117,7 @@ class AddProductProvider extends _$AddProductProvider {
       String productId, DateTime? startTime, DateTime? endTime) async {
     var results = await productApis.getSalesforAProductForToday(
         productId, startTime, endTime);
-    print(results);
-    print("djjsdjsdjsd");
+
     var total = 0.0;
     for (var element in results) {
       total = total + element.productPrice * element.quantitySold!;

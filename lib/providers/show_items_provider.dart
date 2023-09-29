@@ -8,7 +8,6 @@ import 'package:rich_co_inventory/repository/sections/suppliers_api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../screens.dart/brand_feature/view_brand_state.dart';
-import '../screens.dart/sales_feature/view_all_sales_state.dart';
 import '../screens.dart/shared/view_all_items_states.dart';
 import '../screens.dart/supplier_feature.dart/view_all_suppliers_state.dart';
 part '.generated/show_items_provider.g.dart';
@@ -50,12 +49,6 @@ class DisplayProductsProvider extends _$DisplayProductsProvider {
     state = LoadingState();
     final data = await brandAPIs.getAll();
     state = BrandSuccessState(data);
-  }
-
-  getSales() async {
-    state = LoadingState();
-    final data = await salesApi.getAll();
-    state = SalesSuccessState(data);
   }
 
   getSuppliers() async {

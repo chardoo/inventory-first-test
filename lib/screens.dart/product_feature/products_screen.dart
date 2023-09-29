@@ -114,8 +114,10 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                           itemCount: snapshot.requireData.length,
                           itemBuilder: (_, i) {
                             final product = snapshot.requireData[i];
-                            return ProductCard(description: product.productDescription!, name: product.productName, productId: product.productId!,
-                             
+                            return ProductCard(
+                              description: product.productDescription!,
+                              name: product.productName,
+                              productId: product.productId!,
                             );
                           });
                     }
@@ -150,8 +152,9 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () async {
+          print("hello");
           MyNavigator.goto(context,
-              ProductDetailScreen(productId: productId!, productName: name));
+              ProductDetailScreen(productId: productId, productName: name));
         },
         child: Container(
           decoration: BoxDecoration(
