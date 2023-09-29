@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/screens.dart/inventory/add_inventory.dart';
 import 'package:rich_co_inventory/screens.dart/shared/widgets/button.dart';
@@ -85,13 +86,11 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
 class StockCard extends StatelessWidget {
   const StockCard({
     super.key,
-    required this.productName,
-    required this.quantity,
+  required this.stock
     // required this.date
   });
 
-  final String productName;
-  final int quantity;
+  final Stock stock;
   // final String date;
 
   @override
@@ -103,20 +102,25 @@ class StockCard extends StatelessWidget {
           color: Colors.grey.shade100),
       child: ListTile(
         title: MyText(
-          text: productName,
+          text: stock.productName!,
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
         ),
         subtitle: MyText(
-          text: "Qnt: $quantity",
+          text: "Qnt: ${stock.currentQuantity}",
           color: Colors.grey,
           size: 16,
           maxLines: 1,
         ),
-        trailing: const Icon(
-          Icons.edit,
-          color: Colors.blueGrey,
+        trailing: GestureDetector(
+          onTap: () {
+            MyNavigator.goto(context, AddInventoryScreen(stock: stock,));
+          },
+          child: const Icon(
+            Icons.edit,
+            color: Colors.blueGrey,
+          ),
         ),
       ),
     );

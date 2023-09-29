@@ -56,6 +56,7 @@ class StockApis extends FireStoreAPIs<Stock> {
 
   Future<List<Stock?>> getStockByProductId(String productId) async {
     try {
+      print("product id $productId");
       var res = await instance
           .collection(mainCollection)
           .where("productId", isEqualTo: productId)

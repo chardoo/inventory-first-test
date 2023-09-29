@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 
 import '../../models/stock.dart';
@@ -20,8 +18,7 @@ class StockSuccessState extends SuccessState<List<Stock>> {
             final inventory = data[i];
             return StockCard(
               //  date: inventory.purchaseDate,
-              productName: inventory.productName!,
-              quantity: inventory.currentQuantity,
+              stock: inventory,
             );
           }),
     );

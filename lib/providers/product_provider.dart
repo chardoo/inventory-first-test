@@ -43,8 +43,7 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addStock(Stock stock) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    final res = await Future.delayed(const Duration(seconds: 2));
-    stockApis.add(stock);
+    final res = await stockApis.add(stock);
     loadingState.finish();
     loadingState.diactivate();
     return res;
@@ -101,8 +100,7 @@ class AddProductProvider extends _$AddProductProvider {
   Future<String?> addProduct(Product product) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    await Future.delayed(const Duration(seconds: 200));
-    final id = productApis.add(product);
+    final id = await productApis.add(product);
     loadingState.finish();
     loadingState.diactivate();
     return id;
@@ -114,20 +112,20 @@ class AddProductProvider extends _$AddProductProvider {
 
   Future<List<Brand>> searchByName(String name) async {
     return brandApis.searchByName(name);
-  
-  
   }
 
- Future<List<Sale>> getsalesForAProduct(String productId,DateTime? startTime, DateTime? endTime) async {
-   var results  = await productApis.getSalesforAProductForToday(productId, startTime,endTime);
-   print(results);
-   print("djjsdjsdjsd");
+  Future<List<Sale>> getsalesForAProduct(
+      String productId, DateTime? startTime, DateTime? endTime) async {
+    var results = await productApis.getSalesforAProductForToday(
+        productId, startTime, endTime);
+    print(results);
+    print("djjsdjsdjsd");
     var total = 0.0;
     for (var element in results) {
-       total = total + element.productPrice* element.quantitySold!;
+      total = total + element.productPrice * element.quantitySold!;
     }
-   
-    state =  AddProductState(totalSalesforProduct:total, sales: results );
+
+    state = AddProductState(totalSalesforProduct: total, sales: results);
     return results;
   }
 }
@@ -140,15 +138,24 @@ class AddProductState {
   List<Sale> sales = [];
 
   AddProductState copyWith(
-      {Product? product, Supplier? supplier, Brand? brand, double ?totalSalesforProduct, List<Sale> ?sales}) {
+      {Product? product,
+      Supplier? supplier,
+      Brand? brand,
+      double? totalSalesforProduct,
+      List<Sale>? sales}) {
     return AddProductState(
-        sales: sales?? this.sales,
+        sales: sales ?? this.sales,
         brand: brand ?? this.brand,
         product: product ?? this.product,
         supplier: supplier ?? this.supplier,
-        totalSalesforProduct:  totalSalesforProduct ?? this.totalSalesforProduct
-        );
+        totalSalesforProduct:
+            totalSalesforProduct ?? this.totalSalesforProduct);
   }
 
-  AddProductState({this.product, this.supplier, this.brand, required this.totalSalesforProduct, required this.sales});
+  AddProductState(
+      {this.product,
+      this.supplier,
+      this.brand,
+      required this.totalSalesforProduct,
+      required this.sales});
 }

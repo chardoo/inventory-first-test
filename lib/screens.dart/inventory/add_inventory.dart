@@ -20,8 +20,12 @@ import '../shared/widgets/texts.dart';
 import '../product_feature/add_product_screen.dart';
 
 class AddInventoryScreen extends ConsumerStatefulWidget {
-  const AddInventoryScreen({super.key});
+  const AddInventoryScreen({
+    super.key,
+    this.stock,
+  });
 
+  final Stock? stock;
   @override
   ConsumerState<AddInventoryScreen> createState() => _AddProductScreenState();
 }
@@ -31,6 +35,15 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
 
   final TextEditingController quantityCntl = TextEditingController();
   final TextEditingController purchaseDate = TextEditingController();
+  @override
+  void initState() {
+    if (widget.stock != null) {
+      quantityCntl.text = widget.stock!.currentQuantity.toString();
+      productController.text = widget.stock!.productName!;
+      productNameId = (widget.stock!.productName!, widget.stock!.productId);
+    }
+    super.initState();
+  }
 
   DateTime currentDate = DateTime.now();
   final format = DateFormat(DateFormat.YEAR_MONTH_DAY);
@@ -43,7 +56,7 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
     super.dispose();
   }
 
-  Product? selectedProduct;
+  (String, String)? productNameId;
 
   var error = (true, "");
   @override
@@ -54,8 +67,8 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
         appBar: AppBar(
           leading: BackButton(
               color: Colors.black, onPressed: () => MyNavigator.back(context)),
-          title: const MyText(
-            text: "Add Inventory",
+          title: MyText(
+            text: widget.stock == null ? "Add Inventory" : "Update Inventory",
             weight: FontWeight.bold,
             size: 24,
           ),
@@ -79,17 +92,22 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                                 },
                                 controller: productController,
                                 onChange: (val) {
-                                  print("val $val");
-                                  selectedProduct = null;
+                                  if (widget.stock == null) {
+                                    productNameId = null;
+                                  }
                                 },
                                 onSelected: (val) {
-                                  selectedProduct = val;
-                                  productController.text = val.productName;
+                                  if (widget.stock == null) {
+                                    productNameId =
+                                        (val.productName, val.productId!);
+                                    productController.text = val.productName;
+                                  }
                                 },
                                 suggestionsCallback: (val) async {
                                   return ref
                                       .read(addProductProvider.notifier)
-                                      .searchProductByName(val);
+                                      .searchProductByName(
+                                          widget.stock?.productName ?? val);
                                 })),
                         const SizedBox(
                           width: 12,
@@ -147,10 +165,12 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                       height: 50,
                     ),
                     CustomButton(
-                      label: "Add Inventory",
+                      label: widget.stock == null
+                          ? "Add Inventory"
+                          : "Update ${widget.stock!.productName}",
                       width: double.infinity,
                       ontap: () async {
-                        if (selectedProduct == null) {
+                        if (productNameId == null) {
                           MySnackBar.showSnack(
                               "please select a product", context);
                           return;
@@ -161,14 +181,14 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                           MySnackBar.showSnack(error.$2, context);
                         }
                         Stock purchase = Stock(
-                          productId: selectedProduct!.productId!,
-                          productName: selectedProduct!.productName,
+                          productId: productNameId!.$2,
+                          productName: productNameId!.$1,
                           currentQuantity: int.parse(quantityCntl.text),
                           minimumRequiredQuantity: int.parse(quantityCntl.text),
                         );
                         ref
                             .read(inventoryProvider.notifier)
-                            .addInventory(purchase);
+                            .addInventory(purchase, widget.stock != null);
 
                         MyNavigator.back(context);
                         ref.read(displayProductsProvider.notifier).getStocks();

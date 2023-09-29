@@ -17,7 +17,7 @@ class InventoryProvider extends _$InventoryProvider {
     return await StockApis().getStockByProductName(name);
   }
 
-  Future<String?> addInventory(Stock stock) async {
+  Future<String?> addInventory(Stock stock, bool update) async {
     // final id = PurchaseApis().add(purchase);
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
@@ -27,8 +27,9 @@ class InventoryProvider extends _$InventoryProvider {
         productId: currentStock[0]!.productId,
         productPrice: currentStock[0]!.productPrice,
         productName: stock.productName,
-        currentQuantity:
-            currentStock[0]!.currentQuantity + stock.currentQuantity,
+        currentQuantity: update
+            ? stock.currentQuantity
+            : currentStock[0]!.currentQuantity + stock.currentQuantity,
         minimumRequiredQuantity: currentStock[0]!.minimumRequiredQuantity));
     loadingState.diactivate();
 
