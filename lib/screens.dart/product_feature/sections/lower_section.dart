@@ -93,7 +93,7 @@ class _LowerSectionState extends State<_LowerSection> {
         ),
         const SizedBox(height: 50),
         CustomButton(
-          label: "Add product",
+          label: widget.product == null ? "Add product" : "Update product",
           ontap: widget.addProduct,
           width: double.infinity,
         )

@@ -58,13 +58,15 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool updatePage = widget.product != null;
+
     return LoadingLayout(
       child: Scaffold(
           backgroundColor: Colors.grey.shade100,
           appBar: AppBar(
             leading: const BackButton(color: Colors.black),
-            title: const MyText(
-              text: "Add product",
+            title: MyText(
+              text: updatePage ? "Update Product" : "Add product",
               weight: FontWeight.bold,
               size: 24,
             ),
