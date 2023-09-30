@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/models/sales.dart';
@@ -26,10 +27,10 @@ class SalesProvider extends _$SalesProvider {
 
   Future<List<Sale>> getSalesForDuration(DateTime? start, DateTime? end) async {
     final sales = await SalesApi().getSalesForRange(start, end);
-    double total  = 0.0;
+    double total = 0.0;
 
-    for(int i=0; i<sales.length; i++){
-      total = total + (sales[i].productPrice * sales[i].quantitySold!); 
+    for (int i = 0; i < sales.length; i++) {
+      total = total + (sales[i].productPrice * sales[i].quantitySold!);
     }
 
     state = SalesState(total: total);
@@ -58,3 +59,6 @@ class SalesState {
   Purchase? purchas;
   SalesState({this.total, this.listOfProduct, this.purchas});
 }
+
+final dateProvider = StateProvider<({DateTime? start, DateTime? end})>(
+    (ref) => (start: null, end: null));

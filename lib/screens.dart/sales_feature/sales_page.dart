@@ -36,10 +36,17 @@ class _SalesPageState extends ConsumerState<SalesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("All Sales")),
-        body: Stack(
+        body: Column(
           children: [
+            const SizedBox(height: 24),
+            Consumer(builder: (context, ref, _) {
+              return MyText(
+                  text: "Total: ${ref.watch(salesProvider).total}",
+                  weight: FontWeight.bold,
+                  size: 24);
+            }),
             Padding(
-              padding: const EdgeInsets.only(top: 70, right: 24, left: 24),
+              padding: const EdgeInsets.all(24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -53,7 +60,6 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                     ontap: () async {
                       startTime = null;
                       final selectedDate = await showDatePicker(
-                          // currentDate: currentDate,
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime.now()
@@ -61,7 +67,6 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                           lastDate:
                               DateTime.now().add(const Duration(days: 1000)));
                       startTime = selectedDate;
-                     
                     },
                   ),
                   MyIconButton(
@@ -71,7 +76,6 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                       bgColor: Colors.white,
                       ontap: () async {
                         final selectedDate = await showDatePicker(
-                            // currentDate: currentDate,
                             context: context,
                             initialDate: DateTime.now(),
                             firstDate: DateTime.now()
@@ -89,127 +93,66 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                 ],
               ),
             ),
-            Column(
-              children: [
-                Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () async => refresh(),
-                    child: FutureBuilder(
-                        future: ref
-                            .read(salesProvider.notifier)
-                            .getSalesForDuration(startTime, endTime),
-                        builder: (_, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const ShimmerLoader();
-                          }
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async => refresh(),
+                child: FutureBuilder(
+                    future: ref
+                        .read(salesProvider.notifier)
+                        .getSalesForDuration(startTime, endTime),
+                    builder: (_, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const ShimmerLoader();
+                      }
 
-                          if (snapshot.hasData) {
-                            if (snapshot.requireData.isEmpty) {
-                              return const Center(
-                                child: MyText(
-                                  text: "No Purchases yet",
-                                  size: 24,
-                                  weight: FontWeight.bold,
-                                ),
-                              );
-                            }
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const SizedBox(height: 10),
-                                MyText(
-                                  
-                                    text: "Total: ${ref.watch(salesProvider).total}",
-                                    weight: FontWeight.bold,
-                                    size: 24),
-                                const SizedBox(height: 100),
-                                Expanded(
-                                  child: ListView.separated(
-                                    itemBuilder: (_, i) {
-                                      final sale = snapshot.requireData[i];
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12),
-                                        child: ListTileCard(
-                                          title: sale.productName,
-                                          subTitle: "View detail",
-                                          icon: Icon(Icons.delete),
-                                        ),
-                                      );
-                                    },
-                                    itemCount: snapshot.requireData.length,
-                                    separatorBuilder:
-                                        (BuildContext context, int index) {
-                                      return const Divider();
-                                    },
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-
-                          return Center(
+                      if (snapshot.hasData) {
+                        if (snapshot.requireData.isEmpty) {
+                          return const Center(
                             child: MyText(
-                              text:
-                                  "${snapshot.error}${snapshot.hasError}" ?? "",
+                              text: "No Purchases yet",
                               size: 24,
                               weight: FontWeight.bold,
                             ),
                           );
-                        }),
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 70, right: 24, left: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MyIconButton(
-                    label: format(startTime) ?? "start",
-                    forgroundColor: Colors.grey,
-                    borderColor: Colors.grey,
-                    bgColor: Colors.white,
-                    icon: const RotatedBox(
-                        quarterTurns: 3, child: Icon(Icons.chevron_left)),
-                    ontap: () async {
-                      startTime = null;
-                      final selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now()
-                              .subtract(const Duration(days: 1000)),
-                          lastDate:
-                              DateTime.now().add(const Duration(days: 1000)));
-                      startTime = selectedDate;
-                    },
-                  ),
-                  MyIconButton(
-                      label: format(endTime) ?? "endDate",
-                      forgroundColor: Colors.grey,
-                      borderColor: Colors.grey,
-                      bgColor: Colors.white,
-                      ontap: () async {
-                        final selectedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now()
-                                .subtract(const Duration(days: 1000)),
-                            lastDate:
-                                DateTime.now().add(const Duration(days: 1000)));
-                        endTime = selectedDate;
-
-                        if (startTime != null && endTime != null) {
-                          refresh();
                         }
-                      },
-                      icon: const RotatedBox(
-                          quarterTurns: 3, child: Icon(Icons.chevron_left))),
-                ],
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: ListView.separated(
+                                itemBuilder: (_, i) {
+                                  final sale = snapshot.requireData[i];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12),
+                                    child: ListTileCard(
+                                      title: sale.productName,
+                                      subTitle: "View detail",
+                                      icon: Icon(Icons.delete),
+                                    ),
+                                  );
+                                },
+                                itemCount: snapshot.requireData.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return const Divider();
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+
+                      return Center(
+                        child: MyText(
+                          text: "${snapshot.error}${snapshot.hasError}" ?? "",
+                          size: 24,
+                          weight: FontWeight.bold,
+                        ),
+                      );
+                    }),
               ),
-            ),
+            )
           ],
         ));
   }

@@ -19,7 +19,6 @@ class PurchaseProvider extends _$PurchaseProvider {
   Future<String?> addPurchase(Purchase purchase, bool update) async {
     final loadingNotifier = ref.read(loadingStateProvider.notifier);
     loadingNotifier.activate();
-    print(purchase);
     final id = update
         ? await PurchaseApis().update(purchase)
         : await PurchaseApis().add(purchase);

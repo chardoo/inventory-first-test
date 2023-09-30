@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:rich_co_inventory/providers/sales_provider.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/inventory_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
@@ -29,8 +31,11 @@ class _ProductsScreenState extends ConsumerState<ProductDetailScreen> {
     super.initState();
   }
 
-  DateTime? startTime;
-  DateTime? endTime;
+  format(DateTime? date) {
+    final format = DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY);
+    if (date == null) return null;
+    return format.format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,34 +63,22 @@ class _ProductsScreenState extends ConsumerState<ProductDetailScreen> {
                 weight: FontWeight.bold,
                 size: 24);
           }),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MyIconButton(
-                label: "start",
-                forgroundColor: Colors.grey,
-                borderColor: Colors.grey,
-                bgColor: Colors.white,
-                icon: const RotatedBox(
-                    quarterTurns: 3, child: Icon(Icons.chevron_left)),
-                ontap: () async {
-                  startTime = null;
-                  final selectedDate = await showDatePicker(
-                      // currentDate: currentDate,
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate:
-                          DateTime.now().subtract(const Duration(days: 1000)),
-                      lastDate: DateTime.now().add(const Duration(days: 1000)));
-                  startTime = selectedDate;
-                },
-              ),
-              MyIconButton(
-                  label: "endDate",
+          Consumer(builder: (context, ref, _) {
+            final date = ref.watch(dateProvider);
+            final dateRef = ref.watch(dateProvider.notifier);
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                MyIconButton(
+                  label: format(date.start) ?? "start",
                   forgroundColor: Colors.grey,
                   borderColor: Colors.grey,
                   bgColor: Colors.white,
+                  icon: const RotatedBox(
+                      quarterTurns: 3, child: Icon(Icons.chevron_left)),
                   ontap: () async {
+                    dateRef.state = (start: null, end: date.end);
+
                     final selectedDate = await showDatePicker(
                         // currentDate: currentDate,
                         context: context,
@@ -94,24 +87,48 @@ class _ProductsScreenState extends ConsumerState<ProductDetailScreen> {
                             DateTime.now().subtract(const Duration(days: 1000)),
                         lastDate:
                             DateTime.now().add(const Duration(days: 1000)));
-                    endTime = selectedDate;
+                    dateRef.state = (start: selectedDate, end: date.end);
 
-                    if (startTime != null && endTime != null) {
+                    if (date.start != null && date.end != null) {
                       setState(() {});
                     }
                   },
-                  icon: const RotatedBox(
-                      quarterTurns: 3, child: Icon(Icons.chevron_left))),
-            ],
-          ),
+                ),
+                MyIconButton(
+                    label: format(date.end) ?? "endDate",
+                    forgroundColor: Colors.grey,
+                    borderColor: Colors.grey,
+                    bgColor: Colors.white,
+                    ontap: () async {
+                      dateRef.state = (start: date.start, end: null);
+
+                      final selectedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now()
+                              .subtract(const Duration(days: 1000)),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 1000)));
+                      dateRef.state = (start: date.start, end: selectedDate);
+
+                      if (date.start != null && date.end != null) {
+                        setState(() {});
+                      }
+                    },
+                    icon: const RotatedBox(
+                        quarterTurns: 3, child: Icon(Icons.chevron_left))),
+              ],
+            );
+          }),
           const SizedBox(height: 24),
           Expanded(
             child: Consumer(builder: (context, ref, _) {
+              final date = ref.watch(dateProvider);
               return FutureBuilder(
                   future: ref
                       .read(addProductProvider.notifier)
                       .getsalesForAProduct(
-                          widget.productId, startTime, endTime),
+                          widget.productId, date.start, date.end),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListView.separated(

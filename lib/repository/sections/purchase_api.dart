@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
+import 'package:rich_co_inventory/repository/sections/stock.dart';
 
 class PurchaseApis extends FireStoreAPIs<Purchase> {
   @override
@@ -59,13 +60,28 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
   }
 
   @override
-  Future<String?> update(Purchase product) async {
+  Future<String?> update(Purchase item) async {
     try {
-      await instance
-          .collection(mainCollection)
-          .doc(product.purchaseId)
-          .update(product.toJson());
-      return product.productId;
+      final batch = FirebaseFirestore.instance.batch();
+      final stockRef = await instance
+          .collection(dependantCollection)
+          .where("productId", isEqualTo: item.productId)
+          .get();
+      final purchaseRef =
+          await instance.collection(mainCollection).doc(item.purchaseId).get();
+      if (stockRef.docs.isEmpty || !purchaseRef.exists) {
+        return null;
+      }
+      Stock stock = Stock.fromJson(stockRef.docs.first.data());
+      final oldPurchase = Purchase.fromJson(purchaseRef.data()!);
+      final stockQuentity = stock.currentQuantity -
+          oldPurchase.quantityPurchased +
+          item.quantityPurchased;
+      stock = stock.copyWith(currentQuantity: stockQuentity);
+      batch.update(stockRef.docs.first.reference, stock.toJson());
+      batch.update(purchaseRef.reference, item.toJson());
+      await batch.commit();
+      return item.productId;
     } catch (e) {
       return null;
     }
