@@ -9,6 +9,14 @@ class MyNavigator {
     return Navigator.pop(context);
   }
 
+  static pushAndReplace(BuildContext context, String path) {
+    return Navigator.popAndPushNamed(context, path);
+  }
+
+  static popAndPush(BuildContext context, String path) {
+    return Navigator.popAndPushNamed(context, path);
+  }
+
   static backTo(BuildContext context, {String path = "/"}) {
     return Navigator.popUntil(context, ModalRoute.withName(path));
   }
