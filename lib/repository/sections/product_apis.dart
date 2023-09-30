@@ -166,14 +166,16 @@ class ProductApis extends FireStoreAPIs<Product> {
       String productId, DateTime? start, DateTime? end) async {
     try {
       var t = DateTime.now();
-      final days = [];
+      List<int> days = [];
       DateTime currentDay = start ?? DateTime(t.year, t.month, t.day);
       final DateTime endDay = end ?? currentDay.add(const Duration(days: 1));
+      days.add(currentDay.millisecondsSinceEpoch);
       while (currentDay.isBefore(endDay)) {
         days.add(currentDay.millisecondsSinceEpoch);
         currentDay = currentDay.add(const Duration(days: 1));
       }
-     // print("days $days");
+      days.add(endDay.millisecondsSinceEpoch);
+      days = days.toSet().toList();
       var res = await instance
           .collection(Collections.sales.name)
           .where('productId', isEqualTo: productId)
