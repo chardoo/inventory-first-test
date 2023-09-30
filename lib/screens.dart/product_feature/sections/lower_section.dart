@@ -24,10 +24,10 @@ class _LowerSectionState extends State<_LowerSection> {
   void initState() {
     if (widget.product != null) {
       widget.priceCont.text = widget.product!.price.toString();
-      final date = widget.product!.expiryDate;
-      widget.dateController.text = format.format(date == null
-          ? DateTime.now()
-          : DateTime.fromMillisecondsSinceEpoch(widget.product!.expiryDate!));
+      currentDate =
+          DateTime.fromMillisecondsSinceEpoch(widget.product!.expiryDate!);
+      widget.dateController.text =
+          currentDate.millisecondsSinceEpoch.toString();
     }
     super.initState();
   }
@@ -85,6 +85,8 @@ class _LowerSectionState extends State<_LowerSection> {
                 lastDate: DateTime.now().add(const Duration(days: 1000)));
             setState(() {
               currentDate = selectedDate ?? currentDate;
+              widget.dateController.text =
+                  selectedDate!.millisecondsSinceEpoch.toString();
             });
           },
           trailing: const Icon(Icons.calendar_month),

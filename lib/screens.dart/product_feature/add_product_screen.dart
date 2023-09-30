@@ -43,6 +43,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   final TextEditingController priceCont = TextEditingController();
 
   final TextEditingController dateController = TextEditingController();
+
   @override
   @override
   void dispose() {
@@ -118,7 +119,9 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                                 await createAndAddProduct(notifier, state);
                             if (id == null) return;
                             createAndAddStock(notifier, id);
-                            MyNavigator.back(context);
+                            if (mounted) {
+                              MyNavigator.back(context);
+                            }
                             ref
                                 .read(displayProductsProvider.notifier)
                                 .getProducts();
@@ -144,9 +147,11 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
 
   Future<String?> createAndAddProduct(
       AddProductProvider notifier, AddProductState state) async {
+    final expiryDate =
+        DateFormat(DateFormat.YEAR_MONTH_DAY).parse(dateController.text);
     Product product = Product(
         productId: widget.product?.productId,
-        expiryDate: int.tryParse(dateController.text),
+        expiryDate: expiryDate.millisecondsSinceEpoch,
         productName: productController.text,
         price: double.tryParse(priceCont.text) ?? 0,
         supplierId: state.supplier!.supplierId,

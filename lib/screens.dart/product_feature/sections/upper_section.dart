@@ -41,9 +41,7 @@ class _ProductDetailsState extends ConsumerState<_UpperSection> {
   }
 
   getsupplier() async {
-    print("sup id ${widget.product?.supplierId}");
     final supplier = await SuppliersApis().getOne(widget.product!.supplierId!);
-    print("produc $supplier");
     if (supplier == null) return;
     ref.read(addProductProvider.notifier).addSupplierToState(supplier);
 
