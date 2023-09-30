@@ -60,7 +60,8 @@ class AddProductProvider extends _$AddProductProvider {
     return res;
   }
 
-  Future<String?> addAllSales(List<Sale> sales) async {
+  Future<({String? data, String? error, bool isError})> addAllSales(
+      List<Sale> sales) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
     final res = await salesApi.addAll(sales);

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
@@ -13,7 +14,8 @@ class SalesApi extends FireStoreAPIs<Sale> {
   @override
   String get dependantCollection => Collections.stock.name;
 
-  Future<String> addAll(List<Sale> sales) async {
+  Future<({bool isError, String? data, String? error})> addAll(
+      List<Sale> sales) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
     try {
@@ -24,7 +26,15 @@ class SalesApi extends FireStoreAPIs<Sale> {
             .collection(dependantCollection)
             .where("productId", isEqualTo: sale.productId)
             .get();
-
+        final oldStock = Stock.fromJson(stockRef.docs.first.data());
+        if (oldStock.currentQuantity == 0 ||
+            oldStock.currentQuantity < sale.quantitySold!) {
+          return (
+            isError: true,
+            data: null,
+            error: "insufficient stock for ${sale.productName}"
+          );
+        }
         final updateStock =
             stockRef.docs.map((e) => Stock.fromJson(e.data())).toList();
         final quantity = sale.quantitySold ?? 0;
@@ -35,9 +45,13 @@ class SalesApi extends FireStoreAPIs<Sale> {
         batch.set(docRef, sale.toJson());
       }
       await batch.commit();
-      return "successfull";
+      return (isError: false, data: "success", error: null);
     } on FirebaseException catch (e) {
-      return e.message ?? "an error occured";
+      return (
+        isError: true,
+        data: null,
+        error: e.message ?? 'there is a fault at our side'
+      );
     }
   }
 

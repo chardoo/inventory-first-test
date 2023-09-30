@@ -57,7 +57,7 @@ class AddSalesScreen extends ConsumerWidget {
                         final res = await ref
                             .read(addProductProvider.notifier)
                             .addAllSales(salesCart);
-                        if (res == "successfull") {
+                        if (!res.isError) {
                           if (context.mounted) {
                             MyNavigator.backTo(context);
                           }
@@ -65,7 +65,7 @@ class AddSalesScreen extends ConsumerWidget {
                         }
                         if (context.mounted) {
                           MySnackBar.showSnack(
-                              res ?? "a problem occured", context);
+                              res.error ?? "a problem occured", context);
                         }
                       }, message: "Do you really want to add ?");
                     },
