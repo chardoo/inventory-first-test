@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           MyNavigator.goto(context, AddSalesScreen());
         },
-        child: const Text("Add"),
+        child: const Icon(Icons.shopping_cart),
       ),
       bottomNavigationBar: BottomNavigation(
         ontap: (val) {

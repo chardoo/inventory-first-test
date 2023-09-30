@@ -61,6 +61,7 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                           lastDate:
                               DateTime.now().add(const Duration(days: 1000)));
                       startTime = selectedDate;
+                     
                     },
                   ),
                   MyIconButton(
@@ -114,14 +115,13 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                                 ),
                               );
                             }
-                            final total = snapshot.requireData
-                                .map((e) => e.productPrice)
-                                .reduce((val, ele) => ele + val);
                             return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const SizedBox(height: 10),
                                 MyText(
-                                    text: total.toString(),
+                                  
+                                    text: "Total: ${ref.watch(salesProvider).total}",
                                     weight: FontWeight.bold,
                                     size: 24),
                                 const SizedBox(height: 100),

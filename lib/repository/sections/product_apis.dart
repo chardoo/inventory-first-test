@@ -177,7 +177,7 @@ class ProductApis extends FireStoreAPIs<Product> {
       var res = await instance
           .collection(Collections.sales.name)
           .where('productId', isEqualTo: productId)
-          .where("saleDate", whereIn: days)
+         .where("saleDate", whereIn: days)
           .get();
 
       if (res.docs.isEmpty) return [];

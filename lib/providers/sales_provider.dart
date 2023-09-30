@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/models/sales.dart';
@@ -25,9 +27,12 @@ class SalesProvider extends _$SalesProvider {
 
   Future<List<Sale>> getSalesForDuration(DateTime? start, DateTime? end) async {
     final sales = await SalesApi().getSalesForRange(start, end);
-    final total = sales
-        .map((e) => e.productPrice)
-        .reduce((value, element) => value + element);
+    double total  = 0.0;
+
+    for(int i=0; i<sales.length; i++){
+      total = total + (sales[i].productPrice * sales[i].quantitySold!); 
+    }
+
     state = SalesState(total: total);
     return sales;
   }
@@ -37,9 +42,6 @@ class SalesProvider extends _$SalesProvider {
 
     var currentStock =
         await StockApis().getStockByProductId(purchase.productId);
-    print("current stock");
-    print(currentStock);
-
     StockApis().update(Stock(
         stockId: currentStock[0]!.stockId,
         productId: currentStock[0]!.productId,
