@@ -42,8 +42,6 @@ class StockApis extends FireStoreAPIs<Stock> {
 
   @override
   update(Stock item) async {
-    print("upading the stock man");
-    print(item);
     try {
       await instance
           .collection(mainCollection)

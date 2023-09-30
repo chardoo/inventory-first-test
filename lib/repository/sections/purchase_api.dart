@@ -12,7 +12,8 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
   String get dependantCollection => Collections.stock.name;
 
   @override
-  Future<String?> add(Purchase item) async {
+  Future<({String? data, String? error, bool isError})> add(
+      Purchase item) async {
     final purchaseToAdd = Purchase.generateId(item.toJson());
     final batch = FirebaseFirestore.instance.batch();
     print(purchaseToAdd.product);
@@ -31,12 +32,14 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
       batch.set(purchaseRef, purchaseToAdd.toJson());
       batch.commit();
 
-      return purchaseToAdd.purchaseId;
-    } catch (e) {
-      print("error happen pleas");
-      print(e.toString());
+      return (isError: false, data: purchaseToAdd.purchaseId, error: null);
+    } on FirebaseException catch (e) {
+      return (
+        isError: true,
+        data: null,
+        error: e.message ?? "something happened try again"
+      );
     }
-    return null;
   }
 
   @override
@@ -60,7 +63,8 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
   }
 
   @override
-  Future<String?> update(Purchase item) async {
+  Future<({bool isError, String? data, String? error})> update(
+      Purchase item) async {
     try {
       final batch = FirebaseFirestore.instance.batch();
       final stockRef = await instance
@@ -70,20 +74,34 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
       final purchaseRef =
           await instance.collection(mainCollection).doc(item.purchaseId).get();
       if (stockRef.docs.isEmpty || !purchaseRef.exists) {
-        return null;
+        return (isError: true, data: null, error: "stock does not exit");
       }
       Stock stock = Stock.fromJson(stockRef.docs.first.data());
       final oldPurchase = Purchase.fromJson(purchaseRef.data()!);
       final stockQuentity = stock.currentQuantity -
           oldPurchase.quantityPurchased +
           item.quantityPurchased;
+      if (stockQuentity < 0) {
+        return (
+          isError: true,
+          data: null,
+          error: "stock quentity is less than ${item.quantityPurchased}"
+              " stocks might be sold, check available stocks and update again"
+        );
+      }
       stock = stock.copyWith(currentQuantity: stockQuentity);
       batch.update(stockRef.docs.first.reference, stock.toJson());
       batch.update(purchaseRef.reference, item.toJson());
       await batch.commit();
-      return item.productId;
-    } catch (e) {
-      return null;
+      return (isError: false, data: item.purchaseId, error: null);
+    } on FirebaseException catch (e) {
+      return (
+        isError: true,
+        data: null,
+        error: e.message ??
+            "something happen while"
+                "processing this request try again"
+      );
     }
   }
 

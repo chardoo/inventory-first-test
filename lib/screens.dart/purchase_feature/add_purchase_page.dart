@@ -215,14 +215,22 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                               quantityPurchased: int.parse(quantity.text),
                               cost: double.tryParse(priceCont.text)!);
 
-                          await ref
+                          final result = await ref
                               .read(purchaseProvider.notifier)
                               .addPurchase(purchase, product != null);
+
+                          if (result.isError) {
+                            if (mounted) {
+                              MySnackBar.showSnack(result.error!, context);
+                            }
+                            return;
+                          }
 
                           if (mounted) {
                             MyNavigator.backTo(
                               context,
                             );
+                            return;
                           }
                         });
                       },

@@ -38,7 +38,7 @@ class SalesProvider extends _$SalesProvider {
   }
 
   Future<String?> addPurchase(Purchase purchase) async {
-    final id = PurchaseApis().add(purchase);
+    final res = await PurchaseApis().add(purchase);
 
     var currentStock =
         await StockApis().getStockByProductId(purchase.productId);
@@ -49,7 +49,7 @@ class SalesProvider extends _$SalesProvider {
             currentStock[0]!.currentQuantity + purchase.quantityPurchased,
         minimumRequiredQuantity: currentStock[0]!.minimumRequiredQuantity));
 
-    return id;
+    return res.data;
   }
 }
 

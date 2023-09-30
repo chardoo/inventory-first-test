@@ -16,15 +16,16 @@ class PurchaseProvider extends _$PurchaseProvider {
     return await PurchaseApis().getPurchaseByDate(date);
   }
 
-  Future<String?> addPurchase(Purchase purchase, bool update) async {
+  Future<({String? data, String? error, bool isError})> addPurchase(
+      Purchase purchase, bool update) async {
     final loadingNotifier = ref.read(loadingStateProvider.notifier);
     loadingNotifier.activate();
-    final id = update
+    final res = update
         ? await PurchaseApis().update(purchase)
         : await PurchaseApis().add(purchase);
     loadingNotifier.finish();
     loadingNotifier.diactivate();
-    return null;
+    return res;
   }
 }
 
