@@ -13,6 +13,7 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       price: (json['price'] as num).toDouble(),
       supplierId: json['supplierId'] as String?,
       brandId: json['brandId'] as String?,
+      expiryDate: json['expiryDate'] as int?,
       sales: (json['sales'] as List<dynamic>?)
           ?.map((e) => Sale.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -32,6 +33,7 @@ Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
       'price': instance.price,
       'supplierId': instance.supplierId,
       'brandId': instance.brandId,
+      'expiryDate': instance.expiryDate,
       'sales': instance.sales?.map((e) => e.toJson()).toList(),
       'purchases': instance.purchases?.map((e) => e.toJson()).toList(),
       'stocks': instance.stocks?.map((e) => e.toJson()).toList(),

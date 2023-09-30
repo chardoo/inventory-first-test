@@ -63,13 +63,19 @@ class ProductApis extends FireStoreAPIs<Product> {
   }
 
   @override
-  update(Product product) async {
+  Future<String?> update(Product product) async {
+    print("product is $product");
+
     try {
       await instance
           .collection(mainCollection)
-          .doc(product.productName)
+          .doc(product.productId)
           .update(product.toJson());
-    } catch (e) {
+      print("success");
+      return product.productId;
+    } on FirebaseException catch (e) {
+      print("error is ${e.message}");
+      return null;
       //TODO: do something
     }
   }
@@ -179,7 +185,7 @@ class ProductApis extends FireStoreAPIs<Product> {
       var res = await instance
           .collection(Collections.sales.name)
           .where('productId', isEqualTo: productId)
-         .where("saleDate", whereIn: days)
+          .where("saleDate", whereIn: days)
           .get();
 
       if (res.docs.isEmpty) return [];

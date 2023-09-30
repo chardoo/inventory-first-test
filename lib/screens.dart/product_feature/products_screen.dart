@@ -102,7 +102,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                       if (snapshot.requireData.isEmpty) {
                         return const Center(
                           child: MyText(
-                            text: "No Sales yet",
+                            text: "No Products yet",
                             size: 24,
                             weight: FontWeight.bold,
                           ),
@@ -115,9 +115,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                           itemBuilder: (_, i) {
                             final product = snapshot.requireData[i];
                             return ProductCard(
-                              description: product.productDescription!,
-                              name: product.productName,
-                              productId: product.productId!,
+                              product: product,
                             );
                           });
                     }
@@ -138,22 +136,19 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
 }
 
 class ProductCard extends StatelessWidget {
-  const ProductCard(
-      {super.key,
-      required this.name,
-      required this.description,
-      required this.productId});
+  const ProductCard({super.key, required this.product});
 
-  final String name;
-  final String description;
-  final String productId;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () async {
-          MyNavigator.goto(context,
-              ProductDetailScreen(productId: productId, productName: name));
+          MyNavigator.goto(
+              context,
+              ProductDetailScreen(
+                  productId: product.productId!,
+                  productName: product.productName));
         },
         child: Container(
           decoration: BoxDecoration(
@@ -162,20 +157,24 @@ class ProductCard extends StatelessWidget {
               color: Colors.grey.shade100),
           child: ListTile(
             title: MyText(
-              text: name,
+              text: product.productName,
               weight: FontWeight.bold,
               size: 16,
               maxLines: 1,
             ),
             subtitle: MyText(
-              text: description,
+              text: product.productDescription ?? "",
               size: 14,
               maxLines: 1,
               color: Colors.blueGrey,
             ),
             trailing: GestureDetector(
               onTap: () {
-                MyNavigator.goto(context, AddProductScreen());
+                MyNavigator.goto(
+                    context,
+                    AddProductScreen(
+                      product: product,
+                    ));
               },
               child: const Icon(
                 Icons.edit,

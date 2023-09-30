@@ -43,10 +43,16 @@ class StockApis extends FireStoreAPIs<Stock> {
   @override
   update(Stock item) async {
     try {
-      await instance
+      final res = await instance
           .collection(mainCollection)
-          .doc(item.stockId)
-          .update(item.toJson());
+          .where("productId", isEqualTo: item.productId)
+          .limit(1)
+          .get();
+      if (res.docs.isEmpty) {
+        return null;
+      }
+      await res.docs.first.reference.update(item.toJson());
+      return "success";
     } catch (e) {
       //TODO: do something
     }

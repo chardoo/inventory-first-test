@@ -26,6 +26,7 @@ mixin _$Product {
   double get price => throw _privateConstructorUsedError;
   String? get supplierId => throw _privateConstructorUsedError;
   String? get brandId => throw _privateConstructorUsedError;
+  int? get expiryDate => throw _privateConstructorUsedError;
   List<Sale>? get sales => throw _privateConstructorUsedError;
   List<Purchase>? get purchases => throw _privateConstructorUsedError;
   List<Stock>? get stocks => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $ProductCopyWith<$Res> {
       double price,
       String? supplierId,
       String? brandId,
+      int? expiryDate,
       List<Sale>? sales,
       List<Purchase>? purchases,
       List<Stock>? stocks});
@@ -71,6 +73,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? price = null,
     Object? supplierId = freezed,
     Object? brandId = freezed,
+    Object? expiryDate = freezed,
     Object? sales = freezed,
     Object? purchases = freezed,
     Object? stocks = freezed,
@@ -100,6 +103,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.brandId
           : brandId // ignore: cast_nullable_to_non_nullable
               as String?,
+      expiryDate: freezed == expiryDate
+          ? _value.expiryDate
+          : expiryDate // ignore: cast_nullable_to_non_nullable
+              as int?,
       sales: freezed == sales
           ? _value.sales
           : sales // ignore: cast_nullable_to_non_nullable
@@ -130,6 +137,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       double price,
       String? supplierId,
       String? brandId,
+      int? expiryDate,
       List<Sale>? sales,
       List<Purchase>? purchases,
       List<Stock>? stocks});
@@ -151,6 +159,7 @@ class __$$_ProductCopyWithImpl<$Res>
     Object? price = null,
     Object? supplierId = freezed,
     Object? brandId = freezed,
+    Object? expiryDate = freezed,
     Object? sales = freezed,
     Object? purchases = freezed,
     Object? stocks = freezed,
@@ -180,6 +189,10 @@ class __$$_ProductCopyWithImpl<$Res>
           ? _value.brandId
           : brandId // ignore: cast_nullable_to_non_nullable
               as String?,
+      expiryDate: freezed == expiryDate
+          ? _value.expiryDate
+          : expiryDate // ignore: cast_nullable_to_non_nullable
+              as int?,
       sales: freezed == sales
           ? _value._sales
           : sales // ignore: cast_nullable_to_non_nullable
@@ -206,6 +219,7 @@ class _$_Product implements _Product {
       required this.price,
       this.supplierId,
       this.brandId,
+      this.expiryDate,
       final List<Sale>? sales,
       final List<Purchase>? purchases,
       final List<Stock>? stocks})
@@ -228,6 +242,8 @@ class _$_Product implements _Product {
   final String? supplierId;
   @override
   final String? brandId;
+  @override
+  final int? expiryDate;
   final List<Sale>? _sales;
   @override
   List<Sale>? get sales {
@@ -260,7 +276,7 @@ class _$_Product implements _Product {
 
   @override
   String toString() {
-    return 'Product(productId: $productId, productName: $productName, productDescription: $productDescription, price: $price, supplierId: $supplierId, brandId: $brandId, sales: $sales, purchases: $purchases, stocks: $stocks)';
+    return 'Product(productId: $productId, productName: $productName, productDescription: $productDescription, price: $price, supplierId: $supplierId, brandId: $brandId, expiryDate: $expiryDate, sales: $sales, purchases: $purchases, stocks: $stocks)';
   }
 
   @override
@@ -278,6 +294,8 @@ class _$_Product implements _Product {
             (identical(other.supplierId, supplierId) ||
                 other.supplierId == supplierId) &&
             (identical(other.brandId, brandId) || other.brandId == brandId) &&
+            (identical(other.expiryDate, expiryDate) ||
+                other.expiryDate == expiryDate) &&
             const DeepCollectionEquality().equals(other._sales, _sales) &&
             const DeepCollectionEquality()
                 .equals(other._purchases, _purchases) &&
@@ -294,6 +312,7 @@ class _$_Product implements _Product {
       price,
       supplierId,
       brandId,
+      expiryDate,
       const DeepCollectionEquality().hash(_sales),
       const DeepCollectionEquality().hash(_purchases),
       const DeepCollectionEquality().hash(_stocks));
@@ -320,6 +339,7 @@ abstract class _Product implements Product {
       required final double price,
       final String? supplierId,
       final String? brandId,
+      final int? expiryDate,
       final List<Sale>? sales,
       final List<Purchase>? purchases,
       final List<Stock>? stocks}) = _$_Product;
@@ -338,6 +358,8 @@ abstract class _Product implements Product {
   String? get supplierId;
   @override
   String? get brandId;
+  @override
+  int? get expiryDate;
   @override
   List<Sale>? get sales;
   @override

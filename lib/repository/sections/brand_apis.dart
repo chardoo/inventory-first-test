@@ -60,10 +60,10 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
   }
 
   @override
-  Future<Brand?> getOne(String brandName) async {
+  Future<Brand?> getOne(String brandId) async {
     try {
-      final res =
-          await instance.collection(mainCollection).doc(brandName).get();
+      print("brand id $brandId");
+      final res = await instance.collection(mainCollection).doc(brandId).get();
       if (res.exists) {
         return Brand.fromJson(res.data()!);
       } else {

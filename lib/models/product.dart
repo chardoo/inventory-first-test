@@ -16,6 +16,7 @@ abstract class Product with _$Product {
     required double price,
     String? supplierId,
     String? brandId,
+    int? expiryDate,
     List<Sale>? sales,
     List<Purchase>? purchases,
     List<Stock>? stocks,

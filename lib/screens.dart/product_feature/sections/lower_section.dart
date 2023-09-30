@@ -5,8 +5,10 @@ class _LowerSection extends StatefulWidget {
     required this.priceCont,
     required this.dateController,
     this.addProduct,
+    this.product,
   });
   final TextEditingController priceCont;
+  final Product? product;
   final Function()? addProduct;
 
   final TextEditingController dateController;
@@ -17,6 +19,18 @@ class _LowerSection extends StatefulWidget {
 class _LowerSectionState extends State<_LowerSection> {
   final format = DateFormat(DateFormat.YEAR_MONTH_DAY);
   DateTime currentDate = DateTime.now();
+
+  @override
+  void initState() {
+    if (widget.product != null) {
+      widget.priceCont.text = widget.product!.price.toString();
+      final date = widget.product!.expiryDate;
+      widget.dateController.text = format.format(date == null
+          ? DateTime.now()
+          : DateTime.fromMillisecondsSinceEpoch(widget.product!.expiryDate!));
+    }
+    super.initState();
+  }
 
   bool isError = false;
   String errorMsg = "";
@@ -58,7 +72,7 @@ class _LowerSectionState extends State<_LowerSection> {
         ),
         const SizedBox(height: 24),
         MyTextFieldWithTitle(
-          name: "input date",
+          name: "expiry date",
           label: "",
           controller: widget.dateController,
           readOnly: true,

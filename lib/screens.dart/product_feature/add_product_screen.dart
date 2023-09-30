@@ -9,6 +9,8 @@ import 'package:rich_co_inventory/models/supplier.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/app_state_provider.dart';
+import 'package:rich_co_inventory/repository/sections/brand_apis.dart';
+import 'package:rich_co_inventory/repository/sections/suppliers_api.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
 import 'package:rich_co_inventory/widgets/loading_layout.dart';
@@ -24,8 +26,8 @@ part './sections/upper_section.dart';
 part 'sections/product_dialogs.dart';
 
 class AddProductScreen extends ConsumerStatefulWidget {
-  const AddProductScreen({super.key});
-
+  const AddProductScreen({this.product, super.key});
+  final Product? product;
   @override
   ConsumerState<AddProductScreen> createState() => _AddProductScreenState();
 }
@@ -40,9 +42,8 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
   final TextEditingController productDescriptionCont = TextEditingController();
   final TextEditingController priceCont = TextEditingController();
 
-  final TextEditingController initialStockCont = TextEditingController();
-
   final TextEditingController dateController = TextEditingController();
+  @override
   @override
   void dispose() {
     productController.dispose();
@@ -50,7 +51,6 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     supplierController.dispose();
     productDescriptionCont.dispose();
     priceCont.dispose();
-    initialStockCont.dispose();
     dateController.dispose();
     super.dispose();
   }
@@ -77,12 +77,14 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _UpperSection(
+                            product: widget.product,
                             productController: productController,
                             brandController: brandController,
                             supplierController: supplierController,
                             productDescriptionCont: productDescriptionCont),
                         const SizedBox(height: 50),
                         _LowerSection(
+                          product: widget.product,
                           priceCont: priceCont,
                           dateController: dateController,
                           addProduct: () async {
@@ -137,17 +139,19 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         productPrice: double.tryParse(priceCont.text),
         currentQuantity: 0,
         minimumRequiredQuantity: 10);
-    notifier.addStock(stock);
+    notifier.addStock(stock, widget.product != null);
   }
 
   Future<String?> createAndAddProduct(
       AddProductProvider notifier, AddProductState state) async {
     Product product = Product(
+        productId: widget.product?.productId,
+        expiryDate: int.tryParse(dateController.text),
         productName: productController.text,
         price: double.tryParse(priceCont.text) ?? 0,
         supplierId: state.supplier!.supplierId,
         productDescription: productDescriptionCont.text,
-        brandId: state.brand?.brandName);
-    return await notifier.addProduct(product);
+        brandId: state.brand?.brandId);
+    return await notifier.addProduct(product, widget.product != null);
   }
 }

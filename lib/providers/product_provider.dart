@@ -40,10 +40,10 @@ class AddProductProvider extends _$AddProductProvider {
     loadingState.diactivate();
   }
 
-  Future<String?> addStock(Stock stock) async {
+  Future<String?> addStock(Stock stock,bool update) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    final res = await stockApis.add(stock);
+    final res =update? await stockApis.update(stock): await stockApis.add(stock);
     loadingState.finish();
     loadingState.diactivate();
     return res;
@@ -97,10 +97,13 @@ class AddProductProvider extends _$AddProductProvider {
     loadingState.diactivate();
   }
 
-  Future<String?> addProduct(Product product) async {
+  Future<String?> addProduct(Product product, bool update) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    final id = await productApis.add(product);
+
+    final id = update
+        ? await productApis.update(product)
+        : await productApis.add(product);
     loadingState.finish();
     loadingState.diactivate();
     return id;

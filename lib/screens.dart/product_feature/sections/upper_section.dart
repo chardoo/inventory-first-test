@@ -2,13 +2,14 @@ part of '../add_product_screen.dart';
 
 class _UpperSection extends ConsumerStatefulWidget {
   const _UpperSection({
+    this.product,
     required this.productController,
     required this.brandController,
     required this.supplierController,
     required this.productDescriptionCont,
   });
   final TextEditingController productController;
-
+  final Product? product;
   final TextEditingController brandController;
 
   final TextEditingController supplierController;
@@ -18,6 +19,38 @@ class _UpperSection extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailsState extends ConsumerState<_UpperSection> {
+  @override
+  initState() {
+    if (widget.product != null) {
+      print("brand is in intit");
+      getBrand();
+      getsupplier();
+      widget.productDescriptionCont.text = widget.product!.productDescription!;
+      widget.productController.text = widget.product!.productName;
+    }
+    super.initState();
+  }
+
+  getBrand() async {
+    final brand = await BrandAPIs().getOne(widget.product!.brandId!);
+    if (brand == null) return;
+    widget.brandController.text = brand.brandName;
+    ref.read(addProductProvider.notifier).addBrandToState(brand);
+    setState(() {});
+    return;
+  }
+
+  getsupplier() async {
+    print("sup id ${widget.product?.supplierId}");
+    final supplier = await SuppliersApis().getOne(widget.product!.supplierId!);
+    print("produc $supplier");
+    if (supplier == null) return;
+    ref.read(addProductProvider.notifier).addSupplierToState(supplier);
+
+    widget.supplierController.text = supplier.supplierName;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
