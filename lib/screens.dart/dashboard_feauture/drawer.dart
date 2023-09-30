@@ -23,13 +23,13 @@ class MyDrawer extends StatelessWidget {
         MyNavigator.goto(context, const AllInventory());
       }),
       _DrawerData("See All Sales", const Icon(Icons.food_bank), () {
-        const SalesPage();
+        MyNavigator.goto(context, const SalesPage());
       }),
       _DrawerData("Brand", const Icon(Icons.money), () {
-        const AllBrandScreen();
+        MyNavigator.goto(context, const AllBrandScreen());
       }),
       _DrawerData("Supplier", const Icon(Icons.person), () {
-        const SuppliersScreen();
+        MyNavigator.goto(context, const SuppliersScreen());
       }),
       _DrawerData("log out", const Icon(Icons.logout), () {
         MyDialogs.showConfirm(context,

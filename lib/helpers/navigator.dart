@@ -17,7 +17,7 @@ class MyNavigator {
     return Navigator.popAndPushNamed(context, path);
   }
 
-  static backTo(BuildContext context, {String path = "/home"}) {
+  static backTo(BuildContext context, {String path = "/"}) {
     return Navigator.popUntil(context, ModalRoute.withName(path));
   }
 }
