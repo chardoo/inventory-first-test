@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/screens.dart/inventory/all_inventory.dart';
 import 'package:rich_co_inventory/screens.dart/sales_feature/sales_page.dart';
 import 'package:rich_co_inventory/screens.dart/stocks_feature/stocks_screen.dart';
 
@@ -15,7 +16,7 @@ class MyDrawer extends StatelessWidget {
   });
 
   final data = const [
-    _DrawerData("Stock", Icon(Icons.inventory), StocksScreen()),
+    _DrawerData("Inventory", Icon(Icons.inventory),     AllInventory()),
     _DrawerData("See All Sales", Icon(Icons.food_bank), SalesPage()),
     _DrawerData("Brand", Icon(Icons.money), AllBrandScreen()),
     _DrawerData("Supplier", Icon(Icons.person), SuppliersScreen()),

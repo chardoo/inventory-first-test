@@ -38,6 +38,57 @@ class _SalesPageState extends ConsumerState<SalesPage> {
         appBar: AppBar(title: const Text("All Sales")),
         body: Stack(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 70, right: 24, left: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MyIconButton(
+                    label: format(startTime) ?? "start",
+                    forgroundColor: Colors.grey,
+                    borderColor: Colors.grey,
+                    bgColor: Colors.white,
+                    icon: const RotatedBox(
+                        quarterTurns: 3, child: Icon(Icons.chevron_left)),
+                    ontap: () async {
+                      startTime = null;
+                      final selectedDate = await showDatePicker(
+                          // currentDate: currentDate,
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now()
+                              .subtract(const Duration(days: 1000)),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 1000)));
+                      startTime = selectedDate;
+                     
+                    },
+                  ),
+                  MyIconButton(
+                      label: format(endTime) ?? "endDate",
+                      forgroundColor: Colors.grey,
+                      borderColor: Colors.grey,
+                      bgColor: Colors.white,
+                      ontap: () async {
+                        final selectedDate = await showDatePicker(
+                            // currentDate: currentDate,
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now()
+                                .subtract(const Duration(days: 1000)),
+                            lastDate:
+                                DateTime.now().add(const Duration(days: 1000)));
+                        endTime = selectedDate;
+
+                        if (startTime != null && endTime != null) {
+                          refresh();
+                        }
+                      },
+                      icon: const RotatedBox(
+                          quarterTurns: 3, child: Icon(Icons.chevron_left))),
+                ],
+              ),
+            ),
             Column(
               children: [
                 Expanded(
@@ -63,14 +114,13 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                                 ),
                               );
                             }
-                            final total = snapshot.requireData
-                                .map((e) => e.productPrice)
-                                .reduce((val, ele) => ele + val);
                             return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const SizedBox(height: 10),
                                 MyText(
-                                    text: total.toString(),
+                                  
+                                    text: "Total: ${ref.watch(salesProvider).total}",
                                     weight: FontWeight.bold,
                                     size: 24),
                                 const SizedBox(height: 100),

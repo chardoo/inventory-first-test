@@ -27,7 +27,7 @@ class _AllBrandScreenState extends ConsumerState<SuppliersScreen> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
           title: const MyText(
-              text: "All Brands", weight: FontWeight.bold, size: 24)),
+              text: "All Suppliers", weight: FontWeight.bold, size: 24)),
       body: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(

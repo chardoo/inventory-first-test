@@ -152,7 +152,6 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () async {
-          print("hello");
           MyNavigator.goto(context,
               ProductDetailScreen(productId: productId, productName: name));
         },
