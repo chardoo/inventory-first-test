@@ -27,9 +27,9 @@ class _SalesPageState extends ConsumerState<SalesPage> {
   DateTime? endTime;
   double totalSale = 0.0;
   String? format(DateTime? date) {
-    DateFormat d = DateFormat(DateFormat.YEAR_MONTH_DAY);
+    DateFormat d = DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY);
     if (date == null) return null;
-    d.format(date);
+    return d.format(date);
   }
 
   @override
@@ -91,7 +91,6 @@ class _SalesPageState extends ConsumerState<SalesPage> {
             ),
             Column(
               children: [
-                //    SizedBox(height: 50),
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async => refresh(),
@@ -149,9 +148,11 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                               ],
                             );
                           }
+
                           return Center(
                             child: MyText(
-                              text: snapshot.error?.toString() ?? "",
+                              text:
+                                  "${snapshot.error}${snapshot.hasError}" ?? "",
                               size: 24,
                               weight: FontWeight.bold,
                             ),
@@ -160,6 +161,54 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                   ),
                 )
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 70, right: 24, left: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MyIconButton(
+                    label: format(startTime) ?? "start",
+                    forgroundColor: Colors.grey,
+                    borderColor: Colors.grey,
+                    bgColor: Colors.white,
+                    icon: const RotatedBox(
+                        quarterTurns: 3, child: Icon(Icons.chevron_left)),
+                    ontap: () async {
+                      startTime = null;
+                      final selectedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now()
+                              .subtract(const Duration(days: 1000)),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 1000)));
+                      startTime = selectedDate;
+                    },
+                  ),
+                  MyIconButton(
+                      label: format(endTime) ?? "endDate",
+                      forgroundColor: Colors.grey,
+                      borderColor: Colors.grey,
+                      bgColor: Colors.white,
+                      ontap: () async {
+                        final selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now()
+                                .subtract(const Duration(days: 1000)),
+                            lastDate:
+                                DateTime.now().add(const Duration(days: 1000)));
+                        endTime = selectedDate;
+
+                        if (startTime != null && endTime != null) {
+                          refresh();
+                        }
+                      },
+                      icon: const RotatedBox(
+                          quarterTurns: 3, child: Icon(Icons.chevron_left))),
+                ],
+              ),
             ),
           ],
         ));

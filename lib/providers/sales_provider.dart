@@ -20,8 +20,7 @@ class SalesProvider extends _$SalesProvider {
 
   Future<List<Purchase>> getPurchases(String date) async {
     var resutl = await PurchaseApis().getPurchaseByDate(date);
-    print("her this here man");
-    print(resutl);
+
     return resutl;
   }
 

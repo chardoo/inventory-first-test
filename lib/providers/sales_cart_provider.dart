@@ -12,7 +12,7 @@ class SalesCartProvider extends _$SalesCartProvider {
   }
 
   add(Product product) {
-    final now = DateTime.now();
+    final now = DateTime(2023, 09, 1);
     final today = DateTime(now.year, now.month, now.day);
 
     final sale = Sale(

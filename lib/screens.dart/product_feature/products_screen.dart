@@ -173,9 +173,14 @@ class ProductCard extends StatelessWidget {
               maxLines: 1,
               color: Colors.blueGrey,
             ),
-            trailing: const Icon(
-              Icons.edit,
-              color: Colors.blueGrey,
+            trailing: GestureDetector(
+              onTap: () {
+                MyNavigator.goto(context, AddProductScreen());
+              },
+              child: const Icon(
+                Icons.edit,
+                color: Colors.blueGrey,
+              ),
             ),
           ),
         ));
