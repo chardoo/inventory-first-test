@@ -34,6 +34,7 @@ class _SalesPageState extends ConsumerState<SalesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final date = ref.watch(dateProvider);
     return Scaffold(
         appBar: AppBar(title: const Text("All Sales")),
         body: Column(
@@ -45,36 +46,23 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                   weight: FontWeight.bold,
                   size: 24);
             }),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MyIconButton(
-                    label: format(startTime) ?? "start",
-                    forgroundColor: Colors.grey,
-                    borderColor: Colors.grey,
-                    bgColor: Colors.white,
-                    icon: const RotatedBox(
-                        quarterTurns: 3, child: Icon(Icons.chevron_left)),
-                    ontap: () async {
-                      startTime = null;
-                      final selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now()
-                              .subtract(const Duration(days: 1000)),
-                          lastDate:
-                              DateTime.now().add(const Duration(days: 1000)));
-                      startTime = selectedDate;
-                    },
-                  ),
-                  MyIconButton(
-                      label: format(endTime) ?? "endDate",
+            Consumer(builder: (context, ref, _) {
+              final date = ref.watch(dateProvider);
+              final dateRef = ref.read(dateProvider.notifier);
+              return Padding(
+                padding: const EdgeInsets.all(24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyIconButton(
+                      label: format(date.start) ?? "start",
                       forgroundColor: Colors.grey,
                       borderColor: Colors.grey,
                       bgColor: Colors.white,
+                      icon: const RotatedBox(
+                          quarterTurns: 3, child: Icon(Icons.chevron_left)),
                       ontap: () async {
+                        dateRef.state = (start: null, end: date.end);
                         final selectedDate = await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
@@ -82,24 +70,46 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                                 .subtract(const Duration(days: 1000)),
                             lastDate:
                                 DateTime.now().add(const Duration(days: 1000)));
-                        endTime = selectedDate;
-
-                        if (startTime != null && endTime != null) {
+                        dateRef.state = (start: selectedDate, end: date.end);
+                        if (date.start != null && date.end != null) {
                           refresh();
                         }
                       },
-                      icon: const RotatedBox(
-                          quarterTurns: 3, child: Icon(Icons.chevron_left))),
-                ],
-              ),
-            ),
+                    ),
+                    MyIconButton(
+                        label: format(date.end) ?? "endDate",
+                        forgroundColor: Colors.grey,
+                        borderColor: Colors.grey,
+                        bgColor: Colors.white,
+                        ontap: () async {
+                          dateRef.state = (start: date.start, end: null);
+                          final selectedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now()
+                                  .subtract(const Duration(days: 1000)),
+                              lastDate: DateTime.now()
+                                  .add(const Duration(days: 1000)));
+                          dateRef.state =
+                              (start: date.start, end: selectedDate);
+
+                          if (date.start != null && date.end != null) {
+                            refresh();
+                          }
+                        },
+                        icon: const RotatedBox(
+                            quarterTurns: 3, child: Icon(Icons.chevron_left))),
+                  ],
+                ),
+              );
+            }),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async => refresh(),
                 child: FutureBuilder(
                     future: ref
                         .read(salesProvider.notifier)
-                        .getSalesForDuration(startTime, endTime),
+                        .getSalesForDuration(date.start, date.end),
                     builder: (_, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const ShimmerLoader();

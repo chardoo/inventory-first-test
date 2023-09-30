@@ -88,8 +88,6 @@ class SalesApi extends FireStoreAPIs<Sale> {
     try {
       var t = DateTime.now();
       List<int> days = [];
-
-      // days.add(1695859200000);
       DateTime currentDay = start ?? DateTime(t.year, t.month, t.day);
       final DateTime endDay = end ?? currentDay.add(const Duration(days: 1));
       days.add(currentDay.millisecondsSinceEpoch);
