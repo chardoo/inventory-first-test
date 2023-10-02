@@ -23,8 +23,13 @@ class _SalesPageState extends ConsumerState<SalesPage> {
     return;
   }
 
-  DateTime? startTime;
-  DateTime? endTime;
+  @override
+  void initState() {
+    Future.microtask(
+        () => ref.read(dateProvider.notifier).state = (start: null, end: null));
+    super.initState();
+  }
+
   double totalSale = 0.0;
   String? format(DateTime? date) {
     DateFormat d = DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY);

@@ -96,6 +96,7 @@ class SalesApi extends FireStoreAPIs<Sale> {
         currentDay = currentDay.add(const Duration(days: 1));
       }
       days.add(endDay.millisecondsSinceEpoch);
+      print(days);
       days = days.toSet().toList();
 
       var res = await instance
