@@ -6,18 +6,22 @@ class ListTileCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.subTitle,
-    required this.icon,
+    required this.deleteIcon,
     this.ontap,
-    this.onIconTap,
+    this.onDelete,
     this.subTitleColor,
     this.titleSize,
     this.boldTitle = false,
+    required this.editIcon,
+    this.onEdit,
   });
   final String title;
   final String subTitle;
-  final Widget icon;
+  final Widget deleteIcon;
+  final Widget editIcon;
   final Function()? ontap;
-  final Function()? onIconTap;
+  final Function()? onDelete;
+  final Function()? onEdit;
   final Color? subTitleColor;
   final double? titleSize;
   final bool boldTitle;
@@ -35,16 +39,36 @@ class ListTileCard extends StatelessWidget {
         text: subTitle,
         color: subTitleColor ?? Colors.blue,
       ),
-      trailing: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(
-              8,
-            )),
-        child: GestureDetector(
-          onTap: onIconTap,
-          child: icon,
+      trailing: SizedBox(
+        width: 100,
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(
+                    8,
+                  )),
+              child: GestureDetector(
+                onTap: onEdit,
+                child: editIcon,
+              ),
+            ),
+            SizedBox(width: 10),
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(
+                    8,
+                  )),
+              child: GestureDetector(
+                onTap: onDelete,
+                child: deleteIcon,
+              ),
+            ),
+          ],
         ),
       ),
     );

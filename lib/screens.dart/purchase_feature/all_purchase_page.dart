@@ -50,12 +50,12 @@ class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
               Expanded(
                   child: MyTextField(
                 controller: searchCtrl,
-                label: "Type item name",
+                label: "Type product name",
                 onChanged: (val) {
                   timer?.cancel();
                   timer = null;
                   timer = Timer(const Duration(seconds: 2), () {
-                    ref.read(purchaseProvider.notifier).getPurchases(val);
+                    setState(() {});
                   });
                 },
               )),

@@ -37,6 +37,11 @@ class SalesProvider extends _$SalesProvider {
     return sales;
   }
 
+  Future<({String? error, bool isError})> delete(Sale sale) async {
+    final res = await SalesApi().delete(sale);
+    return res;
+  }
+
   Future<String?> addPurchase(Purchase purchase) async {
     final res = await PurchaseApis().add(purchase);
 

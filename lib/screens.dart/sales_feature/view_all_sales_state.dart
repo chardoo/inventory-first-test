@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 import '../../models/sales.dart';
@@ -22,7 +19,8 @@ class SalesSuccessState extends SuccessState<List<Sale>> {
             child: ListTileCard(
               title: sale.productName,
               subTitle: "View detail",
-              icon: Icon(Icons.delete),
+              editIcon: Icon(Icons.edit),
+              deleteIcon: Icon(Icons.delete),
             ),
           );
         },
@@ -34,4 +32,3 @@ class SalesSuccessState extends SuccessState<List<Sale>> {
     );
   }
 }
-

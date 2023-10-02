@@ -31,19 +31,24 @@ class AddProductProvider extends _$AddProductProvider {
     return AddProductState(totalSalesforProduct: 0, sales: []);
   }
 
-  Future addSupplier(Supplier supplier) async {
+  Future<({String? error, bool isError})> addSupplier(
+      Supplier supplier, bool update) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    await Future.delayed(const Duration(seconds: 2));
-    supplierApis.add(supplier);
+    final res = update
+        ? await supplierApis.update(supplier)
+        : await supplierApis.add(supplier);
     loadingState.finish();
+
     loadingState.diactivate();
+    return res;
   }
 
-  Future<String?> addStock(Stock stock,bool update) async {
+  Future<String?> addStock(Stock stock, bool update) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
-    final res =update? await stockApis.update(stock): await stockApis.add(stock);
+    final res =
+        update ? await stockApis.update(stock) : await stockApis.add(stock);
     loadingState.finish();
     loadingState.diactivate();
     return res;
@@ -88,11 +93,11 @@ class AddProductProvider extends _$AddProductProvider {
     state = state.copyWith(supplier: supplier);
   }
 
-  addBrand(Brand brand) async {
+  addBrand(Brand brand, bool update) async {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
     await Future.delayed(const Duration(seconds: 2));
-    brandApis.add(brand);
+    update ?await brandApis.update(brand) :await brandApis.add(brand);
     loadingState.finish();
     loadingState.diactivate();
   }

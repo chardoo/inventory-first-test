@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MyNavigator {
+  static const home = "/";
+  static const logIn = "/logged-in";
+  static const salesPage = "/sales";
+  static const addProduct = "/add-product";
+  static const addSales = "/add-sales";
+  
+
   static goto(BuildContext context, Widget screen) {
     return Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
@@ -17,7 +24,7 @@ class MyNavigator {
     return Navigator.popAndPushNamed(context, path);
   }
 
-  static backTo(BuildContext context, {String path = "/"}) {
+  static backTo(BuildContext context, {String path = home}) {
     return Navigator.popUntil(context, ModalRoute.withName(path));
   }
 }

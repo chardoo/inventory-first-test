@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:rich_co_inventory/providers/product_provider.dart';
+import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/providers/sales_provider.dart';
-import 'package:rich_co_inventory/providers/show_items_provider.dart';
+import 'package:rich_co_inventory/widgets/dialogs.dart';
+import 'package:rich_co_inventory/widgets/snac_bar.dart';
 import 'package:rich_co_inventory/widgets/texts.dart';
 
 import '../../widgets/list_tile_card.dart';
@@ -130,20 +132,48 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                             ),
                           );
                         }
+
+                        final salesData = snapshot.requireData
+                          ..sort((a, b) {
+                            final dateA = DateTime.fromMillisecondsSinceEpoch(
+                                b.dateWithTime);
+                            final dateB = DateTime.fromMillisecondsSinceEpoch(
+                                a.dateWithTime);
+                            return dateA.compareTo(dateB);
+                          });
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
                               child: ListView.separated(
                                 itemBuilder: (_, i) {
-                                  final sale = snapshot.requireData[i];
+                                  final sale = salesData[i];
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12),
                                     child: ListTileCard(
                                       title: sale.productName,
                                       subTitle: "View detail",
-                                      icon: Icon(Icons.delete),
+                                      onDelete: () {
+                                        MyDialogs.showConfirm(context,
+                                            title: "Delete sale",
+                                            message:
+                                                "Do you really want to delete this sale",
+                                            onAcceptLabel: () async {
+                                          MyNavigator.back(context);
+                                          final res = await ref
+                                              .read(salesProvider.notifier)
+                                              .delete(sale);
+                                          if (res.isError) {
+                                            if (mounted) {
+                                              MySnackBar.showSnack(
+                                                  res.error ?? "", context);
+                                            }
+                                          }
+                                        });
+                                      },
+                                      editIcon: const Icon(Icons.edit),
+                                      deleteIcon: const Icon(Icons.delete),
                                     ),
                                   );
                                 },
@@ -160,7 +190,7 @@ class _SalesPageState extends ConsumerState<SalesPage> {
 
                       return Center(
                         child: MyText(
-                          text: "${snapshot.error}${snapshot.hasError}" ?? "",
+                          text: "${snapshot.error}${snapshot.hasError}",
                           size: 24,
                           weight: FontWeight.bold,
                         ),

@@ -61,10 +61,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 onChanged: (val) {
                   timer?.cancel();
                   timer = null;
-                  timer = Timer(Duration(seconds: 2), () {
-                    ref
-                        .read(displayProductsProvider.notifier)
-                        .seachProducts(val);
+                  timer = Timer(const Duration(seconds: 2), () {
+                    setState(() {});
                   });
                 },
               )),

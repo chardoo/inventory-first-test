@@ -1,3 +1,4 @@
+import 'package:rich_co_inventory/models/brand.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/repository/sections/brand_apis.dart';
 import 'package:rich_co_inventory/repository/sections/product_apis.dart';
@@ -7,9 +8,8 @@ import 'package:rich_co_inventory/repository/sections/stock.dart';
 import 'package:rich_co_inventory/repository/sections/suppliers_api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../screens.dart/brand_feature/view_brand_state.dart';
+import '../models/supplier.dart';
 import '../screens.dart/shared/view_all_items_states.dart';
-import '../screens.dart/supplier_feature.dart/view_all_suppliers_state.dart';
 part '.generated/show_items_provider.g.dart';
 
 @riverpod
@@ -45,16 +45,20 @@ class DisplayProductsProvider extends _$DisplayProductsProvider {
     }
   }
 
-  getBrand() async {
-    state = LoadingState();
-    final data = await brandAPIs.getAll();
-    state = BrandSuccessState(data);
+  Future<List<Brand>> getBrand() async {
+    return await brandAPIs.getAll();
   }
 
-  getSuppliers() async {
-    state = LoadingState();
-    final data = await suppliersApis.getAll();
-    state = SupplierSuccessState(data);
+  Future<({String? error, bool isError})> deleteBrand(Brand brand) async {
+    return await brandAPIs.delete(brand);
+  }
+
+  Future<({String? error, bool isError})> deleteSupplier(Supplier supplier) async {
+    return await suppliersApis.delete(supplier);
+  }
+
+  Future<List<Supplier>> getSuppliers() async {
+    return await suppliersApis.getAll();
   }
 
   // search(String searchValue) {

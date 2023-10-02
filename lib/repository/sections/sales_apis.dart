@@ -74,13 +74,28 @@ class SalesApi extends FireStoreAPIs<Sale> {
   }
 
   @override
-  delete(Sale item) async {
+  Future<({bool isError, String? error})> delete(Sale item) async {
     try {
-      final docToDelete =
-          instance.collection(dependantCollection).doc(item.saleId);
-      docToDelete.delete();
-    } catch (e) {
-      print("error is $e");
+      final batch = instance.batch();
+      final saleRef =
+          await instance.collection(mainCollection).doc(item.saleId).get();
+      final stockRef = await instance
+          .collection(dependantCollection)
+          .where("productId", isEqualTo: item.productId)
+          .limit(1)
+          .get();
+      if (stockRef.docs.isEmpty) {
+        return (isError: true, error: "Stock does not exit");
+      }
+      Stock stock = Stock.fromJson(stockRef.docs.first.data());
+      final quentity = stock.currentQuantity + item.quantitySold!;
+      stock = stock.copyWith(currentQuantity: quentity);
+      batch.delete(saleRef.reference);
+      batch.update(stockRef.docs.first.reference, stock.toJson());
+      batch.commit();
+      return (isError: false, error: null);
+    } on FirebaseException catch (e) {
+      return (isError: true, error: e.toString());
     }
   }
 

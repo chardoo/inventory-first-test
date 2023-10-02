@@ -12,8 +12,8 @@ class PurchaseProvider extends _$PurchaseProvider {
     return PurchaseState(me: 23);
   }
 
-  Future<List<Purchase>> getPurchases(String date) async {
-    return await PurchaseApis().getPurchaseByDate(date);
+  Future<List<Purchase>> getPurchases(String name) async {
+    return await PurchaseApis().searchPruchaseByName(name);
   }
 
   Future<({String? data, String? error, bool isError})> addPurchase(

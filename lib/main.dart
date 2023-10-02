@@ -12,6 +12,7 @@ import 'package:rich_co_inventory/screens.dart/product_feature/add_product_scree
 import 'package:rich_co_inventory/screens.dart/product_feature/products_screen.dart';
 import 'package:rich_co_inventory/screens.dart/purchase_feature/all_purchase_page.dart';
 import 'package:rich_co_inventory/screens.dart/sales_feature/add_sales.dart';
+import 'package:rich_co_inventory/screens.dart/sales_feature/sales_page.dart';
 import 'package:rich_co_inventory/widgets/bottom_navigation.dart';
 
 import 'firebase_options.dart';
@@ -21,7 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   bool isLogedIn = await Storage.getLogIn();
-  String path = isLogedIn ? "/" : "/logged-in";
+  String path = isLogedIn ? MyNavigator.home : MyNavigator.logIn;
   runApp(MyApp(
     initialRoute: path,
   ));
@@ -44,10 +45,11 @@ class MyApp extends StatelessWidget {
           useMaterial3: false,
         ),
         routes: {
-          "/logged-in": (context) => const LogInScreen(),
-          "/": (context) => const HomeScreen(),
-          "/add-product": (context) => const AddProductScreen(),
-          '/add-sales': (context) => AddSalesScreen()
+          MyNavigator.logIn: (context) => const LogInScreen(),
+          MyNavigator.home: (context) => const HomeScreen(),
+          MyNavigator.addProduct: (context) => const AddProductScreen(),
+          MyNavigator.addSales: (context) => AddSalesScreen(),
+          MyNavigator.salesPage: (context) => const SalesPage()
         },
         initialRoute: initialRoute,
       ),
