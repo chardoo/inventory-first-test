@@ -81,6 +81,7 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
           .collection(mainCollection)
           .where('brandName', isGreaterThanOrEqualTo: name.toLowerCase())
           .where('brandName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .limit(10)
           .get();
       if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Brand.fromJson(e.data())).toList();

@@ -73,8 +73,14 @@ class _AllBrandScreenState extends ConsumerState<SuppliersScreen> {
                                 showDialog(
                                     context: context,
                                     builder: (_) {
-                                      return AddSupplierDialog(
-                                        supplier: supplier,
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          AddSupplierDialog(
+                                            supplier: supplier,
+                                          ),
+                                        ],
                                       );
                                     });
                               },

@@ -102,7 +102,7 @@ class SuppliersApis extends FireStoreAPIs<Supplier> {
       final res = await instance
           .collection(mainCollection)
           .where('supplierName', isGreaterThanOrEqualTo: name.toLowerCase())
-          .where('supplierName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .where('supplierName', isLessThanOrEqualTo: '${name.toLowerCase()}z').limit(10)
           .get();
       if (res.docs.isEmpty) return [];
 

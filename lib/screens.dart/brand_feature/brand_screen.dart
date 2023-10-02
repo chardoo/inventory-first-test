@@ -80,8 +80,14 @@ class _AllBrandScreenState extends ConsumerState<AllBrandScreen> {
                                 showDialog(
                                     context: context,
                                     builder: (_) {
-                                      return AddBrandDialog(
-                                        brand: brand,
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          AddBrandDialog(
+                                            brand: brand,
+                                          ),
+                                        ],
                                       );
                                     });
                               },

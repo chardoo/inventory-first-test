@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,6 +41,7 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
       priceCont.text = p.cost.toString();
       final date = DateTime.fromMillisecondsSinceEpoch(p.purchaseDate);
       purchaseDate.text = format.format(date);
+      print("date is ${purchaseDate.text}");
       quantity.text = p.quantityPurchased.toString();
       productCntl.text = p.productName;
       productInfo = (

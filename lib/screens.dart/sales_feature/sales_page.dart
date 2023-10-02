@@ -21,7 +21,13 @@ class SalesPage extends ConsumerStatefulWidget {
 
 class _SalesPageState extends ConsumerState<SalesPage> {
   void refresh() {
-    setState(() {});
+    if (start != null && end != null) {
+      setState(() {});
+      Future.delayed(const Duration(seconds: 1), () {
+        start = null;
+        end = null;
+      });
+    }
     return;
   }
 
@@ -39,9 +45,10 @@ class _SalesPageState extends ConsumerState<SalesPage> {
     return d.format(date);
   }
 
+  DateTime? start;
+  DateTime? end;
   @override
   Widget build(BuildContext context) {
-    final date = ref.watch(dateProvider);
     return Scaffold(
         appBar: AppBar(title: const Text("All Sales")),
         body: Column(
@@ -69,6 +76,7 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                       icon: const RotatedBox(
                           quarterTurns: 3, child: Icon(Icons.chevron_left)),
                       ontap: () async {
+                        start = null;
                         dateRef.state = (start: null, end: date.end);
                         final selectedDate = await showDatePicker(
                             context: context,
@@ -78,9 +86,8 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                             lastDate:
                                 DateTime.now().add(const Duration(days: 1000)));
                         dateRef.state = (start: selectedDate, end: date.end);
-                        if (date.start != null && date.end != null) {
-                          refresh();
-                        }
+                        start = selectedDate;
+                        refresh();
                       },
                     ),
                     MyIconButton(
@@ -89,6 +96,7 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                         borderColor: Colors.grey,
                         bgColor: Colors.white,
                         ontap: () async {
+                          end = null;
                           dateRef.state = (start: date.start, end: null);
                           final selectedDate = await showDatePicker(
                               context: context,
@@ -100,9 +108,8 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                           dateRef.state =
                               (start: date.start, end: selectedDate);
 
-                          if (date.start != null && date.end != null) {
-                            refresh();
-                          }
+                          end = selectedDate;
+                          refresh();
                         },
                         icon: const RotatedBox(
                             quarterTurns: 3, child: Icon(Icons.chevron_left))),
@@ -116,7 +123,7 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                 child: FutureBuilder(
                     future: ref
                         .read(salesProvider.notifier)
-                        .getSalesForDuration(date.start, date.end),
+                        .getSalesForDuration(start, end),
                     builder: (_, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const ShimmerLoader();

@@ -1,7 +1,7 @@
 part of '../add_product_screen.dart';
 
 class AddSupplierDialog extends ConsumerStatefulWidget {
-  const AddSupplierDialog({this.supplier});
+  const AddSupplierDialog({super.key, this.supplier});
   final Supplier? supplier;
   @override
   ConsumerState<AddSupplierDialog> createState() => _AddSupplierDialogState();
@@ -75,14 +75,16 @@ class _AddSupplierDialogState extends ConsumerState<AddSupplierDialog> {
 }
 
 class AddBrandDialog extends ConsumerStatefulWidget {
-  const AddBrandDialog({this.brand});
+  const AddBrandDialog({super.key, this.brand});
   final Brand? brand;
   @override
   ConsumerState<AddBrandDialog> createState() => _AddBrandDialogState();
 }
 
 class _AddBrandDialogState extends ConsumerState<AddBrandDialog> {
+  @override
   initState() {
+    super.initState();
     if (widget.brand != null) {
       nameCntl = TextEditingController(text: widget.brand!.brandName);
       descriptionCntl =
