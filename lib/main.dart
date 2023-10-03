@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
     return ProviderScope(
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.pink,
           appBarTheme: const AppBarTheme(
