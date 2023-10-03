@@ -47,36 +47,39 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
             color: Colors.white),
         margin: const EdgeInsets.only(top: 24),
         child: Column(children: [
-          Row(
-            children: [
-              Expanded(
-                  child: MyTextField(
-                controller: searchCtrl,
-                label: "Type stock name",
-                onChanged: (val) {
-                  timer?.cancel();
-                  timer = null;
-                  timer = Timer(const Duration(seconds: 2), () {
-                    refresh();
-                  });
-                },
-              )),
-              const SizedBox(width: 12),
-              MyFilledIconButton(
-                icon: const Icon(
-                  Icons.add,
-                  size: 12,
-                ),
-                label: const MyText(
-                  text: "Add  ",
-                  size: 12,
-                  color: Colors.blue,
-                ),
-                ontap: () {
-                  MyNavigator.goto(context, const AddInventoryScreen());
-                },
-              )
-            ],
+          SizedBox(
+            height: 40,
+            child: Row(
+              children: [
+                Expanded(
+                    child: MyTextField(
+                  controller: searchCtrl,
+                  label: "Type stock name",
+                  onChanged: (val) {
+                    timer?.cancel();
+                    timer = null;
+                    timer = Timer(const Duration(seconds: 2), () {
+                      refresh();
+                    });
+                  },
+                )),
+                const SizedBox(width: 12),
+                MyFilledIconButton(
+                  icon: const Icon(
+                    Icons.add,
+                    size: 12,
+                  ),
+                  label: const MyText(
+                    text: "Add  ",
+                    size: 12,
+                    color: Colors.blue,
+                  ),
+                  ontap: () {
+                    MyNavigator.goto(context, const AddInventoryScreen());
+                  },
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 24),
           Expanded(
@@ -140,6 +143,8 @@ class StockCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final name =
+        "${stock.productName!.substring(0, 1).toUpperCase()}${stock.productName!.substring(1)}";
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade300),
@@ -147,15 +152,15 @@ class StockCard extends StatelessWidget {
           color: Colors.grey.shade100),
       child: ListTile(
         title: MyText(
-          text: stock.productName!,
+          text: name,
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
         ),
         subtitle: MyText(
-          text: "Qnt: ${stock.currentQuantity}",
+          text: "quantity: ${stock.currentQuantity}",
           color: Colors.grey,
-          size: 16,
+          size: 12,
           maxLines: 1,
         ),
         trailing: GestureDetector(

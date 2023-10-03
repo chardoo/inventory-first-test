@@ -34,7 +34,6 @@ abstract class FireStoreAPIs<T> {
   update(T item);
   Future<T?> getOne(String name);
   Future<List<T>> getAll();
- 
 }
 
-enum Collections { brands, user, suppliers, products, sales, purchases, stock }
+enum Collections { brands, users, suppliers, products, sales, purchases, stock }

@@ -13,11 +13,15 @@ class _AddSupplierDialogState extends ConsumerState<AddSupplierDialog> {
   initState() {
     super.initState();
     supplier = widget.supplier;
+    nameCntl = TextEditingController();
+    emailCntl = TextEditingController();
+    addressCntl = TextEditingController();
+    contactCntl = TextEditingController();
     if (supplier != null) {
-      nameCntl = TextEditingController(text: supplier!.supplierName);
-      emailCntl = TextEditingController(text: supplier!.supplierEmail);
-      addressCntl = TextEditingController(text: supplier!.supplierAddress);
-      contactCntl = TextEditingController(text: supplier!.supplierContact);
+      nameCntl.text = supplier!.supplierName;
+      emailCntl.text = supplier!.supplierEmail ?? "";
+      addressCntl.text = supplier!.supplierAddress ?? "";
+      contactCntl.text = supplier!.supplierContact ?? "";
     }
   }
 

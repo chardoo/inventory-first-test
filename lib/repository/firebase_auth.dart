@@ -1,5 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:rich_co_inventory/helpers/secure_store.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
+
+import '../models/user.dart';
 
 class AuthState {
   final String? message;
@@ -10,9 +13,11 @@ class AuthState {
 }
 
 class AuthRepo extends FireStoreAPIs<User> {
-  String get userCollection => Collections.user.name;
-  Future<AuthState> logIn(
-      String email, String password,) async {
+  String get userCollection => Collections.users.name;
+  Future<({User? user, bool isSuccess, String? error})> logIn(
+    String email,
+    String password,
+  ) async {
     try {
       final res = await instance
           .collection(userCollection)
@@ -21,16 +26,23 @@ class AuthRepo extends FireStoreAPIs<User> {
           .get();
 
       if (res.docs.isNotEmpty) {
-        final user = res.docs.first;
-        if (user['password'] == password) {
-          return AuthState(isSuccess: true);
+        final userPsw = res.docs.first["password"];
+        if (userPsw == password) {
+          final user = User.fromJson(res.docs.first.data());
+          return (user: user, isSuccess: true, error: null);
         } else {
-          return AuthState(isSuccess: false, message: "Wrong password");
+          return (user: null, isSuccess: false, error: "wrong password");
         }
       }
-      return AuthState(isSuccess: false, message: "User does not exit");
+      return (user: null, isSuccess: false, error: "User does not exist");
+    } on FirebaseException catch (e) {
+      return (
+        user: null,
+        isSuccess: false,
+        error: e.message ?? "sorry an error occured"
+      );
     } catch (e) {
-      return AuthState(isSuccess: false, message: "sorry an error occured");
+      return (user: null, isSuccess: false, error: "sorry an error occured");
     }
   }
 
@@ -64,7 +76,7 @@ class AuthRepo extends FireStoreAPIs<User> {
 
   @override
   // TODO: implement mainCollection
-  String get mainCollection => throw UnimplementedError();
+  String get mainCollection => "users";
 
   @override
   update(User item) {

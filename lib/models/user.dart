@@ -7,10 +7,13 @@ part '.generated/user.g.dart';
 abstract class User with _$User {
   const factory User({
     required String email,
-    required String pasword,
+    required String password,
     required String deviceToken,
     required String token,
+    required Role role,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
+
+enum Role { admin, superAdmin, user }

@@ -41,7 +41,6 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
       priceCont.text = p.cost.toString();
       final date = DateTime.fromMillisecondsSinceEpoch(p.purchaseDate);
       purchaseDate.text = format.format(date);
-      print("date is ${purchaseDate.text}");
       quantity.text = p.quantityPurchased.toString();
       productCntl.text = p.productName;
       productInfo = (
@@ -74,7 +73,6 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     final product = widget.purchase;
-    purchaseDate.text = format.format(currentDate);
     return LoadingLayout(
       child: Scaffold(
           backgroundColor: Colors.grey.shade100,
@@ -166,6 +164,7 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                                 DateTime.now().add(const Duration(days: 1000)));
                         setState(() {
                           currentDate = selectedDate ?? currentDate;
+                          purchaseDate.text = format.format(currentDate);
                         });
                       },
                       trailing: const Icon(Icons.calendar_month),

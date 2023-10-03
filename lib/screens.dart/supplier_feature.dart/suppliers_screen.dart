@@ -103,10 +103,10 @@ class _AllBrandScreenState extends ConsumerState<SuppliersScreen> {
                                   }
                                 });
                               },
-                              editIcon: Icon(Icons.edit),
+                              editIcon: const Icon(Icons.edit),
                               subTitleColor: Colors.grey,
                               subTitle:
-                                  " \n${supplier.supplierAddress} \n${supplier.supplierContact} | "
+                                  " \n${supplier.supplierAddress} \n${supplier.supplierEmail} \n"
                                   "${supplier.supplierContact}",
                               deleteIcon: const Icon(Icons.delete),
                             ),

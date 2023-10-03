@@ -155,8 +155,10 @@ class _ProductTileState extends ConsumerState<ProductTile> {
                             .read(salesCartProvider.notifier)
                             .update(updatedSale);
                       },
-                      decoration:
-                          const InputDecoration(border: InputBorder.none),
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                              left: controller.text.length > 1 ? 0 : 10),
+                          border: InputBorder.none),
                     )),
                 const VerticalDivider(),
                 GestureDetector(

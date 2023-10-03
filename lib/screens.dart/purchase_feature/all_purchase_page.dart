@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
+import 'package:rich_co_inventory/helpers/string_helper.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
@@ -105,7 +108,7 @@ class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
                           itemCount: snapshot.requireData.length,
                           itemBuilder: (_, i) {
                             final purchase = snapshot.requireData[i];
-                            return PurchaseCard(
+                            return _PurchaseCard(
                               purchase: purchase,
                             );
                           });
@@ -126,10 +129,16 @@ class _ProductsScreenState extends ConsumerState<AllPurchaseScreen> {
   }
 }
 
-class PurchaseCard extends StatelessWidget {
-  const PurchaseCard({super.key, required this.purchase});
+class _PurchaseCard extends StatelessWidget {
+  const _PurchaseCard({super.key, required this.purchase});
 
   final Purchase purchase;
+  format(int dateInt) {
+    final date = DateTime.fromMillisecondsSinceEpoch(purchase.purchaseDate);
+    final format = DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY);
+    final timeFormat = DateFormat(DateFormat.HOUR_MINUTE);
+    return "${format.format(date)} ${timeFormat.format(date)}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,50 +147,65 @@ class PurchaseCard extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
           color: Colors.grey.shade100),
-      child: ListTile(
-        title: MyText(
-          text: purchase.productName,
-          weight: FontWeight.bold,
-          size: 16,
-          maxLines: 1,
-        ),
-        leading: Column(
-          children: [
-            MyText(
-              text: "cost:${purchase.cost}",
-              weight: FontWeight.bold,
-              size: 16,
-              maxLines: 1,
-            ),
-            MyText(
-              text: "Qnt: ${purchase.quantityPurchased}",
-              weight: FontWeight.bold,
-              size: 16,
-              maxLines: 1,
-            ),
-          ],
-        ),
-        subtitle: MyText(
-          text: DateTime.fromMillisecondsSinceEpoch(purchase.purchaseDate)
-              .toString(),
-          size: 14,
-          maxLines: 1,
-          color: Colors.blueGrey,
-        ),
-        trailing: GestureDetector(
-          onTap: () {
-            MyNavigator.goto(
-                context,
-                AddPurchaseScreen(
-                  purchase: purchase,
-                ));
-          },
-          child: const Icon(
-            Icons.edit,
-            color: Colors.blueGrey,
+      child: Padding(
+        padding: EdgeInsets.all(12.0),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Column(
+            children: [
+              MyText(
+                text: "cost: ${purchase.cost}".nameCase,
+                weight: FontWeight.bold,
+                size: 16,
+                maxLines: 1,
+              ),
+              const SizedBox(height: 8),
+              MyText(
+                text: "quantity: ${purchase.quantityPurchased}",
+                size: 14,
+                maxLines: 1,
+                color: Colors.blueGrey,
+              ),
+            ],
           ),
-        ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MyText(
+                text: purchase.productName.nameCase,
+                weight: FontWeight.bold,
+                size: 16,
+                maxLines: 1,
+              ),
+              const SizedBox(height: 8),
+              MyText(
+                text: format(purchase.purchaseDate),
+                size: 14,
+                maxLines: 1,
+                color: Colors.blueGrey,
+              )
+            ],
+          ),
+          GestureDetector(
+            onTap: () {
+              MyNavigator.goto(
+                  context,
+                  AddPurchaseScreen(
+                    purchase: purchase,
+                  ));
+            },
+            child: const Icon(
+              Icons.edit,
+              color: Colors.blueGrey,
+            ),
+          ),
+        ]),
       ),
+      // child: ListTile(
+      // title:
+      // leading:
+      // trailing:
+      // ),
     );
   }
 }

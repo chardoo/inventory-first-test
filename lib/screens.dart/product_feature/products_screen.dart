@@ -160,11 +160,22 @@ class ProductCard extends StatelessWidget {
               size: 16,
               maxLines: 1,
             ),
-            subtitle: MyText(
-              text: product.productDescription ?? "",
-              size: 14,
-              maxLines: 1,
-              color: Colors.blueGrey,
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+                MyText(
+                    text: "GHC ${product.price}",
+                    size: 12,
+                    color: Colors.blueGrey),
+                const SizedBox(height: 5),
+                MyText(
+                  text: product.productDescription ?? "",
+                  size: 14,
+                  maxLines: 2,
+                  color: Colors.blueGrey,
+                ),
+              ],
             ),
             trailing: GestureDetector(
               onTap: () {

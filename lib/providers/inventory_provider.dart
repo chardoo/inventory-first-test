@@ -30,7 +30,9 @@ class InventoryProvider extends _$InventoryProvider {
         currentQuantity: update
             ? stock.currentQuantity
             : currentStock[0]!.currentQuantity + stock.currentQuantity,
-        minimumRequiredQuantity: currentStock[0]!.minimumRequiredQuantity));
+        minimumRequiredQuantity: update
+            ? stock.minimumRequiredQuantity
+            : currentStock[0]!.minimumRequiredQuantity));
     loadingState.diactivate();
 
     return '';

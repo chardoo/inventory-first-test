@@ -21,8 +21,8 @@ import 'helpers/navigator.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  bool isLogedIn = await Storage.getLogIn();
-  String path = isLogedIn ? MyNavigator.home : MyNavigator.logIn;
+  final isLogedIn = await Storage.getUser();
+  String path = isLogedIn.isLoggedIn ? MyNavigator.home : MyNavigator.logIn;
   runApp(MyApp(
     initialRoute: path,
   ));
@@ -66,10 +66,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> screens = [
-    DashBoard(),
-    ProductsScreen(),
-    AllInventory(),
-    AllPurchaseScreen()
+    const DashBoard(),
+    const ProductsScreen(),
+    const AllInventory(),
   ];
   int index = 0;
   @override
@@ -85,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
       resizeToAvoidBottomInset: false,
       body: screens[index],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       drawer: const MyDrawer(),
       floatingActionButton: FloatingActionButton(
         elevation: 0,
