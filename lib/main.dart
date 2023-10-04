@@ -16,15 +16,18 @@ import 'package:rich_co_inventory/widgets/bottom_navigation.dart';
 
 import 'firebase_options.dart';
 import 'helpers/navigator.dart';
-
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   bool isLogedIn = await Storage.getLogIn();
   String path = isLogedIn ? "/" : "/logged-in";
   runApp(MyApp(
     initialRoute: path,
   ));
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
