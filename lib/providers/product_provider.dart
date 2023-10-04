@@ -97,7 +97,7 @@ class AddProductProvider extends _$AddProductProvider {
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
     await Future.delayed(const Duration(seconds: 2));
-    update ?await brandApis.update(brand) :await brandApis.add(brand);
+    update ? await brandApis.update(brand) : await brandApis.add(brand);
     loadingState.finish();
     loadingState.diactivate();
   }
@@ -116,6 +116,10 @@ class AddProductProvider extends _$AddProductProvider {
 
   Future<List<Product>> searchProductByName(String name) async {
     return productApis.searchByName(name);
+  }
+
+  Future<Product?> getProductById(String id) async {
+    return productApis.getOne(id);
   }
 
   Future<List<Brand>> searchByName(String name) async {

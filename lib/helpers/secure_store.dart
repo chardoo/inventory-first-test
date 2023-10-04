@@ -22,7 +22,18 @@ class Storage {
     }
   }
 
- static Future<({User? user, bool isLoggedIn})> getUser() async {
+  static logOut() async {
+    try {
+      final storage = await SharedPreferences.getInstance();
+      storage.setBool(logedInKey, false);
+      storage.clear();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<({User? user, bool isLoggedIn})> getUser() async {
     try {
       final storage = await SharedPreferences.getInstance();
       final isLoggedIn = storage.getBool(logedInKey) ?? false;

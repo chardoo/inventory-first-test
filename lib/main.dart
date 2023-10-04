@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/secure_store.dart';
+import 'package:rich_co_inventory/providers/user_provider.dart';
 import 'package:rich_co_inventory/screens.dart/auth/log_in.dart';
 
 import 'package:rich_co_inventory/screens.dart/dashboard_feauture/dashboard.dart';
@@ -10,7 +11,6 @@ import 'package:rich_co_inventory/screens.dart/dashboard_feauture/drawer.dart';
 import 'package:rich_co_inventory/screens.dart/inventory/all_inventory.dart';
 import 'package:rich_co_inventory/screens.dart/product_feature/add_product_screen.dart';
 import 'package:rich_co_inventory/screens.dart/product_feature/products_screen.dart';
-import 'package:rich_co_inventory/screens.dart/purchase_feature/all_purchase_page.dart';
 import 'package:rich_co_inventory/screens.dart/sales_feature/add_sales.dart';
 import 'package:rich_co_inventory/screens.dart/sales_feature/sales_page.dart';
 import 'package:rich_co_inventory/widgets/bottom_navigation.dart';
@@ -58,14 +58,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    Future.microtask(() => ref.read(userProvider.notifier).init());
+    super.initState();
+  }
+
   final List<Widget> screens = [
     const DashBoard(),
     const ProductsScreen(),

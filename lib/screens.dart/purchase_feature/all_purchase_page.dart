@@ -7,8 +7,10 @@ import 'package:intl/intl.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/helpers/string_helper.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
+import 'package:rich_co_inventory/models/user.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
+import 'package:rich_co_inventory/providers/user_provider.dart';
 import 'package:rich_co_inventory/screens.dart/purchase_feature/add_purchase_page.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/shimmer.dart';
@@ -186,19 +188,27 @@ class _PurchaseCard extends StatelessWidget {
               )
             ],
           ),
-          GestureDetector(
-            onTap: () {
-              MyNavigator.goto(
-                  context,
-                  AddPurchaseScreen(
-                    purchase: purchase,
-                  ));
-            },
-            child: const Icon(
-              Icons.edit,
-              color: Colors.blueGrey,
-            ),
-          ),
+          Consumer(builder: (context, ref, _) {
+            final canEdit =
+                ref.watch(userProvider.select((value) => value?.role)) ==
+                    Role.superAdmin;
+            return Visibility(
+              visible: canEdit,
+              child: GestureDetector(
+                onTap: () {
+                  MyNavigator.goto(
+                      context,
+                      AddPurchaseScreen(
+                        purchase: purchase,
+                      ));
+                },
+                child: const Icon(
+                  Icons.edit,
+                  color: Colors.blueGrey,
+                ),
+              ),
+            );
+          }),
         ]),
       ),
       // child: ListTile(

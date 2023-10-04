@@ -85,9 +85,6 @@ class ProductApis extends FireStoreAPIs<Product> {
     try {
       final res = await instance.collection(mainCollection).doc(name).get();
 
-      Map<String, dynamic> productData = res.data()!;
-
-      await instance.collection(salesCollection).get();
       if (res.exists) {
         return Product.fromJson(res.data()!);
       } else {

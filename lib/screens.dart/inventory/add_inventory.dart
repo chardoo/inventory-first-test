@@ -34,6 +34,7 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
   final TextEditingController quantityCntl = TextEditingController();
   final TextEditingController minimumQuantityCntl = TextEditingController();
   final TextEditingController purchaseDate = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
   @override
   void initState() {
     print("stock ${widget.stock}");
@@ -42,10 +43,19 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
       minimumQuantityCntl.text =
           widget.stock!.minimumRequiredQuantity.toString();
       productController.text = widget.stock!.productName!;
-
+      getDate(widget.stock!.productId);
       productNameId = (widget.stock!.productName!, widget.stock!.productId);
+    } else {
+      dateController.text = format.format(DateTime.now());
     }
     super.initState();
+  }
+
+  getDate(String id) async {
+    final product =
+        await ref.read(addProductProvider.notifier).getProductById(id);
+    dateController.text = format
+        .format(DateTime.fromMillisecondsSinceEpoch(product!.expiryDate!));
   }
 
   DateTime currentDate = DateTime.now();
@@ -103,6 +113,10 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                                     productNameId =
                                         (val.productName, val.productId!);
                                     productController.text = val.productName;
+                                    final date =
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                            val.expiryDate!);
+                                    dateController.text = format.format(date);
                                   }
                                 },
                                 suggestionsCallback: (val) async {
@@ -164,6 +178,29 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                         },
                         keyboadType: TextInputType.number,
                         controller: quantityCntl),
+                    SizedBox(height: 20),
+                    MyTextFieldWithTitle(
+                      name: "expiry date",
+                      label: "",
+                      controller: dateController,
+                      readOnly: true,
+                      ontap: () async {
+                        final selectedDate = await showDatePicker(
+                            currentDate: currentDate,
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now()
+                                .subtract(const Duration(days: 1000)),
+                            lastDate:
+                                DateTime.now().add(const Duration(days: 1000)));
+                        setState(() {
+                          if (selectedDate != null) {
+                            dateController.text = format.format(selectedDate);
+                          }
+                        });
+                      },
+                      trailing: const Icon(Icons.calendar_month),
+                    ),
                     const SizedBox(
                       height: 50,
                     ),
@@ -194,9 +231,12 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                           minimumRequiredQuantity:
                               int.parse(minimumQuantityCntl.text),
                         );
-                        ref
-                            .read(inventoryProvider.notifier)
-                            .addInventory(purchase, widget.stock != null);
+
+                        int dateInMilliseconds = format
+                            .parse(dateController.text)
+                            .millisecondsSinceEpoch;
+                        ref.read(inventoryProvider.notifier).addInventory(
+                            purchase, dateInMilliseconds, widget.stock != null);
 
                         MyNavigator.back(context);
                       },
