@@ -88,6 +88,7 @@ class MyTextField extends StatelessWidget {
       keyboardType: keyboadType ?? TextInputType.text,
       //obscureText: obsureText,
       maxLines: line,
+
       onEditingComplete: onEditingComplete,
       onTap: ontap,
       readOnly: readOnly ?? false,
@@ -95,7 +96,8 @@ class MyTextField extends StatelessWidget {
       decoration: InputDecoration(
         fillColor: bgColor,
         filled: bgColor != null,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 18),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 18, vertical: line != null && line! > 1 ? 10 : 0),
         suffixIcon: trailing,
         focusedBorder: border,
         labelText: label,

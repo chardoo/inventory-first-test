@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 import '../../models/brand.dart';
@@ -15,10 +16,9 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
 
     try {
       final isBrandExist = await check(
-          collection: mainCollection, field: "brandName", arg: brand.brandName);
+          collection: mainCollection, field: "brandName", arg: brand.brandId!);
       if (isBrandExist) {
-        //TODO: prevent user from adding
-        print("already exist");
+        return;
       } else {
         instance
             .collection(mainCollection)
@@ -29,30 +29,31 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
   }
 
   @override
-  delete(Brand brand) async {
+  Future<({bool isError, String? error})> delete(Brand brand) async {
     try {
       final isConnectedToProduct = await check(
           collection: dependantCollection,
           field: "brandId",
-          arg: brand.brandName);
+          arg: brand.brandId!);
       if (isConnectedToProduct) {
-        //TODO: cant delete product
+        return (isError: true, error: "This brand is connected to a product");
       } else {
-        final docToDelete =
-            instance.collection(dependantCollection).doc(brand.brandName);
-        docToDelete.delete();
+        final res =
+            await instance.collection(mainCollection).doc(brand.brandId).get();
+        await res.reference.delete();
+        return (isError: false, error: null);
       }
-    } catch (e) {
-      print("error is $e");
+    } on FirebaseException catch (e) {
+      return (isError: true, error: e.message ?? "something occured");
     }
   }
 
   @override
-  update(Brand brand) async {
+  Future update(Brand brand) async {
     try {
       await instance
           .collection(mainCollection)
-          .doc(brand.brandName)
+          .doc(brand.brandId)
           .update(brand.toJson());
     } catch (e) {
       //TODO: do something
@@ -80,6 +81,7 @@ class BrandAPIs extends FireStoreAPIs<Brand> {
           .collection(mainCollection)
           .where('brandName', isGreaterThanOrEqualTo: name.toLowerCase())
           .where('brandName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .limit(10)
           .get();
       if (res.docs.isEmpty) return [];
       return res.docs.map((e) => Brand.fromJson(e.data())).toList();

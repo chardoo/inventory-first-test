@@ -94,7 +94,7 @@ class _ProductDetailsState extends ConsumerState<_UpperSection> {
                   showDialog(
                       context: context,
                       builder: (_) {
-                        return const _AddSupplierDialog();
+                        return const AddSupplierDialog();
                       });
                 })
           ],
@@ -130,7 +130,7 @@ class _ProductDetailsState extends ConsumerState<_UpperSection> {
                 showDialog(
                     context: context,
                     builder: (_) {
-                      return const _AddBrandDialog();
+                      return const AddBrandDialog();
                     });
               },
               label: const Text("New"),

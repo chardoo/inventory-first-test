@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key, required this.ontap});
   final Function(int val) ontap;
@@ -34,25 +33,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ),
           BottomNavigationBarItem(
             icon: navIcon(
-              Icons.gif_box,
+              Icons.local_mall,
             ),
-            activeIcon: activeIcon(Icons.gif_box),
+            activeIcon: activeIcon(Icons.local_mall),
             label: 'Products',
           ),
           BottomNavigationBarItem(
             icon: navIcon(
-              Icons.factory,
+              Icons.trolley,
             ),
-            activeIcon: activeIcon(Icons.factory),
+            activeIcon: activeIcon(Icons.trolley),
             label: 'Inventory',
           ),
-          BottomNavigationBarItem(
-            icon: navIcon(
-              Icons.person,
-            ),
-            activeIcon: activeIcon(Icons.person),
-            label: 'Purchase',
-          )
         ]);
   }
 }

@@ -37,6 +37,39 @@ class SalesProvider extends _$SalesProvider {
     return sales;
   }
 
+  Future<List<Sale>> getSalesForToday(DateTime? start, DateTime? end) async {
+    final sales = await SalesApi().getSalesForRange(start, end);
+    double todaysSales = 0.0;
+
+    for (int i = 0; i < sales.length; i++) {
+      todaysSales =
+          todaysSales + (sales[i].productPrice * sales[i].quantitySold!);
+    }
+
+    state = SalesState(todaySale: todaysSales, weekSales: state.weekSales);
+    return sales;
+  }
+
+  Future<List<Sale>> getSalesForWeek() async {
+    final end = DateTime.now();
+    final start = end.subtract(const Duration(days: 7));
+    final sales = await SalesApi().getSalesForRange(start, end);
+    double weeklySales = 0.0;
+    print("sales $sales");
+    for (int i = 0; i < sales.length; i++) {
+      weeklySales =
+          weeklySales + (sales[i].productPrice * sales[i].quantitySold!);
+    }
+
+    state = SalesState(todaySale: state.todaySale, weekSales: weeklySales);
+    return sales;
+  }
+
+  Future<({String? error, bool isError})> delete(Sale sale) async {
+    final res = await SalesApi().delete(sale);
+    return res;
+  }
+
   Future<String?> addPurchase(Purchase purchase) async {
     final res = await PurchaseApis().add(purchase);
 
@@ -54,10 +87,17 @@ class SalesProvider extends _$SalesProvider {
 }
 
 class SalesState {
-  double? total;
-  List<Product>? listOfProduct;
-  Purchase? purchas;
-  SalesState({this.total, this.listOfProduct, this.purchas});
+  final double? total;
+  final double todaySale;
+  final double weekSales;
+  final List<Product>? listOfProduct;
+  final Purchase? purchas;
+  SalesState(
+      {this.total,
+      this.listOfProduct,
+      this.purchas,
+      this.todaySale = 0,
+      this.weekSales = 0});
 }
 
 final dateProvider = StateProvider<({DateTime? start, DateTime? end})>(

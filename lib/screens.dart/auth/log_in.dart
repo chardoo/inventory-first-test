@@ -134,11 +134,12 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                                         pwd: _pwdController.text,
                                       );
                               if (mounted) {
-                                if (res.$1) {
-                                  MyNavigator.goto(context, const HomeScreen());
+                                if (!res.isError) {
+                                  MyNavigator.pushAndReplace(
+                                      context, MyNavigator.home);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(res.$2)));
+                                      SnackBar(content: Text(res.error ?? "")));
                                 }
                               }
                             },

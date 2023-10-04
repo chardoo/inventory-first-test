@@ -59,7 +59,8 @@ class AddSalesScreen extends ConsumerWidget {
                             .addAllSales(salesCart);
                         if (!res.isError) {
                           if (context.mounted) {
-                            MyNavigator.backTo(context);
+                            MyNavigator.popAndPush(
+                                context, MyNavigator.salesPage);
                           }
                           return;
                         }

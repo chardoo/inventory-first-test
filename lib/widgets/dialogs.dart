@@ -43,6 +43,7 @@ class MyDialogs {
                 const SizedBox(height: 20),
                 MyText(
                   text: message,
+                  maxLines: 4,
                   size: 24,
                 ),
                 const SizedBox(height: 12),

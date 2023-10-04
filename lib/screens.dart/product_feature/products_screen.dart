@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/models/product.dart';
+import 'package:rich_co_inventory/models/user.dart';
 import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
+import 'package:rich_co_inventory/providers/user_provider.dart';
 import 'package:rich_co_inventory/screens.dart/product_feature/product_details.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
@@ -39,6 +41,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final canAdd =
+        ref.watch(userProvider.select((data) => data?.role != Role.user));
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -61,27 +65,28 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 onChanged: (val) {
                   timer?.cancel();
                   timer = null;
-                  timer = Timer(Duration(seconds: 2), () {
-                    ref
-                        .read(displayProductsProvider.notifier)
-                        .seachProducts(val);
+                  timer = Timer(const Duration(seconds: 2), () {
+                    setState(() {});
                   });
                 },
               )),
               const SizedBox(width: 12),
-              MyFilledIconButton(
-                icon: const Icon(
-                  Icons.add,
-                  size: 12,
+              Visibility(
+                visible: canAdd,
+                child: MyFilledIconButton(
+                  icon: const Icon(
+                    Icons.add,
+                    size: 12,
+                  ),
+                  label: const MyText(
+                    text: "Add  ",
+                    size: 12,
+                    color: Colors.blue,
+                  ),
+                  ontap: () {
+                    MyNavigator.goto(context, const AddProductScreen());
+                  },
                 ),
-                label: const MyText(
-                  text: "Add  ",
-                  size: 12,
-                  color: Colors.blue,
-                ),
-                ontap: () {
-                  MyNavigator.goto(context, const AddProductScreen());
-                },
               )
             ],
           ),
@@ -162,25 +167,43 @@ class ProductCard extends StatelessWidget {
               size: 16,
               maxLines: 1,
             ),
-            subtitle: MyText(
-              text: product.productDescription ?? "",
-              size: 14,
-              maxLines: 1,
-              color: Colors.blueGrey,
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+                MyText(
+                    text: "GHC ${product.price}",
+                    size: 12,
+                    color: Colors.blueGrey),
+                const SizedBox(height: 5),
+                MyText(
+                  text: product.productDescription ?? "",
+                  size: 14,
+                  maxLines: 2,
+                  color: Colors.blueGrey,
+                ),
+              ],
             ),
-            trailing: GestureDetector(
-              onTap: () {
-                MyNavigator.goto(
-                    context,
-                    AddProductScreen(
-                      product: product,
-                    ));
-              },
-              child: const Icon(
-                Icons.edit,
-                color: Colors.blueGrey,
-              ),
-            ),
+            trailing: Consumer(builder: (context, ref, _) {
+              final canEdit = ref.watch(userProvider
+                  .select((data) => data?.role == Role.superAdmin));
+              return Visibility(
+                visible: canEdit,
+                child: GestureDetector(
+                  onTap: () {
+                    MyNavigator.goto(
+                        context,
+                        AddProductScreen(
+                          product: product,
+                        ));
+                  },
+                  child: const Icon(
+                    Icons.edit,
+                    color: Colors.blueGrey,
+                  ),
+                ),
+              );
+            }),
           ),
         ));
   }

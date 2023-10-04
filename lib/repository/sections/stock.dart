@@ -1,5 +1,7 @@
+import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
+import 'package:rich_co_inventory/repository/sections/product_apis.dart';
 
 class StockApis extends FireStoreAPIs<Stock> {
   @override
@@ -41,8 +43,11 @@ class StockApis extends FireStoreAPIs<Stock> {
   }
 
   @override
-  update(Stock item) async {
+  update(Stock item) {}
+
+  updateStock(Stock item, int dateInMilliseconds) async {
     try {
+      final batch = instance.batch();
       final res = await instance
           .collection(mainCollection)
           .where("productId", isEqualTo: item.productId)
@@ -51,7 +56,15 @@ class StockApis extends FireStoreAPIs<Stock> {
       if (res.docs.isEmpty) {
         return null;
       }
-      await res.docs.first.reference.update(item.toJson());
+      final productRef =
+          await instance.collection("products").doc(item.productId).get();
+      var product = Product.fromJson(productRef.data()!);
+
+      product = product.copyWith(expiryDate: dateInMilliseconds);
+
+      batch.update(productRef.reference, product.toJson());
+      batch.update(res.docs.first.reference, item.toJson());
+      batch.commit();
       return "success";
     } catch (e) {
       //TODO: do something

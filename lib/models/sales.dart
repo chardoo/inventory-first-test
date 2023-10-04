@@ -14,7 +14,7 @@ abstract class Sale with _$Sale {
     int? quantitySold,
     required String productName,
     required double productPrice,
-    required String time,
+    required int dateWithTime,
     @Default(0) double totalRevenue,
     int? salesmanId,
     List<Sale>? sales,

@@ -21,9 +21,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   String get email => throw _privateConstructorUsedError;
-  String get pasword => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
   String get deviceToken => throw _privateConstructorUsedError;
   String get token => throw _privateConstructorUsedError;
+  Role get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,12 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String email, String pasword, String deviceToken, String token});
+  $Res call(
+      {String email,
+      String password,
+      String deviceToken,
+      String token,
+      Role role});
 }
 
 /// @nodoc
@@ -52,18 +58,19 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @override
   $Res call({
     Object? email = null,
-    Object? pasword = null,
+    Object? password = null,
     Object? deviceToken = null,
     Object? token = null,
+    Object? role = null,
   }) {
     return _then(_value.copyWith(
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      pasword: null == pasword
-          ? _value.pasword
-          : pasword // ignore: cast_nullable_to_non_nullable
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
               as String,
       deviceToken: null == deviceToken
           ? _value.deviceToken
@@ -73,6 +80,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as Role,
     ) as $Val);
   }
 }
@@ -83,7 +94,12 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$_UserCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String email, String pasword, String deviceToken, String token});
+  $Res call(
+      {String email,
+      String password,
+      String deviceToken,
+      String token,
+      Role role});
 }
 
 /// @nodoc
@@ -96,18 +112,19 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
   @override
   $Res call({
     Object? email = null,
-    Object? pasword = null,
+    Object? password = null,
     Object? deviceToken = null,
     Object? token = null,
+    Object? role = null,
   }) {
     return _then(_$_User(
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      pasword: null == pasword
-          ? _value.pasword
-          : pasword // ignore: cast_nullable_to_non_nullable
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
               as String,
       deviceToken: null == deviceToken
           ? _value.deviceToken
@@ -117,6 +134,10 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as Role,
     ));
   }
 }
@@ -126,24 +147,27 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
 class _$_User implements _User {
   const _$_User(
       {required this.email,
-      required this.pasword,
+      required this.password,
       required this.deviceToken,
-      required this.token});
+      required this.token,
+      required this.role});
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
   @override
   final String email;
   @override
-  final String pasword;
+  final String password;
   @override
   final String deviceToken;
   @override
   final String token;
+  @override
+  final Role role;
 
   @override
   String toString() {
-    return 'User(email: $email, pasword: $pasword, deviceToken: $deviceToken, token: $token)';
+    return 'User(email: $email, password: $password, deviceToken: $deviceToken, token: $token, role: $role)';
   }
 
   @override
@@ -152,16 +176,18 @@ class _$_User implements _User {
         (other.runtimeType == runtimeType &&
             other is _$_User &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.pasword, pasword) || other.pasword == pasword) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
             (identical(other.deviceToken, deviceToken) ||
                 other.deviceToken == deviceToken) &&
-            (identical(other.token, token) || other.token == token));
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, email, pasword, deviceToken, token);
+      Object.hash(runtimeType, email, password, deviceToken, token, role);
 
   @JsonKey(ignore: true)
   @override
@@ -180,20 +206,23 @@ class _$_User implements _User {
 abstract class _User implements User {
   const factory _User(
       {required final String email,
-      required final String pasword,
+      required final String password,
       required final String deviceToken,
-      required final String token}) = _$_User;
+      required final String token,
+      required final Role role}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
   @override
   String get email;
   @override
-  String get pasword;
+  String get password;
   @override
   String get deviceToken;
   @override
   String get token;
+  @override
+  Role get role;
   @override
   @JsonKey(ignore: true)
   _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;

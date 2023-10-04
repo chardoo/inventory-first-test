@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +8,6 @@ import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/purchase.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
-import 'package:rich_co_inventory/providers/show_items_provider.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/dialogs.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
@@ -76,7 +73,6 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     final product = widget.purchase;
-    purchaseDate.text = format.format(currentDate);
     return LoadingLayout(
       child: Scaffold(
           backgroundColor: Colors.grey.shade100,
@@ -168,6 +164,7 @@ class _AddProductScreenState extends ConsumerState<AddPurchaseScreen> {
                                 DateTime.now().add(const Duration(days: 1000)));
                         setState(() {
                           currentDate = selectedDate ?? currentDate;
+                          purchaseDate.text = format.format(currentDate);
                         });
                       },
                       trailing: const Icon(Icons.calendar_month),

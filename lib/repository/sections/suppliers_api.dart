@@ -1,42 +1,67 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rich_co_inventory/models/supplier.dart';
 import 'package:rich_co_inventory/repository/firestore_apis.dart';
 
 class SuppliersApis extends FireStoreAPIs<Supplier> {
   @override
-  add(item) async {
+  Future<({String? error, bool isError})> add(item) async {
     final supplier = Supplier.generateId(item.toJson());
 
     try {
-      final isProductExist = await checkPath(
-          collection: mainCollection, id: supplier.supplierName);
+      final isProductExist =
+          await checkPath(collection: mainCollection, id: supplier.supplierId!);
       if (isProductExist) {
-        //TODO: do some thing
-        return;
+        return (isError: true, error: "product already exist");
       }
       instance
           .collection(mainCollection)
           .doc(supplier.supplierId)
           .set(supplier.toJson());
-      print("done");
-    } catch (e) {
-      //TODO
+      return (isError: false, error: null);
+    } on FirebaseException catch (e) {
+      return (isError: true, error: e.message ?? "something occured");
     }
   }
 
   @override
-  delete(item) async {
+  Future<({bool isError, String? error})> delete(Supplier item) async {
     try {
-      final hasDependant = await check(
+      final isConnectedToProduct = await check(
           collection: dependantCollection,
-          field: "supplierName",
-          arg: item.supplierName);
-      if (hasDependant) {
-        //TODO:
-        return;
+          field: "supplierId",
+          arg: item.supplierId!);
+      if (isConnectedToProduct) {
+        return (
+          isError: true,
+          error: "This Supplier is connected to a product"
+        );
+      } else {
+        final res = await instance
+            .collection(mainCollection)
+            .doc(item.supplierId)
+            .get();
+        await res.reference.delete();
+        return (isError: false, error: null);
       }
-      instance.collection(mainCollection).doc(item.supplierName).delete();
-    } catch (e) {
-      //TODO;
+    } on FirebaseException catch (e) {
+      return (isError: true, error: e.message ?? "something occured");
+    }
+  }
+
+  @override
+  Future<({bool isError, String? error})> update(Supplier item) async {
+    try {
+      await instance
+          .collection(mainCollection)
+          .doc(item.supplierId)
+          .update(item.toJson());
+      return (isError: false, error: null);
+    } on FirebaseException catch (e) {
+      print("error ${e.message}");
+      return (
+        isError: true,
+        error: e.message ?? "something occured at the server"
+      );
     }
   }
 
@@ -45,18 +70,6 @@ class SuppliersApis extends FireStoreAPIs<Supplier> {
 
   @override
   String get mainCollection => Collections.suppliers.name;
-
-  @override
-  update(item) async {
-    try {
-      await instance
-          .collection(mainCollection)
-          .doc(item.supplierName)
-          .update(item.toJson());
-    } catch (e) {
-      //TODO:
-    }
-  }
 
   @override
   Future<List<Supplier>> getAll() async {
@@ -89,7 +102,7 @@ class SuppliersApis extends FireStoreAPIs<Supplier> {
       final res = await instance
           .collection(mainCollection)
           .where('supplierName', isGreaterThanOrEqualTo: name.toLowerCase())
-          .where('supplierName', isLessThanOrEqualTo: '${name.toLowerCase()}z')
+          .where('supplierName', isLessThanOrEqualTo: '${name.toLowerCase()}z').limit(10)
           .get();
       if (res.docs.isEmpty) return [];
 

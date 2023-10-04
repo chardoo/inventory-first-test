@@ -11,6 +11,9 @@ import 'package:rich_co_inventory/widgets/shimmer_loader.dart';
 import 'package:rich_co_inventory/widgets/text_fields.dart';
 import 'package:rich_co_inventory/widgets/texts.dart';
 
+import '../../models/user.dart';
+import '../../providers/user_provider.dart';
+
 class AllInventory extends ConsumerStatefulWidget {
   const AllInventory({super.key});
 
@@ -34,6 +37,8 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
   Timer? timer;
   @override
   Widget build(BuildContext context) {
+    final canAdd =
+        ref.watch(userProvider.select((data) => data?.role != Role.user));
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -47,36 +52,42 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
             color: Colors.white),
         margin: const EdgeInsets.only(top: 24),
         child: Column(children: [
-          Row(
-            children: [
-              Expanded(
-                  child: MyTextField(
-                controller: searchCtrl,
-                label: "Type stock name",
-                onChanged: (val) {
-                  timer?.cancel();
-                  timer = null;
-                  timer = Timer(const Duration(seconds: 2), () {
-                    refresh();
-                  });
-                },
-              )),
-              const SizedBox(width: 12),
-              MyFilledIconButton(
-                icon: const Icon(
-                  Icons.add,
-                  size: 12,
-                ),
-                label: const MyText(
-                  text: "Add  ",
-                  size: 12,
-                  color: Colors.blue,
-                ),
-                ontap: () {
-                  MyNavigator.goto(context, const AddInventoryScreen());
-                },
-              )
-            ],
+          SizedBox(
+            height: 40,
+            child: Row(
+              children: [
+                Expanded(
+                    child: MyTextField(
+                  controller: searchCtrl,
+                  label: "Type stock name",
+                  onChanged: (val) {
+                    timer?.cancel();
+                    timer = null;
+                    timer = Timer(const Duration(seconds: 2), () {
+                      refresh();
+                    });
+                  },
+                )),
+                const SizedBox(width: 12),
+                Visibility(
+                  visible: canAdd,
+                  child: MyFilledIconButton(
+                    icon: const Icon(
+                      Icons.add,
+                      size: 12,
+                    ),
+                    label: const MyText(
+                      text: "Add  ",
+                      size: 12,
+                      color: Colors.blue,
+                    ),
+                    ontap: () {
+                      MyNavigator.goto(context, const AddInventoryScreen());
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 24),
           Expanded(
@@ -130,7 +141,7 @@ class _ProductsScreenState extends ConsumerState<AllInventory> {
   }
 }
 
-class StockCard extends StatelessWidget {
+class StockCard extends ConsumerWidget {
   const StockCard({super.key, required this.stock
       // required this.date
       });
@@ -139,7 +150,12 @@ class StockCard extends StatelessWidget {
   // final String date;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final canEdit = ref.watch(
+        userProvider.select((data) => data?.role == Role.superAdmin));
+    print(ref.read(userProvider));
+    final name =
+        "${stock.productName!.substring(0, 1).toUpperCase()}${stock.productName!.substring(1)}";
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade300),
@@ -147,28 +163,31 @@ class StockCard extends StatelessWidget {
           color: Colors.grey.shade100),
       child: ListTile(
         title: MyText(
-          text: stock.productName!,
+          text: name,
           weight: FontWeight.bold,
           size: 16,
           maxLines: 1,
         ),
         subtitle: MyText(
-          text: "Qnt: ${stock.currentQuantity}",
+          text: "quantity: ${stock.currentQuantity}",
           color: Colors.grey,
-          size: 16,
+          size: 12,
           maxLines: 1,
         ),
-        trailing: GestureDetector(
-          onTap: () {
-            MyNavigator.goto(
-                context,
-                AddInventoryScreen(
-                  stock: stock,
-                ));
-          },
-          child: const Icon(
-            Icons.edit,
-            color: Colors.blueGrey,
+        trailing: Visibility(
+          visible: canEdit,
+          child: GestureDetector(
+            onTap: () {
+              MyNavigator.goto(
+                  context,
+                  AddInventoryScreen(
+                    stock: stock,
+                  ));
+            },
+            child: const Icon(
+              Icons.edit,
+              color: Colors.blueGrey,
+            ),
           ),
         ),
       ),

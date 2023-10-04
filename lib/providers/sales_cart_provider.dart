@@ -16,7 +16,7 @@ class SalesCartProvider extends _$SalesCartProvider {
     final today = DateTime(now.year, now.month, now.day);
 
     final sale = Sale(
-        time: Timestamp.fromDate(DateTime.now()).toString(),
+        dateWithTime: DateTime.now().millisecondsSinceEpoch,
         productId: product.productId ?? "",
         saleDate: today.millisecondsSinceEpoch,
         productName: product.productName,

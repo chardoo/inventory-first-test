@@ -1,27 +1,48 @@
 part of '../add_product_screen.dart';
 
-class _AddSupplierDialog extends ConsumerStatefulWidget {
-  const _AddSupplierDialog();
-
+class AddSupplierDialog extends ConsumerStatefulWidget {
+  const AddSupplierDialog({super.key, this.supplier});
+  final Supplier? supplier;
   @override
-  ConsumerState<_AddSupplierDialog> createState() => _AddSupplierDialogState();
+  ConsumerState<AddSupplierDialog> createState() => _AddSupplierDialogState();
 }
 
-class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
+class _AddSupplierDialogState extends ConsumerState<AddSupplierDialog> {
   final labels = ["name", "email", "address", "contact"];
+  @override
+  initState() {
+    super.initState();
+    supplier = widget.supplier;
+    nameCntl = TextEditingController();
+    emailCntl = TextEditingController();
+    addressCntl = TextEditingController();
+    contactCntl = TextEditingController();
+    if (supplier != null) {
+      nameCntl.text = supplier!.supplierName;
+      emailCntl.text = supplier!.supplierEmail ?? "";
+      addressCntl.text = supplier!.supplierAddress ?? "";
+      contactCntl.text = supplier!.supplierContact ?? "";
+    }
+  }
+
+  Supplier? supplier;
   final hintTexts = [
     "enter supplier name",
     "enter email",
     "enter address",
     "enter contact"
   ];
-  final controllers = List.generate(4, (index) => TextEditingController());
+  late TextEditingController nameCntl;
+  late TextEditingController emailCntl;
+  late TextEditingController addressCntl;
+  late TextEditingController contactCntl;
 
   @override
   void dispose() {
-    for (var cntl in controllers) {
-      cntl.dispose();
-    }
+    nameCntl.dispose();
+    emailCntl.dispose();
+    addressCntl.dispose();
+    contactCntl.dispose();
     super.dispose();
   }
 
@@ -33,15 +54,22 @@ class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
           title: "Create Supplier",
           labels: labels,
           hintText: hintTexts,
-          controllers: controllers,
-          onComplete: () {
+          controllers: [nameCntl, emailCntl, addressCntl, contactCntl],
+          onComplete: () async {
             Supplier supplier = Supplier(
-                supplierName: controllers[0].text,
-                supplierEmail: controllers[1].text,
-                supplierAddress: controllers[2].text,
-                supplierContact: controllers[3].text);
+                supplierId: widget.supplier?.supplierId,
+                supplierName: nameCntl.text,
+                supplierEmail: emailCntl.text,
+                supplierAddress: addressCntl.text,
+                supplierContact: contactCntl.text);
             MyNavigator.back(context);
-            ref.read(addProductProvider.notifier).addSupplier(supplier);
+            final res = await ref
+                .read(addProductProvider.notifier)
+                .addSupplier(supplier, widget.supplier != null);
+
+            if (res.isError && mounted) {
+              MySnackBar.showSnack(res.error!, context);
+            }
           },
         ),
         ref.watch(loadingStateProvider).show(context)
@@ -50,25 +78,35 @@ class _AddSupplierDialogState extends ConsumerState<_AddSupplierDialog> {
   }
 }
 
-class _AddBrandDialog extends ConsumerStatefulWidget {
-  const _AddBrandDialog();
-
+class AddBrandDialog extends ConsumerStatefulWidget {
+  const AddBrandDialog({super.key, this.brand});
+  final Brand? brand;
   @override
-  ConsumerState<_AddBrandDialog> createState() => _AddBrandDialogState();
+  ConsumerState<AddBrandDialog> createState() => _AddBrandDialogState();
 }
 
-class _AddBrandDialogState extends ConsumerState<_AddBrandDialog> {
+class _AddBrandDialogState extends ConsumerState<AddBrandDialog> {
+  @override
+  initState() {
+    super.initState();
+    if (widget.brand != null) {
+      nameCntl = TextEditingController(text: widget.brand!.brandName);
+      descriptionCntl =
+          TextEditingController(text: widget.brand!.brandDescription);
+    }
+  }
+
   final labels = [
     "name",
     "description",
   ];
   final hintTexts = ["enter brand name", "enter description"];
-  final controllers = List.generate(2, (index) => TextEditingController());
+  late TextEditingController nameCntl;
+  late TextEditingController descriptionCntl;
   @override
   void dispose() {
-    for (var cntl in controllers) {
-      cntl.dispose();
-    }
+    nameCntl.dispose();
+    descriptionCntl.dispose();
     super.dispose();
   }
 
@@ -79,16 +117,19 @@ class _AddBrandDialogState extends ConsumerState<_AddBrandDialog> {
         MyDialogWithTitles(
           labels: labels,
           hintText: hintTexts,
-          controllers: controllers,
+          controllers: [nameCntl, descriptionCntl],
           title: "Create Brand",
           onComplete: () async {
             Brand brand = Brand(
-              brandName: controllers[0].text,
-              brandDescription: controllers[1].text,
+              brandId: widget.brand?.brandId,
+              brandName: nameCntl.text,
+              brandDescription: descriptionCntl.text,
             );
             MyNavigator.back(context);
 
-            ref.read(addProductProvider.notifier).addBrand(brand);
+            ref
+                .read(addProductProvider.notifier)
+                .addBrand(brand, widget.brand != null);
           },
         ),
         ref.watch(loadingStateProvider).show(context)

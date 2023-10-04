@@ -32,15 +32,30 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
   final TextEditingController productController = TextEditingController();
 
   final TextEditingController quantityCntl = TextEditingController();
+  final TextEditingController minimumQuantityCntl = TextEditingController();
   final TextEditingController purchaseDate = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
   @override
   void initState() {
+    print("stock ${widget.stock}");
     if (widget.stock != null) {
       quantityCntl.text = widget.stock!.currentQuantity.toString();
+      minimumQuantityCntl.text =
+          widget.stock!.minimumRequiredQuantity.toString();
       productController.text = widget.stock!.productName!;
+      getDate(widget.stock!.productId);
       productNameId = (widget.stock!.productName!, widget.stock!.productId);
+    } else {
+      dateController.text = format.format(DateTime.now());
     }
     super.initState();
+  }
+
+  getDate(String id) async {
+    final product =
+        await ref.read(addProductProvider.notifier).getProductById(id);
+    dateController.text = format
+        .format(DateTime.fromMillisecondsSinceEpoch(product!.expiryDate!));
   }
 
   DateTime currentDate = DateTime.now();
@@ -56,10 +71,9 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
 
   (String, String)? productNameId;
 
-  var error = (true, "");
+  (bool, String, int) error = (true, "", 0);
   @override
   Widget build(BuildContext context) {
-    purchaseDate.text = format.format(currentDate);
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
@@ -99,6 +113,10 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                                     productNameId =
                                         (val.productName, val.productId!);
                                     productController.text = val.productName;
+                                    final date =
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                            val.expiryDate!);
+                                    dateController.text = format.format(date);
                                   }
                                 },
                                 suggestionsCallback: (val) async {
@@ -122,7 +140,28 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                     const SizedBox(height: 24),
                     const SizedBox(height: 24),
                     Visibility(
-                      visible: error.$1,
+                      visible: error.$1 && error.$3 == 1,
+                      child: MyText(
+                        text: error.$2,
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                    MyTextFieldWithTitle(
+                        name: "Minimum quantity required",
+                        label: "",
+                        onChanged: (val) {
+                          setState(() {
+                            final e = MyValidators.isNotNumberAndIsEmpty(val);
+                            error = (e.$1, e.$2, 1);
+                          });
+                        },
+                        keyboadType: TextInputType.number,
+                        controller: minimumQuantityCntl),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    Visibility(
+                      visible: error.$1 && error.$3 == 2,
                       child: MyText(
                         text: error.$2,
                         color: Colors.redAccent,
@@ -133,16 +172,17 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                         label: "",
                         onChanged: (val) {
                           setState(() {
-                            error = MyValidators.isNotNumberAndIsEmpty(val);
+                            final e = MyValidators.isNotNumberAndIsEmpty(val);
+                            error = (e.$1, e.$2, 2);
                           });
                         },
                         keyboadType: TextInputType.number,
                         controller: quantityCntl),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 20),
                     MyTextFieldWithTitle(
-                      name: "Select Date",
+                      name: "expiry date",
                       label: "",
-                      controller: purchaseDate,
+                      controller: dateController,
                       readOnly: true,
                       ontap: () async {
                         final selectedDate = await showDatePicker(
@@ -154,7 +194,9 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                             lastDate:
                                 DateTime.now().add(const Duration(days: 1000)));
                         setState(() {
-                          currentDate = selectedDate ?? currentDate;
+                          if (selectedDate != null) {
+                            dateController.text = format.format(selectedDate);
+                          }
                         });
                       },
                       trailing: const Icon(Icons.calendar_month),
@@ -173,20 +215,28 @@ class _AddProductScreenState extends ConsumerState<AddInventoryScreen> {
                               "please select a product", context);
                           return;
                         }
-                        error = MyValidators.isNotNumberAndIsEmpty(
+                        final e = MyValidators.isNotNumberAndIsEmpty(
                             quantityCntl.text);
-                        if (error.$1) {
-                          MySnackBar.showSnack(error.$2, context);
+                        final f = MyValidators.isNotNumberAndIsEmpty(
+                            minimumQuantityCntl.text);
+                        if (e.$1) {
+                          MySnackBar.showSnack(e.$2, context);
+                        } else if (f.$1) {
+                          MySnackBar.showSnack(e.$2, context);
                         }
                         Stock purchase = Stock(
                           productId: productNameId!.$2,
                           productName: productNameId!.$1,
                           currentQuantity: int.parse(quantityCntl.text),
-                          minimumRequiredQuantity: int.parse(quantityCntl.text),
+                          minimumRequiredQuantity:
+                              int.parse(minimumQuantityCntl.text),
                         );
-                        ref
-                            .read(inventoryProvider.notifier)
-                            .addInventory(purchase, widget.stock != null);
+
+                        int dateInMilliseconds = format
+                            .parse(dateController.text)
+                            .millisecondsSinceEpoch;
+                        ref.read(inventoryProvider.notifier).addInventory(
+                            purchase, dateInMilliseconds, widget.stock != null);
 
                         MyNavigator.back(context);
                       },

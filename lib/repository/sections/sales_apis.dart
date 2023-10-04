@@ -74,19 +74,35 @@ class SalesApi extends FireStoreAPIs<Sale> {
   }
 
   @override
-  delete(Sale item) async {
+  Future<({bool isError, String? error})> delete(Sale item) async {
     try {
-      final docToDelete =
-          instance.collection(dependantCollection).doc(item.saleId);
-      docToDelete.delete();
-    } catch (e) {
-      print("error is $e");
+      final batch = instance.batch();
+      final saleRef =
+          await instance.collection(mainCollection).doc(item.saleId).get();
+      final stockRef = await instance
+          .collection(dependantCollection)
+          .where("productId", isEqualTo: item.productId)
+          .limit(1)
+          .get();
+      if (stockRef.docs.isEmpty) {
+        return (isError: true, error: "Stock does not exit");
+      }
+      Stock stock = Stock.fromJson(stockRef.docs.first.data());
+      final quentity = stock.currentQuantity + item.quantitySold!;
+      stock = stock.copyWith(currentQuantity: quentity);
+      batch.delete(saleRef.reference);
+      batch.update(stockRef.docs.first.reference, stock.toJson());
+      batch.commit();
+      return (isError: false, error: null);
+    } on FirebaseException catch (e) {
+      return (isError: true, error: e.toString());
     }
   }
 
   Future<List<Sale>> getSalesForRange(DateTime? start, DateTime? end) async {
     try {
       var t = DateTime.now();
+      print("start $start end $end");
       List<int> days = [];
       DateTime currentDay = start ?? DateTime(t.year, t.month, t.day);
       final DateTime endDay = end ?? currentDay.add(const Duration(days: 1));
@@ -96,11 +112,30 @@ class SalesApi extends FireStoreAPIs<Sale> {
         currentDay = currentDay.add(const Duration(days: 1));
       }
       days.add(endDay.millisecondsSinceEpoch);
+      print(days);
       days = days.toSet().toList();
 
       var res = await instance
           .collection(Collections.sales.name)
           .where("saleDate", whereIn: days)
+          .get();
+
+      if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Sale.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<Sale>> getSalesFromDateToToday(DateTime start) async {
+    try {
+    ;
+      final searchEndDate = DateTime(start.year, start.month, start.day);
+
+
+      var res = await instance
+          .collection(Collections.sales.name)
+          .where("saleDate", isGreaterThanOrEqualTo: searchEndDate)
           .get();
 
       if (res.docs.isEmpty) return [];

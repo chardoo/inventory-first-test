@@ -15,6 +15,8 @@ class MyValidators {
       return (true, "Please enter a ${name ?? 'value'}");
     } else if (!isNumber(val)) {
       return (true, "Please enter a valid ${name ?? 'value'}");
+    } else if (int.parse(val) <= 0) {
+      return (true, "Please quantity should be more than zero");
     }
     return (false, "");
   }

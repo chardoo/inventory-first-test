@@ -17,21 +17,25 @@ class InventoryProvider extends _$InventoryProvider {
     return await StockApis().getStockByProductName(name);
   }
 
-
-  Future<String?> addInventory(Stock stock, bool update) async {
+  Future<String?> addInventory(
+      Stock stock, int dateInMilliseconds, bool update) async {
     // final id = PurchaseApis().add(purchase);
     final loadingState = ref.read(loadingStateProvider.notifier);
     loadingState.activate();
     var currentStock = await StockApis().getStockByProductId(stock.productId);
-    StockApis().update(Stock(
-        stockId: currentStock[0]!.stockId,
-        productId: currentStock[0]!.productId,
-        productPrice: currentStock[0]!.productPrice,
-        productName: stock.productName,
-        currentQuantity: update
-            ? stock.currentQuantity
-            : currentStock[0]!.currentQuantity + stock.currentQuantity,
-        minimumRequiredQuantity: currentStock[0]!.minimumRequiredQuantity));
+    StockApis().updateStock(
+        Stock(
+            stockId: currentStock[0]!.stockId,
+            productId: currentStock[0]!.productId,
+            productPrice: currentStock[0]!.productPrice,
+            productName: stock.productName,
+            currentQuantity: update
+                ? stock.currentQuantity
+                : currentStock[0]!.currentQuantity + stock.currentQuantity,
+            minimumRequiredQuantity: update
+                ? stock.minimumRequiredQuantity
+                : currentStock[0]!.minimumRequiredQuantity),
+        dateInMilliseconds);
     loadingState.diactivate();
 
     return '';

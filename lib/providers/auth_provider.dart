@@ -23,7 +23,7 @@ class AuthProvider extends _$AuthProvider {
     loadingStateNotifier = ref.read(loadingStateProvider.notifier);
   }
 
-  Future<(bool, String)> logIn({
+  Future<({bool isError, String? error})> logIn({
     required String email,
     required String pwd,
   }) async {
@@ -33,10 +33,12 @@ class AuthProvider extends _$AuthProvider {
       email,
       pwd,
     );
+    if (logInState.isSuccess) {
+      Storage.storeUser(logInState.user, logInState.isSuccess);
+    }
 
-    Storage.setLogIn(logInState.isSuccess);
     loadingStateNotifier?.finish();
     loadingStateNotifier?.diactivate();
-    return (logInState.isSuccess, logInState.message ?? "");
+    return (isError: !logInState.isSuccess, error: logInState.error);
   }
 }
