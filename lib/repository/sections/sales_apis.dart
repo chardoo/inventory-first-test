@@ -102,6 +102,7 @@ class SalesApi extends FireStoreAPIs<Sale> {
   Future<List<Sale>> getSalesForRange(DateTime? start, DateTime? end) async {
     try {
       var t = DateTime.now();
+      print("start $start end $end");
       List<int> days = [];
       DateTime currentDay = start ?? DateTime(t.year, t.month, t.day);
       final DateTime endDay = end ?? currentDay.add(const Duration(days: 1));
@@ -117,6 +118,24 @@ class SalesApi extends FireStoreAPIs<Sale> {
       var res = await instance
           .collection(Collections.sales.name)
           .where("saleDate", whereIn: days)
+          .get();
+
+      if (res.docs.isEmpty) return [];
+      return res.docs.map((e) => Sale.fromJson(e.data())).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<Sale>> getSalesFromDateToToday(DateTime start) async {
+    try {
+    ;
+      final searchEndDate = DateTime(start.year, start.month, start.day);
+
+
+      var res = await instance
+          .collection(Collections.sales.name)
+          .where("saleDate", isGreaterThanOrEqualTo: searchEndDate)
           .get();
 
       if (res.docs.isEmpty) return [];

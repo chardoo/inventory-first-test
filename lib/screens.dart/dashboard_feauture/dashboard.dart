@@ -1,40 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rich_co_inventory/providers/sales_provider.dart';
 import 'package:rich_co_inventory/screens.dart/dashboard_feauture/drawer.dart';
 import 'package:rich_co_inventory/widgets/graph.dart';
 
 import '../../widgets/texts.dart';
 
-class DashBoard extends StatelessWidget {
+class DashBoard extends ConsumerStatefulWidget {
   const DashBoard({super.key});
 
   @override
+  ConsumerState<DashBoard> createState() => _DashBoardState();
+}
+
+class _DashBoardState extends ConsumerState<DashBoard> {
+  @override
+  void initState() {
+    Future.microtask(() {
+      ref.read(salesProvider.notifier).getSalesForToday(null, null);
+      ref.read(salesProvider.notifier).getSalesForWeek();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final salesState = ref.watch(salesProvider);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      body: const Padding(
-        padding: EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(children: [
-            OverviewCard(),
+            const OverviewCard(),
             Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SummaryTile(
-                      title: "New Sale",
-                      icon: Icon(Icons.cases_outlined),
-                      price: 2003.20,
+                      title: "Today's sales",
+                      icon: const Icon(Icons.cases_outlined),
+                      price: salesState.todaySale,
                     ),
                     SummaryTile(
-                      title: "New Sale",
-                      icon: Icon(Icons.cases_outlined),
-                      price: 2003.20,
+                      title: " Sales for the week",
+                      icon: const Icon(Icons.cases_outlined),
+                      price: salesState.weekSales,
                     )
                   ],
                 ),
-                SizedBox(height: 30),
-                Row(
+                const SizedBox(height: 30),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SummaryTile(
