@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
@@ -40,18 +41,18 @@ class _DashBoardState extends ConsumerState<DashBoard> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.sp),
         child: SingleChildScrollView(
           child: Column(children: [
             // const OverviewCard(),
             GridView(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              padding: const EdgeInsets.all(10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              padding: EdgeInsets.all(8.sp),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 2,
-                  crossAxisSpacing: 6,
-                  mainAxisSpacing: 6,
+                  crossAxisSpacing: 10.sp,
+                  mainAxisSpacing: 10.sp,
                   crossAxisCount: 2),
               children: [
                 SummaryTile(
@@ -81,7 +82,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                 )
               ],
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30.sp),
             FutureBuilder(
                 future: ref
                     .read(addProductProvider.notifier)
@@ -97,19 +98,30 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                         child: Text("No expired products"),
                       );
                     } else {
-                      return ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snap.requireData!.length,
-                          itemBuilder: (context, i) {
-                            final product = snap.requireData![i];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MyText(
+                              text: "Products nearing expiry",
+                              size: 18.sp,
+                              weight: FontWeight.bold,
+                              color: Colors.redAccent),
+                          SizedBox(height: 12.sp),
+                          ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snap.requireData!.length,
+                              itemBuilder: (context, i) {
+                                final product = snap.requireData![i];
 
-                            return ProductCard(
-                              product: product,
-                              extraDetails:
-                                  "Expiry date: ${format(product.expiryDate!)}",
-                            );
-                          });
+                                return ProductCard(
+                                  product: product,
+                                  extraDetails:
+                                      "Expiry date: ${format(product.expiryDate!)}",
+                                );
+                              }),
+                        ],
+                      );
                     }
                   }
                   return const SizedBox.shrink();
@@ -140,7 +152,7 @@ class SummaryTile extends StatelessWidget {
         ontap: () {},
         bgColor: color ?? Colors.white,
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.sp),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,7 +165,7 @@ class SummaryTile extends StatelessWidget {
                   weight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 5.sp),
               Expanded(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

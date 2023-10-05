@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rich_co_inventory/helpers/secure_store.dart';
 import 'package:rich_co_inventory/providers/user_provider.dart';
 import 'package:rich_co_inventory/screens.dart/auth/log_in.dart';
@@ -19,9 +20,10 @@ import 'firebase_options.dart';
 import 'helpers/navigator.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 void main() async {
-    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final isLogedIn = await Storage.getUser();
   String path = isLogedIn.isLoggedIn ? MyNavigator.home : MyNavigator.logIn;
@@ -36,28 +38,30 @@ class MyApp extends StatelessWidget {
   final String initialRoute;
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: Colors.pink,
-          appBarTheme: const AppBarTheme(
-              foregroundColor: Colors.black,
-              backgroundColor: Colors.white,
-              elevation: 1),
-          useMaterial3: false,
+    return ScreenUtilInit(builder: (context, _) {
+      return ProviderScope(
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primaryColor: Colors.pink,
+            appBarTheme: const AppBarTheme(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.white,
+                elevation: 1),
+            useMaterial3: false,
+          ),
+          routes: {
+            MyNavigator.logIn: (context) => const LogInScreen(),
+            MyNavigator.home: (context) => const HomeScreen(),
+            MyNavigator.addProduct: (context) => const AddProductScreen(),
+            MyNavigator.addSales: (context) => AddSalesScreen(),
+            MyNavigator.salesPage: (context) => const SalesPage()
+          },
+          initialRoute: initialRoute,
         ),
-        routes: {
-          MyNavigator.logIn: (context) => const LogInScreen(),
-          MyNavigator.home: (context) => const HomeScreen(),
-          MyNavigator.addProduct: (context) => const AddProductScreen(),
-          MyNavigator.addSales: (context) => AddSalesScreen(),
-          MyNavigator.salesPage: (context) => const SalesPage()
-        },
-        initialRoute: initialRoute,
-      ),
-    );
+      );
+    });
   }
 }
 

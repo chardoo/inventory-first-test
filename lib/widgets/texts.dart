@@ -6,7 +6,8 @@ class MyText extends StatelessWidget {
     required this.text,
     this.color,
     this.size,
-    this.weight, this.maxLines,
+    this.weight,
+    this.maxLines,
   });
   final String text;
   final Color? color;
