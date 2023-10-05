@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/models/user.dart';
+import 'package:rich_co_inventory/providers/sales_page_provider.dart';
 import 'package:rich_co_inventory/providers/sales_provider.dart';
 import 'package:rich_co_inventory/providers/user_provider.dart';
 import 'package:rich_co_inventory/widgets/dialogs.dart';
@@ -47,6 +48,7 @@ class _SalesPageState extends ConsumerState<SalesPage> {
     return d.format(date);
   }
 
+  int? selected;
   DateTime? start;
   DateTime? end;
   @override
@@ -165,30 +167,69 @@ class _SalesPageState extends ConsumerState<SalesPage> {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12),
-                                    child: ListTileCard(
-                                      title: sale.productName,
-                                      subTitle: "View detail",
-                                      onDelete: () {
-                                        MyDialogs.showConfirm(context,
-                                            title: "Delete sale",
-                                            message:
-                                                "Do you really want to delete this sale",
-                                            onAcceptLabel: () async {
-                                          MyNavigator.back(context);
-                                          final res = await ref
-                                              .read(salesProvider.notifier)
-                                              .delete(sale);
-                                          if (res.isError) {
-                                            if (mounted) {
-                                              MySnackBar.showSnack(
-                                                  res.error ?? "", context);
-                                            }
-                                          }
-                                        });
-                                      },
-                                      editIcon: const Icon(Icons.edit),
-                                      deleteIcon: const Icon(Icons.delete),
-                                    ),
+                                    child: Consumer(builder: (context, ref, _) {
+                                      final onShow = ref.watch(showDetail);
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ListTileCard(
+                                            title: sale.productName,
+                                            subTitle: "View detail",
+                                            onShowMore: () {
+                                              ref
+                                                      .read(showDetail.notifier)
+                                                      .state =
+                                                  onShow == i ? null : i;
+                                            },
+                                            onDelete: () {
+                                              MyDialogs.showConfirm(context,
+                                                  title: "Delete sale",
+                                                  message:
+                                                      "Do you really want to delete this sale",
+                                                  onAcceptLabel: () async {
+                                                MyNavigator.back(context);
+                                                final res = await ref
+                                                    .read(
+                                                        salesProvider.notifier)
+                                                    .delete(sale);
+                                                if (res.isError) {
+                                                  if (mounted) {
+                                                    MySnackBar.showSnack(
+                                                        res.error ?? "",
+                                                        context);
+                                                  }
+                                                }
+                                              });
+                                            },
+                                            editIcon: const Icon(Icons.edit),
+                                            deleteIcon:
+                                                const Icon(Icons.delete),
+                                          ),
+                                          Visibility(
+                                              visible: onShow == i,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    MyText(
+                                                        text:
+                                                            "Quantity sold: ${sale.quantitySold.toString()}"),
+                                                    MyText(
+                                                        text:
+                                                            "Price: ${sale.productPrice.toString()}"),
+                                                    MyText(
+                                                        text:
+                                                            "Total revenue: ${sale.quantitySold! * sale.productPrice}"),
+                                                  ],
+                                                ),
+                                              ))
+                                        ],
+                                      );
+                                    }),
                                   );
                                 },
                                 itemCount: snapshot.requireData.length,

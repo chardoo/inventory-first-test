@@ -66,11 +66,13 @@ class AddProductProvider extends _$AddProductProvider {
     return res;
   }
 
-  
-
   Future<List> getSuppliers() async {
     brandApis.getAll();
     return [];
+  }
+
+  Future<List<Product>?>  getProductsNearingExpiry() async {
+  return  productApis.productsNearingExpiring();
   }
 
   Future<List<Supplier>> searchSuppliers(String supplierName) async {

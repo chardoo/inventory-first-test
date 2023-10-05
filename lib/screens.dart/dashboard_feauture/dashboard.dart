@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:rich_co_inventory/providers/product_provider.dart';
 import 'package:rich_co_inventory/providers/purchase_provider.dart';
 import 'package:rich_co_inventory/providers/sales_provider.dart';
 import 'package:rich_co_inventory/screens.dart/dashboard_feauture/drawer.dart';
+import 'package:rich_co_inventory/screens.dart/product_feature/products_screen.dart';
 import 'package:rich_co_inventory/widgets/graph.dart';
 
 import '../../widgets/texts.dart';
@@ -24,6 +27,12 @@ class _DashBoardState extends ConsumerState<DashBoard> {
     super.initState();
   }
 
+  String format(int dateTimeFromMillisec) {
+    final d = DateTime.fromMillisecondsSinceEpoch(dateTimeFromMillisec);
+    final format = DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY);
+    return format.format(d);
+  }
+
   @override
   Widget build(BuildContext context) {
     final salesState = ref.watch(salesProvider);
@@ -35,43 +44,76 @@ class _DashBoardState extends ConsumerState<DashBoard> {
         child: SingleChildScrollView(
           child: Column(children: [
             // const OverviewCard(),
-            Column(
+            GridView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(10),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 6,
+                  mainAxisSpacing: 6,
+                  crossAxisCount: 2),
               children: [
-                GridView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(10),
-                  gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 2,
-                      crossAxisSpacing: 6,
-                      mainAxisSpacing: 6,
-                      crossAxisCount: 2),
-                  children: [
-                    SummaryTile(
-                      title: "Today's sales",
-                      icon: const Icon(Icons.cases_outlined),
-                      price: salesState.todaySale,
-                    ),
-                    SummaryTile(
-                      title: " Sales for the week",
-                      icon: const Icon(Icons.cases_outlined),
-                      price: salesState.weekSales,
-                    ),
-                    SummaryTile(
-                      title: "Total purchases for this week",
-                      icon: const Icon(Icons.cases_outlined),
-                      price: purchaseState.weeklyTotal,
-                    ),
-                    SummaryTile(
-                      title: "Total purchases for this month",
-                      icon: const Icon(Icons.cases_outlined),
-                      price: purchaseState.monthlyTotal,
-                    )
-                  ],
+                SummaryTile(
+                  title: "Today's sales",
+                  icon: const Icon(Icons.cases_outlined, color: Colors.blue),
+                  price: salesState.todaySale,
                 ),
-                const SizedBox(height: 30),
+                SummaryTile(
+                  title: " Sales for the week",
+                  icon: const Icon(Icons.cases_outlined, color: Colors.blue),
+                  price: salesState.weekSales,
+                ),
+                SummaryTile(
+                  title: "Total purchases for this week",
+                  icon: const Icon(Icons.cases_outlined, color: Colors.blue),
+                  price: purchaseState.weeklyTotal,
+                ),
+                SummaryTile(
+                  title: "Total purchases for this month",
+                  icon: const Icon(Icons.cases_outlined, color: Colors.blue),
+                  price: purchaseState.monthlyTotal,
+                ),
+                SummaryTile(
+                  title: "Highest purchase product for the week",
+                  icon: const Icon(Icons.cases_outlined, color: Colors.blue),
+                  price: purchaseState.monthlyTotal,
+                )
               ],
-            )
+            ),
+            const SizedBox(height: 30),
+            FutureBuilder(
+                future: ref
+                    .read(addProductProvider.notifier)
+                    .getProductsNearingExpiry(),
+                builder: (context, snap) {
+                  if (snap.hasData) {
+                    if (snap.requireData == null) {
+                      return const Center(
+                        child: Text("something occured"),
+                      );
+                    } else if (snap.requireData!.isEmpty) {
+                      return const Center(
+                        child: Text("No expired products"),
+                      );
+                    } else {
+                      return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snap.requireData!.length,
+                          itemBuilder: (context, i) {
+                            final product = snap.requireData![i];
+
+                            return ProductCard(
+                              product: product,
+                              extraDetails:
+                                  "Expiry date: ${format(product.expiryDate!)}",
+                            );
+                          });
+                    }
+                  }
+                  return const SizedBox.shrink();
+                })
           ]),
         ),
       ),
@@ -96,28 +138,32 @@ class SummaryTile extends StatelessWidget {
     return MyIconButton(
         label: '',
         ontap: () {},
-        bgColor: color ?? Colors.deepPurple.shade100,
+        bgColor: color ?? Colors.white,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              icon,
-              const SizedBox(width: 10),
               Expanded(
-                child: Column(
+                child: MyText(
+                  text: title,
+                  maxLines: 3,
+                  color: Colors.black,
+                  weight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Expanded(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: MyText(
-                        text: title,
-                        maxLines: 3,
-                        color: Colors.grey,
+                    icon,
+                    MyText(
+                        text: "GHC $price",
                         weight: FontWeight.bold,
-                      ),
-                    ),
-                    MyText(text: "GHC $price", weight: FontWeight.bold)
+                        color: Colors.blue)
                   ],
                 ),
               )

@@ -141,7 +141,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
 }
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key, required this.product});
+  const ProductCard({super.key, required this.product, this.extraDetails});
+  final String? extraDetails;
 
   final Product product;
 
@@ -182,11 +183,19 @@ class ProductCard extends StatelessWidget {
                   maxLines: 2,
                   color: Colors.blueGrey,
                 ),
+                extraDetails == null
+                    ? SizedBox.shrink()
+                    : MyText(
+                        text: extraDetails!,
+                        size: 14,
+                        maxLines: 2,
+                        color: Colors.blueGrey,
+                      ),
               ],
             ),
             trailing: Consumer(builder: (context, ref, _) {
-              final canEdit = ref.watch(userProvider
-                  .select((data) => data?.role == Role.superAdmin));
+              final canEdit = ref.watch(
+                  userProvider.select((data) => data?.role == Role.superAdmin));
               return Visibility(
                 visible: canEdit,
                 child: GestureDetector(

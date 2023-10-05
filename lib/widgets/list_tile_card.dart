@@ -6,6 +6,7 @@ import 'package:rich_co_inventory/widgets/texts.dart';
 
 class ListTileCard extends ConsumerWidget {
   const ListTileCard({
+    this.onShowMore,
     super.key,
     required this.title,
     required this.subTitle,
@@ -25,6 +26,7 @@ class ListTileCard extends ConsumerWidget {
   final Function()? ontap;
   final Function()? onDelete;
   final Function()? onEdit;
+  final Function()? onShowMore;
   final Color? subTitleColor;
   final double? titleSize;
   final bool boldTitle;
@@ -40,9 +42,12 @@ class ListTileCard extends ConsumerWidget {
         size: titleSize,
       ),
       onTap: ontap,
-      subtitle: MyText(
-        text: subTitle,
-        color: subTitleColor ?? Colors.blue,
+      subtitle: GestureDetector(
+        onTap: onShowMore,
+        child: MyText(
+          text: subTitle,
+          color: subTitleColor ?? Colors.blue,
+        ),
       ),
       trailing: SizedBox(
         width: 100,

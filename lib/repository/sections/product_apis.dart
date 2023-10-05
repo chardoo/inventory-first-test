@@ -80,6 +80,21 @@ class ProductApis extends FireStoreAPIs<Product> {
     }
   }
 
+  Future<List<Product>?> productsNearingExpiring() async {
+    final threeMonthsFromNow = DateTime.now().add(Duration(days: 90));
+    try {
+      final res = await instance
+          .collection(mainCollection)
+          .where("expiryDate",
+              isLessThanOrEqualTo: threeMonthsFromNow.millisecondsSinceEpoch)
+          .get();
+      if (res.docs.isEmpty) return null;
+      return res.docs.map((e) => Product.fromJson(e.data())).toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
   @override
   Future<Product?> getOne(String name) async {
     try {
