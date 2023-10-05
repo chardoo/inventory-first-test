@@ -34,11 +34,18 @@ class _DashBoardState extends ConsumerState<DashBoard> {
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(children: [
-            const OverviewCard(),
+            // const OverviewCard(),
             Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                GridView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(10),
+                  gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 6,
+                      mainAxisSpacing: 6,
+                      crossAxisCount: 2),
                   children: [
                     SummaryTile(
                       title: "Today's sales",
@@ -49,13 +56,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                       title: " Sales for the week",
                       icon: const Icon(Icons.cases_outlined),
                       price: salesState.weekSales,
-                    )
-                  ],
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                    ),
                     SummaryTile(
                       title: "Total purchases for this week",
                       icon: const Icon(Icons.cases_outlined),
@@ -67,7 +68,8 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                       price: purchaseState.monthlyTotal,
                     )
                   ],
-                )
+                ),
+                const SizedBox(height: 30),
               ],
             )
           ]),
@@ -103,17 +105,21 @@ class SummaryTile extends StatelessWidget {
             children: [
               icon,
               const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MyText(
-                    text: title,
-                    maxLines: 3,
-                    color: Colors.grey,
-                    weight: FontWeight.bold,
-                  ),
-                  MyText(text: "GHC $price", weight: FontWeight.bold)
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: MyText(
+                        text: title,
+                        maxLines: 3,
+                        color: Colors.grey,
+                        weight: FontWeight.bold,
+                      ),
+                    ),
+                    MyText(text: "GHC $price", weight: FontWeight.bold)
+                  ],
+                ),
               )
             ],
           ),
