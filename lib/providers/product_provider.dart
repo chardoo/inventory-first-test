@@ -3,6 +3,7 @@ import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/models/stock.dart';
 import 'package:rich_co_inventory/models/supplier.dart';
+import 'package:rich_co_inventory/providers/sales_provider.dart';
 import 'package:rich_co_inventory/repository/sections/product_apis.dart';
 import 'package:rich_co_inventory/repository/sections/sales_apis.dart';
 import 'package:rich_co_inventory/repository/sections/stock.dart';
@@ -65,16 +66,7 @@ class AddProductProvider extends _$AddProductProvider {
     return res;
   }
 
-  Future<({String? data, String? error, bool isError})> addAllSales(
-      List<Sale> sales) async {
-    final loadingState = ref.read(loadingStateProvider.notifier);
-    loadingState.activate();
-    final res = await salesApi.addAll(sales);
-    print("res $res");
-    loadingState.finish();
-    loadingState.diactivate();
-    return res;
-  }
+  
 
   Future<List> getSuppliers() async {
     brandApis.getAll();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rich_co_inventory/providers/purchase_provider.dart';
 import 'package:rich_co_inventory/providers/sales_provider.dart';
 import 'package:rich_co_inventory/screens.dart/dashboard_feauture/drawer.dart';
 import 'package:rich_co_inventory/widgets/graph.dart';
@@ -17,8 +18,8 @@ class _DashBoardState extends ConsumerState<DashBoard> {
   @override
   void initState() {
     Future.microtask(() {
-      ref.read(salesProvider.notifier).getSalesForToday(null, null);
-      ref.read(salesProvider.notifier).getSalesForWeek();
+      ref.read(salesProvider.notifier).setSalesForDayAndWeek();
+      ref.read(purchaseProvider.notifier).setWeeklyAndMonthlyPurchase();
     });
     super.initState();
   }
@@ -26,6 +27,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
   @override
   Widget build(BuildContext context) {
     final salesState = ref.watch(salesProvider);
+    final purchaseState = ref.watch(purchaseProvider);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       body: Padding(
@@ -51,18 +53,18 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                   ],
                 ),
                 const SizedBox(height: 30),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SummaryTile(
-                      title: "New Sale",
-                      icon: Icon(Icons.cases_outlined),
-                      price: 2003.20,
+                      title: "Total purchases for this week",
+                      icon: const Icon(Icons.cases_outlined),
+                      price: purchaseState.weeklyTotal,
                     ),
                     SummaryTile(
-                      title: "New Sale",
-                      icon: Icon(Icons.cases_outlined),
-                      price: 2003.20,
+                      title: "Total purchases for this month",
+                      icon: const Icon(Icons.cases_outlined),
+                      price: purchaseState.monthlyTotal,
                     )
                   ],
                 )
@@ -106,6 +108,7 @@ class SummaryTile extends StatelessWidget {
                 children: [
                   MyText(
                     text: title,
+                    maxLines: 3,
                     color: Colors.grey,
                     weight: FontWeight.bold,
                   ),

@@ -172,6 +172,49 @@ class PurchaseApis extends FireStoreAPIs<Purchase> {
     }
   }
 
+  Future<double> getTotalPurchasesForAWeek() async {
+    try {
+      final d = DateTime.now();
+      final today = DateTime(d.year, d.month, d.day);
+      final sevenDaysBefore = today.subtract(const Duration(days: 6));
+      final res = await instance
+          .collection(mainCollection)
+          .where("purchaseDate",
+              isGreaterThanOrEqualTo: sevenDaysBefore.millisecondsSinceEpoch,
+              isLessThanOrEqualTo: today.millisecondsSinceEpoch)
+          .get();
+
+      if (res.docs.isEmpty) return 0;
+      return res.docs.map((e) {
+        final s = Purchase.fromJson(e.data());
+        return s.cost * s.quantityPurchased;
+      }).reduce((value, element) => value + element);
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  Future<double> getTotalPurchasesForMonth() async {
+    try {
+      final d = DateTime.now();
+      final today = DateTime(d.year, d.month, d.day);
+      final month = today.subtract(const Duration(days: 30));
+      final res = await instance
+          .collection(mainCollection)
+          .where("purchaseDate",
+              isGreaterThanOrEqualTo: month.millisecondsSinceEpoch,
+              isLessThanOrEqualTo: today.millisecondsSinceEpoch)
+          .get();
+      if (res.docs.isEmpty) return 0;
+      return res.docs.map((e) {
+        final s = Purchase.fromJson(e.data());
+        return s.cost * s.quantityPurchased;
+      }).reduce((value, element) => value + element);
+    } catch (e) {
+      return 0;
+    }
+  }
+
   Future<List<Purchase>> searchPruchaseByName(String name) async {
     try {
       final res = await instance

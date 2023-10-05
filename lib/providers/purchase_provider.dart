@@ -16,6 +16,17 @@ class PurchaseProvider extends _$PurchaseProvider {
     return await PurchaseApis().searchPruchaseByName(name);
   }
 
+  setWeeklyAndMonthlyPurchase() async {
+    final weekly = await PurchaseApis().getTotalPurchasesForAWeek();
+    final monthly = await PurchaseApis().getTotalPurchasesForMonth();
+    state = PurchaseState(
+        listpurchase: state.listpurchase,
+        me: state.me,
+        monthlyTotal: monthly,
+        purchas: state.purchas,
+        weeklyTotal: weekly);
+  }
+
   Future<({String? data, String? error, bool isError})> addPurchase(
       Purchase purchase, bool update) async {
     final loadingNotifier = ref.read(loadingStateProvider.notifier);
@@ -23,6 +34,8 @@ class PurchaseProvider extends _$PurchaseProvider {
     final res = update
         ? await PurchaseApis().update(purchase)
         : await PurchaseApis().add(purchase);
+    setWeeklyAndMonthlyPurchase();
+
     loadingNotifier.finish();
     loadingNotifier.diactivate();
     return res;
@@ -31,7 +44,15 @@ class PurchaseProvider extends _$PurchaseProvider {
 
 class PurchaseState {
   int? me;
+  final double monthlyTotal;
+  final double weeklyTotal;
   List<Purchase>? listpurchase;
   Purchase? purchas;
-  PurchaseState({this.me, this.listpurchase, this.purchas});
+  PurchaseState({
+    this.me,
+    this.listpurchase,
+    this.purchas,
+    this.monthlyTotal = 0,
+    this.weeklyTotal = 0,
+  });
 }

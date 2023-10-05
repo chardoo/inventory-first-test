@@ -127,21 +127,52 @@ class SalesApi extends FireStoreAPIs<Sale> {
     }
   }
 
-  Future<List<Sale>> getSalesFromDateToToday(DateTime start) async {
+  Future<double> getSalesSoldForWeek() async {
+    final now = DateTime.now();
     try {
-    ;
-      final searchEndDate = DateTime(start.year, start.month, start.day);
-
+      final today = DateTime(now.year, now.month, now.day);
+      final sevenDaysBefore = today.subtract(const Duration(days: 6));
 
       var res = await instance
           .collection(Collections.sales.name)
-          .where("saleDate", isGreaterThanOrEqualTo: searchEndDate)
+          .where("saleDate",
+              isGreaterThanOrEqualTo: sevenDaysBefore.millisecondsSinceEpoch,
+              isLessThanOrEqualTo: today.millisecondsSinceEpoch)
           .get();
+      if (res.docs.isEmpty) return 0;
 
-      if (res.docs.isEmpty) return [];
-      return res.docs.map((e) => Sale.fromJson(e.data())).toList();
+      final sales = res.docs.map((e) {
+        final s = Sale.fromJson(e.data());
+
+        return s.quantitySold! * s.productPrice;
+      }).toList();
+      return sales.reduce((value, element) => value + element);
     } catch (e) {
-      return [];
+      return 0;
+    }
+  }
+
+  
+
+  Future<double> getSalesSoldForADay() async {
+    final now = DateTime.now();
+    try {
+      final today = DateTime(now.year, now.month, now.day);
+
+      var res = await instance
+          .collection(Collections.sales.name)
+          .where("saleDate", isEqualTo: today.millisecondsSinceEpoch)
+          .get();
+      if (res.docs.isEmpty) return 0;
+
+      final sales = res.docs.map((e) {
+        final s = Sale.fromJson(e.data());
+
+        return s.quantitySold! * s.productPrice;
+      }).toList();
+      return sales.reduce((value, element) => value + element);
+    } catch (e) {
+      return 0;
     }
   }
 

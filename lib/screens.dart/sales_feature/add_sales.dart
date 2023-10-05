@@ -5,6 +5,7 @@ import 'package:rich_co_inventory/helpers/navigator.dart';
 import 'package:rich_co_inventory/models/product.dart';
 import 'package:rich_co_inventory/models/sales.dart';
 import 'package:rich_co_inventory/providers/sales_cart_provider.dart';
+import 'package:rich_co_inventory/providers/sales_provider.dart';
 import 'package:rich_co_inventory/widgets/button.dart';
 import 'package:rich_co_inventory/widgets/dialogs.dart';
 import 'package:rich_co_inventory/widgets/drop_down_field.dart';
@@ -55,7 +56,7 @@ class AddSalesScreen extends ConsumerWidget {
                         MyNavigator.back(context);
 
                         final res = await ref
-                            .read(addProductProvider.notifier)
+                            .read(salesProvider.notifier)
                             .addAllSales(salesCart);
                         if (!res.isError) {
                           if (context.mounted) {

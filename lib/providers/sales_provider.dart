@@ -10,6 +10,8 @@ import 'package:rich_co_inventory/repository/sections/sales_apis.dart';
 import 'package:rich_co_inventory/repository/sections/stock.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'app_state_provider.dart';
+
 part '.generated/sales_provider.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -37,36 +39,28 @@ class SalesProvider extends _$SalesProvider {
     return sales;
   }
 
-  Future<List<Sale>> getSalesForToday(DateTime? start, DateTime? end) async {
-    final sales = await SalesApi().getSalesForRange(start, end);
-    double todaysSales = 0.0;
-
-    for (int i = 0; i < sales.length; i++) {
-      todaysSales =
-          todaysSales + (sales[i].productPrice * sales[i].quantitySold!);
-    }
-
-    state = SalesState(todaySale: todaysSales, weekSales: state.weekSales);
-    return sales;
-  }
-
-  Future<List<Sale>> getSalesForWeek() async {
-    final end = DateTime.now();
-    final start = end.subtract(const Duration(days: 7));
-    final sales = await SalesApi().getSalesForRange(start, end);
-    double weeklySales = 0.0;
-    print("sales $sales");
-    for (int i = 0; i < sales.length; i++) {
-      weeklySales =
-          weeklySales + (sales[i].productPrice * sales[i].quantitySold!);
-    }
-
-    state = SalesState(todaySale: state.todaySale, weekSales: weeklySales);
-    return sales;
+  Future setSalesForDayAndWeek() async {
+    final salesForToday = await SalesApi().getSalesSoldForADay();
+    final salesForWeek = await SalesApi().getSalesSoldForWeek();
+    state = SalesState(
+        todaySale: salesForToday, weekSales: salesForWeek, total: state.total);
   }
 
   Future<({String? error, bool isError})> delete(Sale sale) async {
     final res = await SalesApi().delete(sale);
+    return res;
+  }
+
+  Future<({String? data, String? error, bool isError})> addAllSales(
+      List<Sale> sales) async {
+    final loadingState = ref.read(loadingStateProvider.notifier);
+    loadingState.activate();
+    final res = await SalesApi().addAll(sales);
+    setSalesForDayAndWeek();
+
+    print("res $res");
+    loadingState.finish();
+    loadingState.diactivate();
     return res;
   }
 
